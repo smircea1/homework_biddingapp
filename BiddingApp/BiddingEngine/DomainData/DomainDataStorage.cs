@@ -31,6 +31,10 @@ namespace BiddingApp.BiddingEngine.DomainData
         private DomainDataStorage()
         {
             this.AuctionTable = new AuctionTable();
+            this.BidTable = new BidTable();
+            this.CategoryTable = new CategoryTable();
+            this.PersonTable = new PersonTable();
+            this.ProductTable = new ProductTable();
         }
 
         /// <summary>
@@ -40,6 +44,38 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// The auction table.
         /// </value>
         public IAuctionTable AuctionTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the bid table.
+        /// </summary>
+        /// <value>
+        /// The bid table.
+        /// </value>
+        public IBidTable BidTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the category table.
+        /// </summary>
+        /// <value>
+        /// The category table.
+        /// </value>
+        public ICategoryTable CategoryTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the person table.
+        /// </summary>
+        /// <value>
+        /// The person table.
+        /// </value>
+        public IPersonTable PersonTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the product table.
+        /// </summary>
+        /// <value>
+        /// The product table.
+        /// </value>
+        public IProductTable ProductTable { get; internal set; }
 
         /// <summary>
         /// Gets the instance.

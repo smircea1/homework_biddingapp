@@ -42,6 +42,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public string Name { get; internal set; }
 
         /// <summary>
+        /// Gets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        public string Description { get; internal set; }
+
+        /// <summary>
         /// Builds an Product
         /// </summary>
         public class Builder
@@ -66,6 +74,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             public void SetName(string name)
             {
                 this.pending.Name = name;
+            }
+
+            /// <summary>
+            /// Sets the description.
+            /// </summary>
+            /// <param name="description">The description.</param>
+            public void SetDescription(string description)
+            {
+                this.pending.Description = description;
             }
 
             /// <summary>
@@ -100,6 +117,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                 if (this.pending.Name.Length == 0)
                 {
                     throw new Exception("product name is empty!");
+                }
+
+                if (this.pending.Description.Length == 0)
+                {
+                    throw new Exception("description is empty!");
                 }
 
                 if (this.pending.Categories.Count == 0)

@@ -7,11 +7,7 @@
 
 namespace BiddingApp.BiddingEngine.DataLayer.DAO
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
 
@@ -35,6 +31,17 @@ namespace BiddingApp.BiddingEngine.DataLayer.DAO
         /// <param name="auction">The auction.</param> 
         public void Update(Auction auction)
         { 
+        }
+
+        /// <summary>
+        /// Loads all auctions.
+        /// </summary>
+        /// <returns>All auctions in db</returns>
+        public List<Auction> LoadAllAuctions()
+        {
+            List<Auction> result = null;
+
+            return result;
         }
     }
 }

@@ -185,10 +185,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                     return null;
                 }
 
-                if (this.pending.Id.Length == 0)
-                {
-                    return null;
-                }
+                ////if (this.pending.Id.Length == 0)
+                ////{
+                ////    return null;
+                ////}
 
                 return this.pending;
             }
