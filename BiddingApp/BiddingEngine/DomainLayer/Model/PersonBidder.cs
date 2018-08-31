@@ -1,9 +1,10 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Currency.cs" company="Transilvania University of Brasov"> 
+// <copyright file="PersonBidder.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------  
+
 namespace BiddingApp.BiddingEngine.DomainLayer.Model
 {
     using System;
@@ -13,34 +14,33 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     using System.Threading.Tasks;
 
     /// <summary>
-    /// This represents a money currency
+    /// The bidder role of a person
     /// </summary>
-    public class Currency 
-    {   
+    public class PersonBidder
+    { 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Currency"/> class.
+        /// Initializes a new instance of the <see cref="PersonBidder"/> class.
         /// </summary>
-        /// <param name="name">The name.</param> 
-        public Currency(string name)
+        /// <param name="person">The person.</param>
+        public PersonBidder(Person person)
         {
-            this.Id = 0;
-            this.Name = name; 
+            this.Person = person;
         }
 
         /// <summary>
-        /// Gets or sets the identifier.
+        /// Gets or sets the identifier bidder.
         /// </summary>
         /// <value>
-        /// The identifier.
+        /// The identifier bidder.
         /// </value>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the name.
+        /// Gets or sets the identifier person.
         /// </summary>
         /// <value>
-        /// The name.
+        /// The identifier person.
         /// </value>
-        public string Name { get; set; } 
+        public Person Person { get; set; }
     }
 }

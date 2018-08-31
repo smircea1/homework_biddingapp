@@ -4,15 +4,12 @@
 // </copyright> 
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------
-
+ 
 namespace BiddingApp.BiddingEngine.DomainData
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using BiddingApp.BiddingEngine.DataLayer.DAO;
+    using System.Configuration;
+    using Insight.Database;
+    using MySql.Data.MySqlClient;
 
     /// <summary>
     /// this is the link between domain and it's storage.
@@ -26,15 +23,23 @@ namespace BiddingApp.BiddingEngine.DomainData
         private static DomainDataStorage instance = null;
 
         /// <summary>
+        /// The database conneection
+        /// </summary>
+        private MySqlConnection databaseConneection = null;
+
+        /// <summary>
         /// Prevents a default instance of the <see cref="DomainDataStorage"/> class from being created.
         /// </summary>
         private DomainDataStorage()
         {
-            this.AuctionTable = new AuctionTable();
-            this.BidTable = new BidTable();
-            this.CategoryTable = new CategoryTable();
-            this.PersonTable = new PersonTable();
-            this.ProductTable = new ProductTable();
+            string connectionString = ConfigurationManager.ConnectionStrings["MySQL"].ConnectionString;
+            this.databaseConneection = new MySqlConnection(connectionString);
+
+            this.AuctionTable = this.databaseConneection.As<IAuctionTable>();
+            this.BidTable = this.databaseConneection.As<IBidTable>();
+            this.CategoryTable = this.databaseConneection.As<ICategoryTable>();
+            this.PersonTable = this.databaseConneection.As<IPersonTable>();
+            this.ProductTable = this.databaseConneection.As<IProductTable>();  
         }
 
         /// <summary>

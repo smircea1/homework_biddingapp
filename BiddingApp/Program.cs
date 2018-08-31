@@ -6,8 +6,11 @@
 //-----------------------------------------------------------------------
 namespace BiddingApp
 {
+    using System;
+    using System.Configuration;
     using System.Data;
     using BiddingApp.BiddingEngine.DomainData;
+    using BiddingApp.BiddingEngine.DomainLayer;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
     using Insight.Database;
     using MySql.Data.MySqlClient;
@@ -22,21 +25,42 @@ namespace BiddingApp
         /// </summary>
         /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
-        {
-            string databaseUrl = "localhost";
-            string databaseName = "biddingdb";
-            string databaseUsername = "root";
-            string databasePassword = "root";
-            string connstring = string.Format("SERVER={0}; DATABASE={1}; UID={2}; password={3}; SslMode=none", databaseUrl, databaseName, databaseUsername, databasePassword);
-
-            MySqlConnection conn = new MySqlConnection(connstring);  
+        { 
+            string connectionString = ConfigurationManager.ConnectionStrings["MySQL"].ConnectionString; 
+            MySqlConnection conn = new MySqlConnection(connectionString);  
 
             Person.Builder personBuilder = new Person.Builder();
+            personBuilder.SetId(16);
             personBuilder.SetName("aname");
-            personBuilder.SetIsBanned(true); 
+            personBuilder.SetIsBanned(true);
              
-            IPersonTable persons = conn.As<IPersonTable>(); 
-            persons.InsertPerson(personBuilder.Build());
+            Person person = personBuilder.Build(); 
+
+            Product.Builder product_builder = new Product.Builder();
+            product_builder.SetName("AProduct");
+            product_builder.AddCategory(new Category("Food"));
+            product_builder.SetDescription("big_description");
+
+            Product productA = product_builder.Build();
+
+            DateTime startDate = DateTime.Now.AddSeconds(5);
+            DateTime endDate = DateTime.Now.AddSeconds(8);
+
+            Currency usd_currency = CurrencyConverter.CurrencyRates.GetCurrencyByName("USD");
+
+            Money starting_money = new Money(usd_currency, 20);
+
+            Auction.Builder auction_builder = new Auction.Builder();
+            auction_builder.SetOwner(person.Id);
+            auction_builder.SetStartDate(startDate);
+            auction_builder.SetEndDate(endDate);
+            auction_builder.SetProduct(productA);
+            auction_builder.SetStartingMoney(starting_money);
+
+            Auction auctionA = auction_builder.Build();
+
+            IAuctionTable auctionTable = DomainDataStorage.GetInstance().AuctionTable;
+            auctionTable.InsertAuction(auctionA);
 
             System.Console.WriteLine("inserted!");
         }

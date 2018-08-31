@@ -20,15 +20,31 @@ namespace BiddingApp.BiddingEngine.DomainData
     public interface IAuctionTable
     {
         /// <summary>
-        /// Inserts the specified auction.
+        /// Inserts the auction.
         /// </summary>
         /// <param name="auction">The auction.</param>
-        void Insert(Auction auction);
+        /// <returns>the just inserted id</returns>
+        int InsertAuction(Auction auction);
 
         /// <summary>
-        /// Updates the specified auction.
+        /// Fetches the offeror auctions.
         /// </summary>
-        /// <param name="auction">The auction.</param>
-        void Update(Auction auction);
+        /// <param name="offeror">The offeror.</param>
+        /// <returns>offeror's auctions</returns>
+        List<Auction> FetchOfferorAuctions(PersonOfferor offeror);
+
+        /// <summary>
+        /// Fetches all auctions.
+        /// </summary>
+        /// <returns>all auctions existing.</returns>
+        List<Auction> FetchAllAuctions();
+
+        /// <summary>
+        /// Fetches the offeror auctions by category.
+        /// </summary>
+        /// <param name="offerer">The offerer.</param>
+        /// <param name="category">The category.</param>
+        /// <returns>returns all user's auction is specified category</returns>
+        List<Auction> FetchOfferorAuctionsByCategory(PersonOfferor offerer, Category category);
     }
 }

@@ -20,15 +20,17 @@ namespace BiddingApp.BiddingEngine.DomainData
     public interface IProductTable
     {
         /// <summary>
-        /// Inserts the specified product.
+        /// Inserts the product.
         /// </summary>
         /// <param name="product">The product.</param>
-        void Insert(Product product);
+        /// <returns>the inserted id</returns>
+        int InsertProduct(Product product);
 
         /// <summary>
-        /// Updates the specified product.
+        /// Fetches the product by identifier.
         /// </summary>
-        /// <param name="product">The product.</param>
-        void Update(Product product);
+        /// <param name="id">The identifier.</param>
+        /// <returns>the product by id</returns>
+        Product FetchProductById(int id);
     }
 }

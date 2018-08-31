@@ -7,8 +7,10 @@
 namespace BiddingApp.BiddingEngine.DomainLayer
 {
     using System;
-    using System.Collections.Generic;  
+    using System.Collections.Generic;
+    using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
+    using BiddingApp.BiddingEngine.DomainLayer.ServiceModel;
 
     /// <summary>
     /// The broker that keeps and handles the auctions
@@ -23,7 +25,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// The configs
         /// </summary>
-        private static BrokerConfigs configs = null;
+        private static BrokerConfigs configs = BrokerConfigs.LoadConfigs();
+
+        /// <summary>
+        /// The domain data storage
+        /// </summary>
+        private static DomainDataStorage domainDataStorage = DomainDataStorage.GetInstance();
 
         /// <summary>
         /// The auctions
@@ -35,7 +42,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private BiddingBroker()
         {
-            BiddingBroker.configs = BrokerConfigs.LoadConfigs();
+
         }
 
         /// <summary>
@@ -60,8 +67,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>true if he did, false either</returns>
         public bool DidPersonHitMaxCategoryListLimit(Person person, Category category)
         {
+            PersonService personService = new PersonService(person);
             int max_in_category = BiddingBroker.configs.MaxInProgressByCategory;
-            int current_in_category = person.CountActiveAuctionsInCategory(category);
+            int current_in_category = personService.CountActiveAuctionsInCategory(category);
 
             return current_in_category >= max_in_category;
         }
@@ -84,7 +92,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         /// <param name="auction">The auction.</param>
         /// <returns>False if the register auction has failed.</returns>
-        public bool RegisterAuction(Auction auction)
+        public bool RegisterAuction(Person person, Auction auction)
         {
             // if it's older
             if (DateTime.Now.CompareTo(auction.StartDate) < 0)
@@ -96,7 +104,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 }
             }
 
-            auction.ProductOwner.GetInProgressAuctions().Add(auction);
+            person.GetInProgressAuctions().Add(auction);
 
             this.auctions.Add(auction);
 
@@ -111,12 +119,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>false if the bid registration had failed.</returns>
         public bool RegisterBid(Bid bid, Auction auction)
         {
-            if (auction.IsEnded)
+            AuctionService auctionService = new AuctionService(auction);
+            if (auctionService.IsEnded)
             {
                 return false;
             }
 
-            auction.GetBidsHistory().Add(auction.CurrentBid);
+            auctionService.Auction.HistoryBids.Add(auction.CurrentBid);
             auction.CurrentBid = bid;
 
             //// NOTICE CURRENT BIDDER HAS CHANGED
@@ -129,9 +138,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         /// <param name="auction">The auction.</param>
         /// <returns>False if the end auction had failed.</returns>
-        public bool EndAuction(Auction auction)
-        {
-            Person owner = auction.ProductOwner;
+        public bool EndAuction(Person owner, Auction auction)
+        { 
             if (!owner.GetInProgressAuctions().Remove(auction))
             {
                 return false; // cannot remove auction, it may didn't exist.
@@ -141,5 +149,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
             return true;
         }  
+
+        private void LoadAuctions()
+        {
+            List<Auction> auctions = domainDataStorage.AuctionTable.FetchAllAuctions();
+        }
     }
 }

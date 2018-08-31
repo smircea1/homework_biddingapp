@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Bid.cs" company="Transilvania University of Brasov"> 
+// <copyright file="PersonMark.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
@@ -14,19 +14,22 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     using System.Threading.Tasks;
 
     /// <summary>
-    /// An auction bid
+    /// User mark.
     /// </summary>
-    public class Bid
-    {
+    public class PersonMark
+    { 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Bid"/> class from being created.
+        /// Initializes a new instance of the <see cref="PersonMark"/> class.
         /// </summary>
-        private Bid()
+        /// <param name="sender">The sender.</param>
+        /// <param name="receiver">The receiver.</param>
+        /// <param name="mark">The mark.</param>
+        public PersonMark(Person sender, Person receiver, int mark)
         {
             this.Id = 0;
-            this.PersonBidder = null;
-            this.Auction = null;
-            this.Currency = null;
+            this.Sender = sender;
+            this.Receiver = receiver;
+            this.Mark = mark;
         }
 
         /// <summary>
@@ -38,36 +41,28 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier owner.
+        /// Gets or sets the sender.
         /// </summary>
         /// <value>
-        /// The identifier owner.
+        /// The sender.
         /// </value>
-        public PersonBidder PersonBidder { get; set; }
+        public Person Sender { get; set; }
+         
+        /// <summary>
+        /// Gets or sets the receiver.
+        /// </summary>
+        /// <value>
+        /// The receiver.
+        /// </value>
+        public Person Receiver { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier auction.
+        /// Gets or sets the mark.
         /// </summary>
         /// <value>
-        /// The identifier auction.
+        /// The mark.
         /// </value>
-        public Auction Auction { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier currency.
-        /// </summary>
-        /// <value>
-        /// The identifier currency.
-        /// </value>
-        public Currency Currency { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>
-        /// The value.
-        /// </value>
-        public double Value { get; set; }
+        public int Mark { get; set; }
 
         /// <summary>
         /// Gets or sets the date.
@@ -75,6 +70,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The date.
         /// </value>
-        public DateTime Date { get; set; }
+        public DateTime DateOccur { get; set; }
     }
 }

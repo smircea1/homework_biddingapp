@@ -18,211 +18,74 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// An auction
     /// </summary>
     public class Auction
-    {
-        /// <summary>
-        /// The log
-        /// </summary>
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// The timer
-        /// </summary>
-        private System.Threading.Timer endTimer;
-
-        /// <summary>
-        /// The start timer
-        /// </summary>
-        private System.Threading.Timer startTimer;
-
-        /// <summary>
-        /// The bids history
-        /// </summary>
-        private List<Bid> bidsHistory = new List<Bid>();
-
+    {  
         /// <summary>
         /// Prevents a default instance of the <see cref="Auction"/> class from being created.
         /// </summary>
         private Auction()
         {
-            this.IsOpen = false;
-            this.IsEnded = true;
+            this.Id = 0;
+            this.PersonOfferor = null;
+            this.Product = null;
+            this.Currency = null;
+            this.StartValue = 0;
         }
 
         /// <summary>
-        /// Gets the auction owner.
+        /// Gets or sets the identifier auction.
         /// </summary>
         /// <value>
-        /// The auction owner.
+        /// The identifier auction.
         /// </value>
-        public Person ProductOwner { get; internal set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets the product.
+        /// Gets or sets the identifier offeror.
         /// </summary>
         /// <value>
-        /// The product.
+        /// The identifier offeror.
         /// </value>
-        public Product Product { get; internal set; }
+        public PersonOfferor PersonOfferor { get; set; }
 
         /// <summary>
-        /// Gets the starting money.
+        /// Gets or sets the identifier product.
         /// </summary>
         /// <value>
-        /// The starting money.
+        /// The identifier product.
         /// </value>
-        public Money StartingMoney { get; internal set; }
+        public Product Product { get; set; }
 
         /// <summary>
-        /// Gets the start date.
+        /// Gets or sets the identifier currency.
+        /// </summary>
+        /// <value>
+        /// The identifier currency.
+        /// </value>
+        public Currency Currency { get; set; } 
+
+        /// <summary>
+        /// Gets or sets the start date.
         /// </summary>
         /// <value>
         /// The start date.
         /// </value>
-        public DateTime StartDate { get; internal set; }
+        public DateTime StartDate { get; set; }
 
         /// <summary>
-        /// Gets the end date.
+        /// Gets or sets the end date.
         /// </summary>
         /// <value>
         /// The end date.
         /// </value>
-        public DateTime EndDate { get; internal set; }
+        public DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is ended.
+        /// Gets or sets the start value.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is ended; otherwise, <c>false</c>.
+        /// The start value.
         /// </value>
-        public bool IsEnded { get; internal set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is open.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is open; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsOpen { get; internal set; }
-
-        /// <summary>
-        /// Gets the current bid.
-        /// </summary>
-        /// <value>
-        /// The current bid.
-        /// </value>
-        public Bid CurrentBid { get; internal set; }
-
-        /// <summary>
-        /// Gets the bids history.
-        /// </summary>
-        /// <returns>Returns the bid historic</returns>
-        public List<Bid> GetBidsHistory()
-        {
-            return this.bidsHistory;
-        }
-
-        /// <summary>
-        /// Gets the currency.
-        /// </summary>
-        /// <returns>The auctions's currency</returns>
-        public Currency GetCurrency()
-        {
-            return this.StartingMoney.Currency;
-        }
-
-        /// <summary>
-        /// Determines whether [is bid eligible] [the specified bid].
-        /// </summary>
-        /// <param name="bid">The bid.</param>
-        /// <returns>
-        ///   <c>true</c> if [is bid eligible] [the specified bid]; otherwise, <c>false</c>.
-        /// </returns>
-        public bool IsBidEligible(Bid bid)
-        {
-            Bid current_bid = this.CurrentBid;
-            if (current_bid == null)
-            {
-                current_bid = new Bid(this.ProductOwner, this.StartingMoney);
-            }
-
-            //// The same person cannot bid its own bid.
-            if (current_bid.Person.Equals(bid.Person))
-            {
-                return false;
-            }
-
-            //// The bid should be already exchanged to auction's currency
-            if (!bid.Offered.Currency.Name.Equals(this.GetCurrency().Name))
-            {
-                return false;
-            }
-
-            Money current_bid_money = current_bid.Offered;
-
-            //// Max current price + 50% * current price
-            double max_new_bid_value = current_bid_money.Value + (current_bid_money.Value / 2);
-
-            //// Price should be bigger than existent one, but not bigger than 50% + current price
-            bool price_ok = bid.Offered.Value > current_bid_money.Value && bid.Offered.Value < max_new_bid_value;
-
-            return price_ok;
-        }
-
-        /// <summary>
-        /// Setups the timers.
-        /// </summary>
-        private void SetupTimers()
-        {
-            DateTime current = DateTime.Now;
-            TimeSpan untilEnd = this.EndDate.TimeOfDay - current.TimeOfDay;
-            TimeSpan untilStart = this.StartDate.TimeOfDay - current.TimeOfDay;
-
-            if (untilEnd < TimeSpan.Zero)
-            {
-                //// time already passed
-                this.IsEnded = true; 
-            } 
-            else
-            {
-                this.IsEnded = false;
-
-                this.endTimer = new System.Threading.Timer(
-                x => { this.OnAuctionEnded(); }, null, untilEnd, Timeout.InfiniteTimeSpan);
-
-                Log.Info("Auction::SetupTimers: End timer had started.");
-            }
-
-            if (untilStart < TimeSpan.Zero)
-            {
-                //// time already passed
-                this.IsOpen = true; 
-            } 
-            else
-            {
-                this.IsOpen = false;
-
-                this.startTimer = new System.Threading.Timer(
-                x => { this.OnAuctionStarted(); }, null, untilStart, Timeout.InfiniteTimeSpan);
-
-                Log.Info("Auction::SetupTimers: Start timer had started.");
-            }
-        }
-
-        /// <summary>
-        /// Called when [auction ended].
-        /// </summary>
-        private void OnAuctionEnded()
-        {
-            this.IsEnded = true;
-        }
-
-        /// <summary>
-        /// Called when [auction started].
-        /// </summary>
-        private void OnAuctionStarted()
-        {
-            this.IsOpen = true;
-        }
+        public double StartValue { get; set; }
 
         /// <summary>
         /// The builder of an auction.
@@ -232,7 +95,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             /// <summary>
             /// The pending
             /// </summary>
-            private Auction pending;
+            private Auction pending; 
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Builder"/> class.
@@ -245,10 +108,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             /// <summary>
             /// Sets the owner.
             /// </summary>
-            /// <param name="owner">The owner.</param>
-            public void SetOwner(Person owner)
+            /// <param name="offeror">The identifier owner.</param>
+            public void SetOfferor(PersonOfferor offeror)
             {
-                this.pending.ProductOwner = owner;
+                this.pending.PersonOfferor = offeror;
             }
 
             /// <summary>
@@ -261,12 +124,21 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             }
 
             /// <summary>
-            /// Sets the starting money.
+            /// Sets the currency.
             /// </summary>
-            /// <param name="price">The price.</param>
-            public void SetStartingMoney(Money price)
+            /// <param name="currency">The currency.</param>
+            public void SetCurrency(Currency currency)
             {
-                this.pending.StartingMoney = price;
+                this.pending.Currency = currency;
+            }
+
+            /// <summary>
+            /// Sets the starting value.
+            /// </summary> 
+            /// <param name="startValue">The start value.</param>
+            public void SetStartingValue(double startValue)
+            { 
+                this.pending.StartValue = startValue;
             }
 
             /// <summary>
@@ -302,7 +174,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             /// </exception>
             public Auction Build()
             {
-                if (this.pending.ProductOwner == null)
+                if (this.pending.PersonOfferor == null)
                 {
                     throw new Exception("you must provide an action owner!");
                 }
@@ -326,17 +198,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                     throw new Exception("invalid start/end dates!");
                 }
 
-                if (this.pending.StartingMoney == null)
+                if (this.pending.Currency == null)
                 {
-                    throw new Exception("no starting price set!");
+                    throw new Exception("Currency not set!");
                 }
 
-                if (this.pending.StartingMoney.Value < 0)
+                if (this.pending.StartValue < 0)
                 {
                     throw new Exception("negative price is not allowed!");
-                }
-
-                this.pending.SetupTimers();
+                } 
 
                 return this.pending;
             }

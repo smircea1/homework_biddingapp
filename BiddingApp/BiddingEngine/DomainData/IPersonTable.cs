@@ -23,12 +23,14 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the specified person.
         /// </summary>
         /// <param name="person">The person.</param>
-        void InsertPerson(Person person); 
-
+        /// <returns>the inserted id</returns>
+        int InsertPerson(Person person); 
+         
         /// <summary>
-        /// Updates the specified person.
+        /// Gets the person by identifier.
         /// </summary>
-        /// <param name="person">The person.</param>
-        void Update(Person person);
+        /// <param name="id">The identifier.</param>
+        /// <returns>the person by id</returns>
+        Person FetchPersonById(int id);
     }
 }

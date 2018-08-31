@@ -17,54 +17,40 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The category of a product
     /// </summary>
     public class Category
-    {
-        /// <summary>
-        /// The subcategories
-        /// </summary>
-        private List<Category> subcategories = new List<Category>();
-
+    {  
         /// <summary>
         /// Initializes a new instance of the <see cref="Category"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public Category(string name)
         {
+            this.Id = 0;
             this.Name = name;
+            this.SubCategories = new List<Category>();
         }
 
         /// <summary>
-        /// Gets the name.
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
         /// </summary>
         /// <value>
         /// The name.
         /// </value>
-        public string Name { get; internal set; }
-         
-        /// <summary>
-        /// Gets the sub categories.
-        /// </summary>
-        /// <returns>The subcategories.</returns>
-        public List<Category> GetSubCategories()
-        {
-            return this.subcategories;
-        }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Adds the subcategory.
+        /// Gets or sets the sub categories.
         /// </summary>
-        /// <param name="category">The category.</param>
-        public void AddSubcategory(Category category)
-        {
-            this.subcategories.Add(category);
-        }
-
-        /// <summary>
-        /// Removes the subcategory.
-        /// </summary>
-        /// <param name="category">The category.</param>
-        public void RemoveSubcategory(Category category)
-        {
-            this.subcategories.Remove(category);
-        }
+        /// <value>
+        /// The sub categories.
+        /// </value>
+        public List<Category> SubCategories { get; set; } 
     }
 }

@@ -54,11 +54,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Actions
             auctionBuilder.SetStartDate(start);
             auctionBuilder.SetStartingMoney(startingMoney);
             auctionBuilder.SetProduct(product);
-            auctionBuilder.SetOwner(person);
+            auctionBuilder.SetOwner(person.Id);
 
             Auction auctionCreated = auctionBuilder.Build();
 
-            return broker.RegisterAuction(auctionCreated); 
+            return broker.RegisterAuction(person, auctionCreated); 
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Actions
         /// <returns>False if it cannot end the specified auction.</returns>
         public static bool EndAuction(BiddingBroker broker, Person person, Auction auction)
         { 
-            Person owner = auction.ProductOwner;
+            int IdOwner = auction.IdOwner;
 
-            if (!owner.Id.Equals(person.Id))
+            if (IdOwner != person.Id)
             {
                 return false;
             }
@@ -82,7 +82,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Actions
                 return false;
             }
 
-            return broker.EndAuction(auction); 
+            return broker.EndAuction(person, auction); 
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Actions
             double converted_value = CurrencyConverter.DoExchange(money.Currency, auction_currency, money.Value);
             Money exchaged_money = new Money(auction_currency, converted_value);
 
-            Bid new_bid = new Bid(person, exchaged_money); 
+            Bid new_bid = new Bid(person.Id, exchaged_money); 
              
             if (!auction.IsBidEligible(new_bid))
             {

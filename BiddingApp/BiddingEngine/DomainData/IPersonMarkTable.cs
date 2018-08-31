@@ -1,40 +1,36 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="BidTable.cs" company="Transilvania University of Brasov"> 
+// <copyright file="IPersonMarkTable.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------
 
-namespace BiddingApp.BiddingEngine.DataLayer.DAO
+namespace BiddingApp.BiddingEngine.DomainData
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
 
     /// <summary>
-    /// Implementation of IBidTable.
+    /// The person marks table.
     /// </summary>
-    /// <seealso cref="BiddingApp.BiddingEngine.DomainData.IBidTable" />
-    public class BidTable : IBidTable
+    public interface IPersonMarkTable
     {
         /// <summary>
-        /// Inserts the specified bid.
+        /// Inserts the person mark.
         /// </summary>
-        /// <param name="bid">The bid.</param>
-        public void Insert(Bid bid)
-        {
-        }
+        /// <param name="personMark">The person mark.</param>
+        /// <returns>the inserted id</returns>
+        int InsertPersonMark(PersonMark personMark);
 
         /// <summary>
-        /// Updates the specified bid.
+        /// Fetches the person marks.
         /// </summary>
-        /// <param name="bid">The bid.</param>
-        public void Update(Bid bid)
-        {
-        }
+        /// <param name="person">The person.</param>
+        /// <returns>All persons marks</returns>
+        List<PersonMark> FetchPersonMarks(Person person);
     }
 }

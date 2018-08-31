@@ -23,12 +23,21 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the specified bid.
         /// </summary>
         /// <param name="bid">The bid.</param>
-        void Insert(Bid bid);
+        /// <returns>the inserted id</returns>
+        int Insert(Bid bid);
 
         /// <summary>
-        /// Updates the specified bid.
+        /// Fetches the auction highest bid.
         /// </summary>
-        /// <param name="bid">The bid.</param>
-        void Update(Bid bid);
+        /// <param name="auction">The auction.</param>
+        /// <returns>the highest bid of the auction</returns>
+        Bid FetchAuctionHighestBid(Auction auction);
+
+        /// <summary>
+        /// Fetches the auction bidds.
+        /// </summary>
+        /// <param name="auction">The auction.</param>
+        /// <returns>All auction's bidds.</returns>
+        List<Bid> FetchAuctionBidds(Auction auction);
     }
 }

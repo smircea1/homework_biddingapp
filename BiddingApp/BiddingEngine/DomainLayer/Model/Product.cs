@@ -22,32 +22,41 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         internal Product()
         {
+            this.Id = 0;
             this.Categories = new List<Category>();
         }
 
         /// <summary>
-        /// Gets the categories.
+        /// Gets or sets the identifier product.
+        /// </summary>
+        /// <value>
+        /// The identifier product.
+        /// </value>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the categories.
         /// </summary>
         /// <value>
         /// The categories.
         /// </value>
-        public List<Category> Categories { get; internal set; }
+        public List<Category> Categories { get; set; }
 
         /// <summary>
-        /// Gets the name.
+        /// Gets or sets the name.
         /// </summary>
         /// <value>
         /// The name.
         /// </value>
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets the description.
+        /// Gets or sets the description.
         /// </summary>
         /// <value>
         /// The description.
         /// </value>
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Builds an Product

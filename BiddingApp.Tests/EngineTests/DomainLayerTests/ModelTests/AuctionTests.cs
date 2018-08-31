@@ -34,13 +34,13 @@ namespace BiddingApp.Tests.DomainLayerTests.ModelTets
             this.productA = product_builder.Build();
 
             Person.Builder person_builder = new Person.Builder();
-            person_builder.SetId("123");
+            person_builder.SetId(123);
             person_builder.SetName("PersonA");
 
             this.personA = person_builder.Build();
 
             person_builder = new Person.Builder();
-            person_builder.SetId("321");
+            person_builder.SetId(123);
             person_builder.SetName("PersonB");
 
             this.personB = person_builder.Build();
@@ -51,7 +51,7 @@ namespace BiddingApp.Tests.DomainLayerTests.ModelTets
             Money starting_money = new Money(this.usd_currency, 20);
 
             Auction.Builder auction_builder = new Auction.Builder();
-            auction_builder.SetOwner(this.personA);
+            auction_builder.SetOwner(this.personA.Id);
             auction_builder.SetStartDate(this.startDate);
             auction_builder.SetEndDate(this.endDate);
             auction_builder.SetProduct(this.productA);
@@ -79,11 +79,11 @@ namespace BiddingApp.Tests.DomainLayerTests.ModelTets
             Money bad_money2 = new Money(this.usd_currency, 2); 
             Money good_money = new Money(this.usd_currency, 29);
 
-            Bid bad_bid = new Bid(this.personA, bad_money);
-            Bid bad_bid2 = new Bid(this.personB, bad_money2);
-            Bid bad_bid3 = new Bid(this.personA, good_money);
+            Bid bad_bid = new Bid(this.personA.Id, bad_money);
+            Bid bad_bid2 = new Bid(this.personB.Id, bad_money2);
+            Bid bad_bid3 = new Bid(this.personA.Id, good_money);
 
-            Bid good_bid = new Bid(this.personB, good_money);
+            Bid good_bid = new Bid(this.personB.Id, good_money);
 
             Assert.False(this.auctionA.IsBidEligible(bad_bid)); // will fail due to price + 50% * price
             Assert.False(this.auctionA.IsBidEligible(bad_bid2)); // will fail due to low price
@@ -104,7 +104,7 @@ namespace BiddingApp.Tests.DomainLayerTests.ModelTets
             Assert.ThrowsAny<Exception>(builder.Build);
              
             //// Incomplete build attempt
-            builder.SetOwner(this.personA);
+            builder.SetOwner(this.personA.Id);
             Assert.ThrowsAny<Exception>(builder.Build);
 
             //// Incomplete build attempt

@@ -8,6 +8,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -21,14 +22,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// Prevents a default instance of the <see cref="BrokerConfigs"/> class from being created.
         /// </summary>
         private BrokerConfigs()
-        {
-            // DEFAULT CONFIGS
-            this.DefaultRating = 100; // 100%
-            this.MinRatingAllowedForBidding = 30; // 30%
-            this.BannedDaysForBadRating = 3; // 3 days ban for bad Rating.
-            this.MaxInProgress = 3;   // max auctions in progress
-            this.MaxInProgressByCategory = 1; // only 1 action per category per user.
-            this.ReviewsCountedForRating = 3;  // last 3 reviews counts for the rating.
+        { 
+            //// DEFAULT CONFIGS
+            ////this.DefaultRating = 100; // 100%
+            ////this.MinRatingAllowedForBidding = 30; // 30%
+            ////this.BannedDaysForBadRating = 3; // 3 days ban for bad Rating.
+            ////this.MaxInProgress = 3;   // max auctions in progress
+            ////this.MaxInProgressByCategory = 1; // only 1 action per category per user.
+            ////this.ReviewsCountedForRating = 3;  // last 3 reviews counts for the rating.
         }
          
         /// <summary>
@@ -85,7 +86,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>The loaded configs.</returns>
         public static BrokerConfigs LoadConfigs()
         {
-            BrokerConfigs configs = new BrokerConfigs(); 
+            BrokerConfigs configs = new BrokerConfigs();
+
+            // DEFAULT CONFIGS
+            configs.DefaultRating = int.Parse(ConfigurationManager.AppSettings.Get("DefaultRating"));
+            configs.MinRatingAllowedForBidding = int.Parse(ConfigurationManager.AppSettings.Get("MinRatingAllowedForBidding"));
+            configs.BannedDaysForBadRating = int.Parse(ConfigurationManager.AppSettings.Get("BannedDaysForBadRating"));
+            configs.MaxInProgress = int.Parse(ConfigurationManager.AppSettings.Get("MaxInProgress"));
+            configs.MaxInProgressByCategory = int.Parse(ConfigurationManager.AppSettings.Get("MaxInProgressByCategory"));
+            configs.ReviewsCountedForRating = int.Parse(ConfigurationManager.AppSettings.Get("ReviewsCountedForRating"));
+             
             //// load from file.  
             return configs;
         }
