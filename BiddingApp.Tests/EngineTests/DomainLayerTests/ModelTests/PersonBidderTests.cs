@@ -14,7 +14,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         public void CreatePersonBidder_ShouldInstantiatePersonBidder()
         {
             Person person = new Person();
-            var personBidder = new PersonBidder(person);
+            var personBidder = new PersonBidder();
+            personBidder.Person = person;
 
             Assert.NotNull(personBidder);
         }
@@ -22,7 +23,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         [Fact]
         public void CreatePersonBidder_ShouldThrow()
         {
-            var personBidder = new PersonBidder(null);
+            var personBidder = new PersonBidder();
+            personBidder.Person = null;
 
             Assert.ThrowsAny<Exception>(() => personBidder.ValidateObject());
         }
