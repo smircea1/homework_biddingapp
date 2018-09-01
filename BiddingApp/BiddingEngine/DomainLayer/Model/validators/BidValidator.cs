@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AuctionValidator.cs" company="Transilvania University of Brasov"> 
+// <copyright file="BidValidator.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
@@ -33,12 +33,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </exception>
         public static void ValidateObject(this Bid bid)
         {
-            if(bid.PersonBidder == null)
+            if (bid.PersonBidder == null)
             {
                 throw new Exception("PersonBidder is required!");
             }
 
-            if(bid.Auction == null)
+            if (bid.Auction == null)
             {
                 throw new Exception("Auction is required!");
             }
@@ -46,12 +46,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             if (bid.Currency == null)
             {
                 throw new Exception("Currency is required!");
-            } 
+            }
 
             if (bid.Date == null)
             {
                 throw new Exception("Date is required!");
-            } 
+            }
         }
     }
 }

@@ -18,15 +18,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// An auction bid
     /// </summary>
     public class Bid
-    {
-        /// <summary>
-        /// Prevents a default instance of the <see cref="Bid"/> class from being created.
-        /// </summary>
-        private Bid()
-        {
-            this.Id = 0; 
-        }
-
+    {  
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>

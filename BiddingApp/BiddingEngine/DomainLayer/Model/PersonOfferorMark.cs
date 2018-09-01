@@ -18,21 +18,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// User mark.
     /// </summary>
     public class PersonOfferorMark
-    { 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PersonOfferorMark"/> class.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="receiver">The receiver.</param>
-        /// <param name="mark">The mark.</param>
-        public PersonOfferorMark(Person sender, PersonOfferor receiver, int mark)
-        {
-            this.Id = 0;
-            this.Sender = sender;
-            this.Receiver = receiver;
-            this.Mark = mark;
-        }
-
+    {   
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>

@@ -18,17 +18,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The Offer role of a person
     /// </summary>
     public class PersonOfferor
-    { 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PersonOfferor"/> class.
-        /// </summary>
-        /// <param name="person">The person.</param>
-        public PersonOfferor(Person person)
-        {
-            this.Id = 0;
-            this.Person = person; 
-        }
-
+    {   
         /// <summary>
         /// Gets or sets the identifier bidder.
         /// </summary>

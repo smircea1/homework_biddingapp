@@ -18,14 +18,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The person who posts a bid or who bidds
     /// </summary>
     public class Person
-    {  
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Person"/> class.
-        /// </summary>
-        public Person()
-        {
-        }
-
+    {    
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
