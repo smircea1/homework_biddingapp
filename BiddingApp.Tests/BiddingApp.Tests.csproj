@@ -77,7 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\AuctionTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ModelTests\CategoryTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ModelTests\CurrecyTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonBidderTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonOfferorMarkTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonOfferorTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

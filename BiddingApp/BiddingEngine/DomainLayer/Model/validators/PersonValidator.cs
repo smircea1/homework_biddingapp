@@ -35,12 +35,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                 throw new Exception("Invalid Id!");
             }
 
-            if (string.IsNullOrEmpty(obj.Name))
+            if (string.IsNullOrWhiteSpace(obj.Name))
             {
                 throw new Exception("Name is required!");
             }
 
-            if (string.IsNullOrEmpty(obj.Phone))
+            if (string.IsNullOrWhiteSpace(obj.Phone))
             {
                 throw new Exception("Phone is required!");
             }
