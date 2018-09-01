@@ -78,6 +78,24 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
         /// </value>
         public bool IsActive { get; internal set; }
+         
+        /// <summary>
+        /// Ends the auction.
+        /// </summary>
+        /// <param name="offeror">The offeror.</param>
+        /// <returns>true if the auction had ended.</returns>
+        public bool EndAuction(PersonOfferor offeror)
+        {
+            bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
+            if (end_result)
+            {
+                this.Auction.EndDate = DateTime.Now;
+                this.OnAuctionEnded();
+                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
+            }
+
+            return end_result;
+        }
 
         /// <summary>
         /// Updates the status.
@@ -133,25 +151,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             }
 
             Log.Info("Auction::SetupTimers: Timers set ended!");
-        }
-
-        /// <summary>
-        /// Ends the auction.
-        /// </summary>
-        /// <param name="offeror">The offeror.</param>
-        /// <returns>true if the auction had ended.</returns>
-        public bool EndAuction(PersonOfferor offeror)
-        {
-            bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
-            if (end_result)
-            {
-                this.Auction.EndDate = DateTime.Now;
-                this.OnAuctionEnded();
-                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
-            }
-
-            return end_result;
-        }
+        } 
 
         /// <summary>
         /// Called when [auction ended].

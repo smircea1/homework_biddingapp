@@ -22,7 +22,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         internal Product()
         {
-            this.Id = 0; 
+            this.Id = 0;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             public void SetDescription(string description)
             {
                 this.pending.Description = description;
-            }  
+            }
 
             /// <summary>
             /// Builds this instance.
@@ -114,7 +114,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                     throw new Exception("description is empty!");
                 }
 
-                if(this.pending.Category == null)
+                if (this.pending.Category == null)
                 {
                     return null;
                 }

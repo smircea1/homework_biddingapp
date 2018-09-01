@@ -61,7 +61,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         }
 
         /// <summary>
-        /// Gets or sets the offeror.
+        /// Gets the offeror.
         /// </summary>
         /// <value>
         /// The offeror.
@@ -69,7 +69,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public PersonOfferor Offeror { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is banned.
+        /// Gets a value indicating whether this instance is banned.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is banned; otherwise, <c>false</c>.
@@ -77,7 +77,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public bool IsBanned { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the rating.
+        /// Gets the rating.
         /// </summary>
         /// <value>
         /// The rating.
@@ -127,13 +127,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             return counted;
         }
 
-
         /// <summary>
         /// Dids the person hit maximum category list limit.
         /// </summary>
-        /// <param name="person">The person.</param>
+        /// <param name="offeror">The offeror.</param>
         /// <param name="category">The category.</param>
-        /// <returns>true if he did, false either</returns>
+        /// <returns>
+        /// true if he did, false either
+        /// </returns>
         public bool DidPersonHitMaxCategoryListLimit(PersonOfferor offeror, Category category)
         { 
             PersonOfferorService personOfferorService = new PersonOfferorService(offeror);
@@ -148,8 +149,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Dids the person hit maximum list limit.
         /// </summary>
-        /// <param name="person">The person.</param>
-        /// <returns>true if he did, false either</returns>
+        /// <param name="offeror">The offeror.</param>
+        /// <returns>
+        /// true if he did, false either
+        /// </returns>
         public bool DidPersonHitMaxListLimit(PersonOfferor offeror)
         { 
             PersonOfferorService personOfferorService = new PersonOfferorService(offeror);
@@ -160,8 +163,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
 
             return counted >= max_in_progress;
         }
-
-
+         
         /// <summary>
         /// Updates the rating.
         /// </summary>
@@ -182,7 +184,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             if (countedMarks == 0)
             {
                 this.Rating = defaultRating;
-            } else
+            } 
+            else
             {
                 this.Rating = totalScore / countedMarks;
             }
@@ -204,13 +207,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
                 return;
             }
 
-            //this. ;
+            ////this. ;
 
-            bool shouldBan = Rating < minRatingAllowedForBidding;
+            bool shouldBan = this.Rating < minRatingAllowedForBidding;
 
             if (shouldBan && !isAlreadyBanned)
             {
-                IsBanned = true;
+                this.IsBanned = true;
                 this.Offeror.LastBannedDate = DateTime.Now;
                 DomainDataStorage.GetInstance().PersonOfferorTable.UpdatePersonOfferor(this.Offeror);
             }

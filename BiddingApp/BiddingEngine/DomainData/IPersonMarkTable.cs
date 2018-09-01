@@ -29,8 +29,10 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Fetches the person marks.
         /// </summary>
-        /// <param name="person">The person.</param>
-        /// <returns>All persons marks</returns>
+        /// <param name="offeror">The offeror.</param>
+        /// <returns>
+        /// All persons marks
+        /// </returns>
         List<PersonMark> FetchPersonOfferorMarks(PersonOfferor offeror);
     }
 }

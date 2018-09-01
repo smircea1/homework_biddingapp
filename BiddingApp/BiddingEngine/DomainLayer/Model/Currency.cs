@@ -54,7 +54,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         {
             Currency casted = (Currency)obj;
             if (casted == null)
+            {
                 return false;
+            }
 
             return casted.Name.Equals(this.Name);
         }
@@ -68,7 +70,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
+        } 
     }
 }
