@@ -31,7 +31,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         }
 
         /// <summary>
-        /// Gets or sets the person.
+        /// Gets the person.
         /// </summary>
         /// <value>
         /// The person.

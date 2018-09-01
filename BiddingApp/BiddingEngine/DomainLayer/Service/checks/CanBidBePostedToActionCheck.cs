@@ -14,6 +14,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
     using System.Threading.Tasks;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
+    using BiddingApp.BiddingEngine.DomainLayer.ServiceModel;
 
     /// <summary>
     /// this is the check in order to allow a bid occur.
@@ -27,9 +28,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// <param name="auction">The auction.</param>
         /// <returns>true if the bid can be posted to auction</returns>
         public static bool DoCheck(Bid bid, Auction auction)
-        {
-            DomainDataStorage dataStorage = DomainDataStorage.GetInstance();
-            IBidTable bidTable = dataStorage.BidTable;
+        { 
+            IBidTable bidTable = DomainDataStorage.GetInstance().BidTable;
+
+            AuctionService auctionService = new AuctionService(auction);
+
+            // is active (started & not ended)? 
+            if (!auctionService.IsActive)
+            {
+                return false;
+            }
 
             Bid highest_bid = bidTable.FetchAuctionHighestBid(auction);
 

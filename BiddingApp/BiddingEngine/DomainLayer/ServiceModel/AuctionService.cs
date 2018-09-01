@@ -78,6 +78,24 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
         /// </value>
         public bool IsActive { get; internal set; }
+         
+        /// <summary>
+        /// Ends the auction.
+        /// </summary>
+        /// <param name="offeror">The offeror.</param>
+        /// <returns>true if the auction had ended.</returns>
+        public bool EndAuction(PersonOfferor offeror)
+        {
+            bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
+            if (end_result)
+            {
+                this.Auction.EndDate = DateTime.Now;
+                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
+                this.UpdateStatus();
+            }
+
+            return end_result;
+        }
 
         /// <summary>
         /// Updates the status.
@@ -133,32 +151,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             }
 
             Log.Info("Auction::SetupTimers: Timers set ended!");
-        }
-
-        /// <summary>
-        /// Ends the auction.
-        /// </summary>
-        /// <param name="offeror">The offeror.</param>
-        /// <returns>true if the auction had ended.</returns>
-        public bool EndAuction(PersonOfferor offeror)
-        {
-            bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
-            if (end_result)
-            {
-                this.Auction.EndDate = DateTime.Now;
-                this.OnAuctionEnded();
-                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
-            }
-
-            return end_result;
-        }
+        }  
 
         /// <summary>
         /// Called when [auction ended].
         /// </summary>
         private void OnAuctionEnded()
         {
-            this.HadEnded = true;
+            this.UpdateStatus(); 
             Log.Info("AUCTION ENDED!");
         }
 
@@ -167,7 +167,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         private void OnAuctionStarted()
         {
-            this.HadStarted = true;
+            this.UpdateStatus();
             Log.Info("AUCTION STARTED!");
         }
     }

@@ -9,6 +9,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -25,9 +26,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public PersonOfferor(Person person)
         {
             this.Id = 0;
-            this.Person = person;
-            this.AuctionsInProgress = new List<Auction>();
-            this.AuctionsFinished = new List<Auction>();
+            this.Person = person; 
         }
 
         /// <summary>
@@ -44,6 +43,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The identifier person.
         /// </value>
+        [Required(ErrorMessage = "Person is required")]
         public Person Person { get; set; }
 
         /// <summary>
@@ -52,22 +52,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The last banned date.
         /// </value>
-        public DateTime LastBannedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the auctions in progress.
-        /// </summary>
-        /// <value>
-        /// The auctions in progress.
-        /// </value>
-        public List<Auction> AuctionsInProgress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the auctions finished.
-        /// </summary>
-        /// <value>
-        /// The auctions finished.
-        /// </value>
-        public List<Auction> AuctionsFinished { get; set; }
+        public DateTime LastBannedDate { get; set; }  
     }
 }

@@ -8,6 +8,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -41,6 +42,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The name.
         /// </value>
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
         /// <summary>
@@ -54,7 +56,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         {
             Currency casted = (Currency)obj;
             if (casted == null)
+            {
                 return false;
+            }
 
             return casted.Name.Equals(this.Name);
         }
@@ -68,7 +72,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
+        } 
     }
 }

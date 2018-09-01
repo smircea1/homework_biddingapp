@@ -8,6 +8,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -18,11 +19,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     public class Product
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Product"/> class.
+        /// Initializes a new instance of the <see cref="Product" /> class.
         /// </summary>
-        internal Product()
+        public Product()
         {
-            this.Id = 0; 
+            this.Id = 0;
         }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The categories.
         /// </value>
+        [Required(ErrorMessage = "Category is required")]
         public Category Category { get; set; }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The name.
         /// </value>
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
         /// <summary>
@@ -55,77 +58,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The description.
         /// </value>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Builds an Product
-        /// </summary>
-        public class Builder
-        {
-            /// <summary>
-            /// The pending product to be built
-            /// </summary>
-            private Product pending;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Builder"/> class.
-            /// </summary>
-            public Builder()
-            {
-                this.pending = new Product();
-            }
-
-            /// <summary>
-            /// Sets the name.
-            /// </summary>
-            /// <param name="name">The name.</param>
-            public void SetName(string name)
-            {
-                this.pending.Name = name;
-            }
-
-            /// <summary>
-            /// Sets the description.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            public void SetDescription(string description)
-            {
-                this.pending.Description = description;
-            }  
-
-            /// <summary>
-            /// Builds this instance.
-            /// </summary>
-            /// <returns>The correctly created product.</returns>
-            /// <exception cref="Exception">
-            /// product name is empty!
-            /// or
-            /// No category selected!
-            /// </exception>
-            public Product Build()
-            {
-                if (this.pending.Name.Length == 0)
-                {
-                    throw new Exception("product name is empty!");
-                }
-
-                if (this.pending.Description.Length == 0)
-                {
-                    throw new Exception("description is empty!");
-                }
-
-                if(this.pending.Category == null)
-                {
-                    return null;
-                }
-
-                if (this.pending.Category == null)
-                {
-                    throw new Exception("No category selected!");
-                }
-
-                return this.pending;
-            }
-        }
+        [Required(ErrorMessage = "Description is required")]
+        public string Description { get; set; } 
     }
 }

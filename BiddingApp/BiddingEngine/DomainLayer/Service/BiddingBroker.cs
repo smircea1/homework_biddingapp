@@ -17,16 +17,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     /// The broker that keeps and handles the auctions
     /// </summary>
     public class BiddingBroker
-    { 
+    {
         /// <summary>
         /// The log
         /// </summary>
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-         
+
         /// <summary>
         /// The instance
         /// </summary>
-        private static BiddingBroker instance = null; 
+        private static BiddingBroker instance = null;
 
         /// <summary>
         /// The domain data storage
@@ -58,7 +58,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
 
             return BiddingBroker.instance;
-        } 
+        }
 
         /// <summary>
         /// Registers the auction.
@@ -70,6 +70,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </returns>
         public bool RegisterAuction(Person person, Auction auction)
         {
+            try
+            {
+                auction.ValidateDates();
+            } 
+            catch (Exception e)
+            {
+                return false;
+            }
+
             PersonOfferor offeror = domainDataStorage.PersonOfferorTable.FetchPersonOfferorByPerson(person);
 
             bool canPost = CanAuctionBePostedCheck.DoCheck(offeror, auction);
@@ -81,6 +90,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
             domainDataStorage.AuctionTable.InsertAuction(auction);
             this.auctions.Add(auction);
+
+            AuctionService auctionService = new AuctionService(auction);
+            auctionService.StartTimers();
 
             return true;
         }
@@ -95,23 +107,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </returns>
         public bool RegisterBid(Bid bid, Auction auction)
         {
-            bool goodBid = CanBidBePostedToActionCheck.DoCheck(bid, auction);
+            bool isOkToPostBid = CanBidBePostedToActionCheck.DoCheck(bid, auction);
 
-            if (!goodBid)
+            if (!isOkToPostBid)
             {
                 //// throw
                 return false;
             }
 
-            AuctionService auctionService = new AuctionService(auction);
-
-            if (!auctionService.IsActive)
-            {
-                //// auction not started or already ended.
-                return false;
-            }
-
-            domainDataStorage.BidTable.Insert(bid); 
+            domainDataStorage.BidTable.Insert(bid);
 
             //// MAYBE NOTICE CURRENT BIDDER HAS CHANGED
 
@@ -127,8 +131,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// False if the end auction had failed.
         /// </returns>
         public bool EndAuction(PersonOfferor offeror, Auction auction)
-        { 
-            AuctionService auctionService = new AuctionService(auction); 
+        {
+            AuctionService auctionService = new AuctionService(auction);
             return auctionService.EndAuction(offeror);
         }
 
