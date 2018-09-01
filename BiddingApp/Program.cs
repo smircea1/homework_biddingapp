@@ -30,7 +30,7 @@ namespace BiddingApp
             Person badPerson = new Person() { Name = null };
             Person badPerson2 = new Person() { Name = null, Phone = "07299544321" };
             Person badPerson3 = new Person() { Name = "gigica", Phone = null };
-            Person goodPerson = new Person() { Name = "gigica" };
+            Person goodPerson = new Person() { Name = "gigica", Phone = "07299544321" };
 
             broker.RegisterPerson(badPerson);
             broker.RegisterPerson(badPerson2);

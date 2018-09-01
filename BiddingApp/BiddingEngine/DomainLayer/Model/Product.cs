@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The identifier product.
         /// </value>
-        public int Id { get; set; }
+        public int IdProduct { get; set; }
 
         /// <summary>
         /// Gets or sets the categories.

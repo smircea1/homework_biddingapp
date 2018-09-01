@@ -26,7 +26,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The identifier auction.
         /// </value>
-        public int Id { get; set; }
+        public int IdAuction { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier offeror.

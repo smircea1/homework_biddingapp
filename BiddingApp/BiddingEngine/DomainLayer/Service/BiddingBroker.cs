@@ -70,10 +70,18 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             try
             {
-                person.ValidateObject();
-                if (person.Id != 0)
+                if (person.IdPerson != 0)
                 {
                     throw new Exception("Person is already registered!");
+                }
+
+                person.ValidateObject();
+
+                Person exists = domainDataStorage.PersonTable.FetchPersonByPhone(person.Phone);
+                if (exists != null)
+                {
+                    person = exists;
+                    return true; //// just login
                 }
             }
             catch (Exception e)
@@ -82,11 +90,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 return false;
             }
 
-            PersonOfferor offeror = new PersonOfferor() { Person = person };
+            //// at this point person doesn't exist into db. 
 
+            //// the actual insert
             domainDataStorage.PersonTable.InsertPerson(person);
+            person = domainDataStorage.PersonTable.FetchPersonByPhone(person.Phone); //// in order to update Id
              
-            Log.Info("RegisterPerson: " + person.Name + " person id =" + person.Id + " inserted with success.");
+            PersonOfferor offeror = new PersonOfferor() { Person = person };
+            PersonBidder bidder = new PersonBidder() { Person = person };
+
+            domainDataStorage.PersonOfferorTable.InsertPersonOfferor(offeror);
+            domainDataStorage.PersonBidderTable.InsertPersonBidder(bidder);
+             
+            Log.Info("RegisterPerson: " + person.Name + " person id =" + person.IdPerson + " inserted with success.");
 
             return true;
         }
@@ -103,7 +119,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             try
             {
-                if (person.Id == 0)
+                if (person.IdPerson == 0)
                 {
                     throw new Exception("Person is not registered!");
                 }

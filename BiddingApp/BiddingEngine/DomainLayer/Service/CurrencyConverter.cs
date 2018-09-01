@@ -133,7 +133,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             {
                 if (!currencies.Contains(currency))
                 {
-                    currency.Id = currencyTable.InsertCurrency(currency);
+                    currencyTable.InsertCurrency(currency);
                 }
             }
         }

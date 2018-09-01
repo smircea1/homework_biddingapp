@@ -54,7 +54,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// StartValue must be greater than 0</exception>
         public static void ValidateObject(this Auction obj)
         {
-            if (obj.Id < 0)
+            if (obj.IdAuction < 0)
             {
                 throw new Exception("Invalid Id!");
             }

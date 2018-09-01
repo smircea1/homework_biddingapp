@@ -46,7 +46,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// DateOccur is required!</exception>
         public static void ValidateObject(this PersonOfferorMark obj)
         {
-            if (obj.Id < 0)
+            if (obj.IdOfferorMark < 0)
             {
                 throw new Exception("Invalid Id!");
             }

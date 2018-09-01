@@ -23,7 +23,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the person bidder.
         /// </summary>
         /// <param name="personOfferor">The person offeror.</param>
-        void InsertPersonBidder(PersonOfferor personOfferor);
+        void InsertPersonOfferor(PersonOfferor personOfferor);
 
         /// <summary>
         /// Updates the person offeror.

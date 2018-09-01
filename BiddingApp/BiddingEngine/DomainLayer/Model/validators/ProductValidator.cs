@@ -38,7 +38,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Name is required!</exception>
         public static void ValidateObject(this Product obj)
         {
-            if (obj.Id < 0)
+            if (obj.IdProduct < 0)
             {
                 throw new Exception("Invalid Id!");
             }

@@ -33,7 +33,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
                 return false;
             }
 
-            if (offeror.Id != auction.Auction.PersonOfferor.Id)
+            if (offeror.IdOfferor != auction.Auction.PersonOfferor.IdOfferor)
             {
                 // does not belongs to.
                 return false;

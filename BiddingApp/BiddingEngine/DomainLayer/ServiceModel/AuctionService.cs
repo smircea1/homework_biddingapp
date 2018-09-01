@@ -102,7 +102,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         internal void UpdateStatus()
         {
-            this.Auction = DomainDataStorage.GetInstance().AuctionTable.FetchAuctionById(this.Auction.Id);
+            this.Auction = DomainDataStorage.GetInstance().AuctionTable.FetchAuctionById(this.Auction.IdAuction);
 
             if (this.Auction == null)
             {

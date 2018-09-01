@@ -14,7 +14,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         public void CreateCategoryOfferor_ShouldInstantiateCategory()
         {
             Category category = new Category();
-            category.Id = 1;
+            category.IdCategory = 1;
             category.Name = "Auto";
 
             category.ValidateObject();
@@ -31,7 +31,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         {
             Category category = new Category
             {
-                Id = id,
+                IdCategory = id,
                 Name = name
             };
 

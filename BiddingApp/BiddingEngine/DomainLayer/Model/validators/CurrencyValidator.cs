@@ -30,7 +30,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <exception cref="Exception">Name is required</exception>
         public static void ValidateObject(this Currency obj)
         {
-            if (obj.Id < 0)
+            if (obj.IdCurrency < 0)
             {
                 throw new Exception("Invalid Id!");
             }

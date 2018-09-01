@@ -42,7 +42,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Date is required!</exception>
         public static void ValidateObject(this Bid obj)
         {
-            if (obj.Id < 0)
+            if (obj.IdBid < 0)
             {
                 throw new Exception("Invalid Id!");
             }

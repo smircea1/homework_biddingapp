@@ -30,5 +30,12 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <returns>all available currencies.</returns>
         List<Currency> FetchAllCurrencies();
+
+        /// <summary>
+        /// Fetches the name of the currency by.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>the selected currency or null</returns>
+        Currency FetchCurrencyByName(string name);
     }
 }
