@@ -22,10 +22,20 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Validates the object.
         /// </summary>
         /// <param name="currency">The currency.</param>
+        /// <exception cref="System.Exception">
+        /// Invalid Id!
+        /// or
+        /// Name is required!
+        /// </exception>
         /// <exception cref="Exception">Name is required</exception>
         public static void ValidateObject(this Currency currency)
         {
-            if (currency.Name == null)
+            if (currency.Id < 0)
+            {
+                throw new Exception("Invalid Id!");
+            }
+
+            if (currency.Name == null || currency.Name.Length == 0)
             {
                 throw new Exception("Name is required!");
             }

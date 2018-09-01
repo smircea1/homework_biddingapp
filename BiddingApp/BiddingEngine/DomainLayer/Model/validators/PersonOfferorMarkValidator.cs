@@ -22,7 +22,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Validates the object.
         /// </summary>
         /// <param name="personOfferorMark">The person offeror mark.</param>
-        /// <exception cref="Exception">
+        /// <exception cref="System.Exception">
+        /// Invalid Id!
+        /// or
         /// Sender is required!
         /// or
         /// Receiver is required!
@@ -33,8 +35,22 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// or
         /// DateOccur is required!
         /// </exception>
+        /// <exception cref="Exception">Sender is required!
+        /// or
+        /// Receiver is required!
+        /// or
+        /// Sender is required!
+        /// or
+        /// Mark is out of range(0, 100)!
+        /// or
+        /// DateOccur is required!</exception>
         public static void ValidateObject(this PersonOfferorMark personOfferorMark)
         {
+            if (personOfferorMark.Id < 0)
+            {
+                throw new Exception("Invalid Id!");
+            }
+
             if (personOfferorMark.Sender == null)
             {
                 throw new Exception("Sender is required!");

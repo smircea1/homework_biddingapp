@@ -22,7 +22,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Validates the object.
         /// </summary>
         /// <param name="bid">The bid.</param>
-        /// <exception cref="Exception">
+        /// <exception cref="System.Exception">
+        /// Invalid Id!
+        /// or
         /// PersonBidder is required!
         /// or
         /// Auction is required!
@@ -31,8 +33,20 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// or
         /// Date is required!
         /// </exception>
+        /// <exception cref="Exception">PersonBidder is required!
+        /// or
+        /// Auction is required!
+        /// or
+        /// Currency is required!
+        /// or
+        /// Date is required!</exception>
         public static void ValidateObject(this Bid bid)
         {
+            if (bid.Id < 0)
+            {
+                throw new Exception("Invalid Id!");
+            }
+
             if (bid.PersonBidder == null)
             {
                 throw new Exception("PersonBidder is required!");

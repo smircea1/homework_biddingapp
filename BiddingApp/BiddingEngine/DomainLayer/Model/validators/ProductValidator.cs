@@ -22,18 +22,30 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Validates the object.
         /// </summary>
         /// <param name="product">The product.</param>
-        /// <exception cref="Exception">
+        /// <exception cref="System.Exception">
+        /// Invalid Id!
+        /// or
         /// Category is requried!
         /// or
         /// Description is requried or is empty!
         /// or
         /// Name is required!
         /// </exception>
+        /// <exception cref="Exception">Category is requried!
+        /// or
+        /// Description is requried or is empty!
+        /// or
+        /// Name is required!</exception>
         public static void ValidateObject(this Product product)
         {
-            if (product.Category == null)
+            if (product.Id < 0)
             {
-                throw new Exception("Category is requried!");
+                throw new Exception("Invalid Id!");
+            }
+
+            if (product.Name == null || product.Name.Length == 0)
+            {
+                throw new Exception("Name is required!");
             }
 
             if (product.Description == null || product.Description.Length == 0)
@@ -41,9 +53,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                 throw new Exception("Description is requried or is empty!");
             }
 
-            if (product.Name == null)
+            if (product.Category == null)
             {
-                throw new Exception("Name is required!");
+                throw new Exception("Category is requried!");
             }
         }
     }

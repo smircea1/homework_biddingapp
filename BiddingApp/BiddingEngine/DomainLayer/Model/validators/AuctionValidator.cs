@@ -17,13 +17,29 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// auction validator
     /// </summary>
     public static class AuctionValidator
-    { 
+    {
         /// <summary>
         /// Validates the auction.
         /// </summary>
         /// <param name="auction">The auction.</param>
-        /// <exception cref="Exception">
-        /// PersonOfferor is required
+        /// <exception cref="System.Exception">
+        /// Invalid Id!
+        /// or
+        /// PersonOfferor is required!
+        /// or
+        /// Product is required!
+        /// or
+        /// Currency is required!
+        /// or
+        /// StartDate is required!
+        /// or
+        /// EndDate is required!
+        /// or
+        /// Start date is after end date!
+        /// or
+        /// StartValue must be greater than 0!
+        /// </exception>
+        /// <exception cref="Exception">PersonOfferor is required
         /// or
         /// Product is required
         /// or
@@ -35,10 +51,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// or
         /// Start date is after end date!
         /// or
-        /// StartValue must be greater than 0
-        /// </exception>
+        /// StartValue must be greater than 0</exception>
         public static void ValidateObject(this Auction auction)
-        {   
+        {
+            if (auction.Id < 0)
+            {
+                throw new Exception("Invalid Id!");
+            }
+
             if (auction.PersonOfferor == null)
             {
                 throw new Exception("PersonOfferor is required!");

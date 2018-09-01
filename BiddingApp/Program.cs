@@ -25,20 +25,15 @@ namespace BiddingApp
         /// </summary>
         /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
-        { 
-            string connectionString = ConfigurationManager.ConnectionStrings["MySQL"].ConnectionString; 
-            MySqlConnection conn = new MySqlConnection(connectionString);
-             
-            Currency currencyA = new Currency() { Name = null};
-            currencyA.ValidateObject();
+        {
+            BiddingBroker broker = BiddingBroker.GetInstance();
+            Person personA = new Person() { Name = null };
+            Person personB = new Person() { Name = "gigica" };
 
-            double valueA = 234.2;
-            Currency currencyB = new Currency() { Name = "ron" };
-             
-            ////double converted_value = CurrencyConverter.DoExchange(currencyA, currencyB, valueA);
+            broker.RegisterPerson(personA);
+            broker.RegisterPerson(personB);
 
-            ////IAuctionTable auctionTable = DomainDataStorage.GetInstance().AuctionTable;
-            ////auctionTable.InsertAuction(auctionA);
+
 
             System.Console.WriteLine("app ended!");
         }

@@ -74,17 +74,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The start value.
         /// </value> 
-        public double StartValue { get; set; }
-
-        /// <summary>
-        /// Validates the dates.
-        /// </summary>
-        /// <returns>If this Action has valide dates</returns>
-        public bool ValidateDates()
-        {
-            // TODO: implement this
-            return true;
-        }
+        public double StartValue { get; set; } 
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.

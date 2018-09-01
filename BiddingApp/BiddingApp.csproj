@@ -112,18 +112,18 @@
     <Compile Include="BiddingEngine\DomainData\IPersonOfferorTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IPersonTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IProductTable.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\AuctionValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\AuctionValidator.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\PersonBidder.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\PersonOfferor.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\PersonOfferorMark.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\BidValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\CategoryValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\CurrencyValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\PersonBidderValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\PersonOfferorMarkValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\PersonOfferorValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\PersonValidator.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Model\validators\ProductValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\BidValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\CategoryValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\CurrencyValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\PersonBidderValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\PersonOfferorMarkValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\PersonOfferorValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\PersonValidator.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\Validators\ProductValidator.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\AuctionService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\PersonOfferorService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\PersonService.cs" />
@@ -159,7 +159,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BiddingEngine\DataLayer\DataModel\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

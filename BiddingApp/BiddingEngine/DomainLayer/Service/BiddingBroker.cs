@@ -47,10 +47,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         }
 
         /// <summary>
-        /// Instances this instance.
+        /// Gets the instance.
         /// </summary>
-        /// <returns>The broker instance.</returns>
-        public static BiddingBroker Instance()
+        /// <returns>this instance.</returns>
+        public static BiddingBroker GetInstance()
         {
             if (BiddingBroker.instance == null)
             {
@@ -58,6 +58,33 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
 
             return BiddingBroker.instance;
+        }
+
+        /// <summary>
+        /// Registers the person.
+        /// </summary>
+        /// <param name="person">The person.</param>
+        /// <returns>true if it succeeds</returns>
+        /// <exception cref="System.Exception">Person is already registered!</exception>
+        public bool RegisterPerson(Person person)
+        {
+            try
+            {
+                person.ValidateObject();
+                if (person.Id != 0)
+                {
+                    throw new Exception("Person is already registered!");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Info(e.Message);
+                return false;
+            }
+
+            domainDataStorage.PersonTable.InsertPerson(person);
+
+            return true;
         }
 
         /// <summary>
@@ -72,10 +99,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             try
             {
-                auction.ValidateDates();
+                if (person.Id == 0)
+                {
+                    throw new Exception("Person is not registered!");
+                }
+
+                auction.ValidateObject();
             } 
             catch (Exception e)
             {
+                Log.Info(e.Message);
                 return false;
             }
 
