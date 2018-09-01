@@ -16,14 +16,14 @@ namespace BiddingApp.Tests.DomainLayerTests.ModelTets
     {
         readonly Currency usd_currency = CurrencyConverter.GetInstance().GetCurrencyByName("usd");
 
-        private Product productA;
-        private Person personA;
-        private Auction auctionA;
+        //private Product productA;
+        //private Person personA;
+        //private Auction auctionA;
 
-        private DateTime startDate;
-        private DateTime endDate;
+        //private DateTime startDate;
+        //private DateTime endDate;
 
-        private Person personB;
+        //private Person personB;
 
         public AuctionTests()
         {

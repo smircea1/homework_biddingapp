@@ -74,18 +74,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The start value.
         /// </value> 
-        public double StartValue { get; set; } 
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
+        public double StartValue { get; set; }  
     } 
 }
