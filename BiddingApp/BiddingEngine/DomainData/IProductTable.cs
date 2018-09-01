@@ -23,7 +23,6 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the product.
         /// </summary>
         /// <param name="product">The product.</param>
-        /// <returns>the inserted id</returns>
         void InsertProduct(Product product);
 
         /// <summary>

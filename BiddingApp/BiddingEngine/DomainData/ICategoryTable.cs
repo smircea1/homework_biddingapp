@@ -23,7 +23,6 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the specified category.
         /// </summary>
         /// <param name="category">The category.</param>
-        /// <returns>the just inserted id</returns>
         void InsertCategory(Category category);
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The person who posts a bid or who bidds
     /// </summary>
     public class Person
-    {    
+    {
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
@@ -34,14 +34,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// The name.
         /// </value> 
         public string Name { get; set; }
-
-
+         
         /// <summary>
         /// Gets or sets the phone.
         /// </summary>
         /// <value>
         /// The phone.
         /// </value>
-        public string Phone { get; set; }  
+        public string Phone { get; set; }
     }
 }

@@ -23,8 +23,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the currency.
         /// </summary>
         /// <param name="currency">The currency.</param>
-        /// <returns>the id of inserted currency</returns>
-        int InsertCurrency(Currency currency);
+        void InsertCurrency(Currency currency);
 
         /// <summary>
         /// Fetches all currencies.

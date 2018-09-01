@@ -23,8 +23,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the person mark.
         /// </summary>
         /// <param name="personMark">The person mark.</param>
-        /// <returns>the inserted id</returns>
-        int InsertPersonMark(PersonOfferorMark personMark);
+        void InsertPersonMark(PersonOfferorMark personMark);
 
         /// <summary>
         /// Fetches the person marks.

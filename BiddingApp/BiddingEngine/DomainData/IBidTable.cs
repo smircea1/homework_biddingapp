@@ -23,7 +23,6 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the specified bid.
         /// </summary>
         /// <param name="bid">The bid.</param>
-        /// <returns>the inserted id</returns>
         void Insert(Bid bid);
 
         /// <summary>
