@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="category">The category.</param>
         /// <returns>the just inserted id</returns>
-        int InsertCategory(Category category);
+        void InsertCategory(Category category);
 
         /// <summary>
         /// Fetches all categories.

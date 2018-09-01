@@ -82,9 +82,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 return false;
             }
 
+            PersonOfferor offeror = new PersonOfferor() { Person = person };
+
             domainDataStorage.PersonTable.InsertPerson(person);
 
-            Log.Info("RegisterPerson: " + person.Name + " inserted with success.");
+            Log.Info("RegisterPerson: " + person.Name +" person id =" + person.Id + " inserted with success.");
 
             return true;
         }

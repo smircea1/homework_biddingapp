@@ -35,70 +35,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </value> 
         public string Name { get; set; }
 
-        /// <summary>
-        /// Equalses the specified other.
-        /// </summary>
-        /// <param name="other">The other.</param>
-        /// <returns>true if they are equal.</returns>
-        public bool Equals(Person other)
-        {
-            return this.Id.Equals(other.Id);
-        } 
 
         /// <summary>
-        /// Builds a Person
+        /// Gets or sets the phone.
         /// </summary>
-        public class Builder
-        {
-            /// <summary>
-            /// The pending person which would be built
-            /// </summary>
-            private Person pending;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Builder"/> class.
-            /// </summary>
-            public Builder()
-            {
-                this.pending = new Person();
-            }
-             
-            /// <summary>
-            /// Sets the identifier.
-            /// </summary>
-            /// <param name="id">The identifier.</param>
-            public void SetId(int id)
-            {
-                this.pending.Id = id;
-            }
-
-            /// <summary>
-            /// Sets the name of the new person.
-            /// </summary>
-            /// <param name="name">The name.</param>
-            public void SetName(string name)
-            {
-                this.pending.Name = name;
-            }
-
-            /// <summary>
-            /// Builds this instance.
-            /// </summary>
-            /// <returns>The just created person.</returns>
-            public Person Build()
-            { 
-                ////if (this.pending.Id.Length == 0)
-                ////{
-                ////    return null;
-                ////}
-
-                if (string.IsNullOrWhiteSpace(this.pending.Name))
-                {
-                    return null;
-                }
-
-                return this.pending;
-            }
-        }
+        /// <value>
+        /// The phone.
+        /// </value>
+        public string Phone { get; set; }  
     }
 }

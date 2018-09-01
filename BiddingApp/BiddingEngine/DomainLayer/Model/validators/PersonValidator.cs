@@ -39,6 +39,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             {
                 throw new Exception("Name is required!");
             }
+
+            if (string.IsNullOrEmpty(obj.Phone))
+            {
+                throw new Exception("Phone is required!");
+            }
         }
     }
 }

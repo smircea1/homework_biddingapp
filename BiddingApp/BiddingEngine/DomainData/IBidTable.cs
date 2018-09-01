@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="bid">The bid.</param>
         /// <returns>the inserted id</returns>
-        int Insert(Bid bid);
+        void Insert(Bid bid);
 
         /// <summary>
         /// Fetches the auction highest bid.

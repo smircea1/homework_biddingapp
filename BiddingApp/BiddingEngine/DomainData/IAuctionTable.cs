@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="auction">The auction.</param>
         /// <returns>the just inserted id</returns>
-        int InsertAuction(Auction auction);
+        void InsertAuction(Auction auction);
 
         /// <summary>
         /// Updates the auction.

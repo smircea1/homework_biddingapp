@@ -101,7 +101,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BiddingEngine\DataLayer\TabelsImpl\PersonTable.cs" />
     <Compile Include="BiddingEngine\DomainData\DomainDataStorage.cs" />
     <Compile Include="BiddingEngine\DomainData\IAuctionTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IBidTable.cs" />
@@ -161,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BiddingEngine\DataLayer\DataModel\" />
+    <Folder Include="BiddingEngine\DataLayer\TabelsImpl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
