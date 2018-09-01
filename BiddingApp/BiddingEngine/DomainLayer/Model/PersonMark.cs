@@ -9,6 +9,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -46,14 +47,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The sender.
         /// </value>
+        [Required(ErrorMessage = "Sender is required")]
         public Person Sender { get; set; }
-         
+
         /// <summary>
         /// Gets or sets the receiver.
         /// </summary>
         /// <value>
         /// The receiver.
         /// </value>
+        [Required(ErrorMessage = "Receiver is required")]
         public PersonOfferor Receiver { get; set; }
 
         /// <summary>
@@ -62,6 +65,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The mark.
         /// </value>
+        [Required(ErrorMessage = "Mark is required")]
         public int Mark { get; set; }
 
         /// <summary>
@@ -70,6 +74,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The date.
         /// </value>
+        [Required(ErrorMessage = "DateOccur is required")]
         public DateTime DateOccur { get; set; }
     }
 }
