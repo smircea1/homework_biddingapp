@@ -119,15 +119,15 @@
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\PersonOfferorService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\PersonService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\ProductService.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Service\Actions\PersonBrokerActions.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Service\BrokerConfigs.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Auction.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\BiddingBroker.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Bid.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Category.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Currency.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Service\checks\BidToActionCheck.cs" />
-    <Compile Include="BiddingEngine\DomainLayer\Service\checks\PostAuctionToBrokerCheck.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\Checks\CanBidBePostedToActionCheck.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\Checks\CanOfferorEndAuctionCheck.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\Checks\CanAuctionBePostedCheck.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\Checks\ExistsAnySimilarProductCheck.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\CurrencyConverter.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Person.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>

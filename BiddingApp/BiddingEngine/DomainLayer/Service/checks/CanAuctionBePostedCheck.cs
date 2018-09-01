@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PostAuctionToBrokerCheck.cs" company="Transilvania University of Brasov"> 
+// <copyright file="CanAuctionBePostedCheck.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------   
 
-namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
+namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
 {
     using System;
     using System.Collections.Generic;
@@ -24,17 +24,29 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
         /// <summary>
         /// Does the check.
         /// </summary>
-        /// <param name="offerorService">The offeror service.</param>
-        /// <param name="auctionService">The auction service.</param>
-        /// <returns>
-        /// true if the auction can be posted.
-        /// </returns>
+        /// <param name="personOfferor">The person offeror.</param>
+        /// <param name="auction">The auction.</param>
+        /// <returns>true if the auction can be posted.</returns>
         public static bool DoCheck(PersonOfferor personOfferor, Auction auction)
         {  
             PersonOfferorService offerorService = new PersonOfferorService(personOfferor);
 
             //// if it's banned.
             if (offerorService.IsBanned)
+            {
+                return false;
+            }
+
+            //// can't have more than this.
+            bool hasMaxAuctions = offerorService.DidPersonHitMaxListLimit(personOfferor);
+            if (hasMaxAuctions)
+            {
+                return false;
+            }
+
+            //// can't have more than this in specified category.
+            bool hasMaxInCategory = offerorService.DidPersonHitMaxCategoryListLimit(personOfferor, auction.Product.Category);
+            if (hasMaxInCategory)
             {
                 return false;
             }

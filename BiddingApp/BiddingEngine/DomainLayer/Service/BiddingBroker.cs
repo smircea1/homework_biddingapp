@@ -10,7 +10,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     using System.Collections.Generic;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
-    using BiddingApp.BiddingEngine.DomainLayer.Service.checks;
+    using BiddingApp.BiddingEngine.DomainLayer.Service.Checks;
     using BiddingApp.BiddingEngine.DomainLayer.ServiceModel;
 
     /// <summary>
@@ -26,12 +26,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// The instance
         /// </summary>
-        private static BiddingBroker instance = null;
-
-        /// <summary>
-        /// The configs
-        /// </summary>
-        private static BrokerConfigs configs = BrokerConfigs.LoadConfigs();
+        private static BiddingBroker instance = null; 
 
         /// <summary>
         /// The domain data storage
@@ -48,7 +43,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private BiddingBroker()
         {
-
+            this.LoadAuctions();
         }
 
         /// <summary>
@@ -63,29 +58,28 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
 
             return BiddingBroker.instance;
-        }
-
+        } 
 
         /// <summary>
         /// Registers the auction.
         /// </summary>
+        /// <param name="person">The person.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>False if the register auction has failed.</returns>
+        /// <returns>
+        /// False if the register auction has failed.
+        /// </returns>
         public bool RegisterAuction(Person person, Auction auction)
         {
-            bool canPost = CanAuctionBePostedCheck.DoCheck(person, auction);
-            // if it's older
-            if (DateTime.Now.CompareTo(auction.StartDate) < 0)
+            PersonOfferor offeror = domainDataStorage.PersonOfferorTable.FetchPersonOfferorByPerson(person);
+
+            bool canPost = CanAuctionBePostedCheck.DoCheck(offeror, auction);
+
+            if (!canPost)
             {
-                //// it should not be older than 5 min.
-                if ((DateTime.Now - auction.StartDate).TotalMinutes > 5)
-                {
-                    return false;
-                }
+                return false;
             }
 
-            person.GetInProgressAuctions().Add(auction);
-
+            domainDataStorage.AuctionTable.InsertAuction(auction);
             this.auctions.Add(auction);
 
             return true;
@@ -96,7 +90,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         /// <param name="bid">The bid.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>false if the bid registration had failed.</returns>
+        /// <returns>
+        /// false if the bid registration had failed.
+        /// </returns>
         public bool RegisterBid(Bid bid, Auction auction)
         {
             bool goodBid = CanBidBePostedToActionCheck.DoCheck(bid, auction);
@@ -125,14 +121,20 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// Ends the auction.
         /// </summary>
+        /// <param name="offeror">The offeror.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>False if the end auction had failed.</returns>
+        /// <returns>
+        /// False if the end auction had failed.
+        /// </returns>
         public bool EndAuction(PersonOfferor offeror, Auction auction)
         { 
             AuctionService auctionService = new AuctionService(auction); 
             return auctionService.EndAuction(offeror);
-        }  
+        }
 
+        /// <summary>
+        /// Loads the auctions.
+        /// </summary>
         private void LoadAuctions()
         {
             List<Auction> auctions = domainDataStorage.AuctionTable.FetchAllAuctions();

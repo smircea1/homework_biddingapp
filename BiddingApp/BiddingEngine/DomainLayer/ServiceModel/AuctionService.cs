@@ -15,7 +15,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
     using System.Threading.Tasks;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
-    using BiddingApp.BiddingEngine.DomainLayer.Service.checks;
+    using BiddingApp.BiddingEngine.DomainLayer.Service.Checks;
 
     /// <summary>
     /// Wraps an auction in order to be used by the broker
@@ -36,7 +36,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// The start timer
         /// </summary>
         private System.Threading.Timer startTimer;
-         
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AuctionService"/> class.
         /// </summary>
@@ -44,11 +44,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public AuctionService(Auction auction)
         {
             this.Auction = auction;
-            this.UpdateStatus(); 
-        } 
+            this.UpdateStatus();
+        }
 
         /// <summary>
-        /// Gets or sets the auction.
+        /// Gets the auction.
         /// </summary>
         /// <value>
         /// The auction.
@@ -56,23 +56,29 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public Auction Auction { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is ended.
+        /// Gets a value indicating whether [had ended].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is ended; otherwise, <c>false</c>.
+        ///   <c>true</c> if [had ended]; otherwise, <c>false</c>.
         /// </value>
         public bool HadEnded { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is open.
+        /// Gets a value indicating whether [had started].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is open; otherwise, <c>false</c>.
+        ///   <c>true</c> if [had started]; otherwise, <c>false</c>.
         /// </value>
-        public bool HadStarted { get; internal set; } 
+        public bool HadStarted { get; internal set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is active.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
         public bool IsActive { get; internal set; }
-         
+
         /// <summary>
         /// Updates the status.
         /// </summary>
@@ -80,7 +86,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         {
             this.Auction = DomainDataStorage.GetInstance().AuctionTable.FetchAuctionById(this.Auction.Id);
 
-            if(this.Auction == null)
+            if (this.Auction == null)
             {
                 return;
             }
@@ -88,11 +94,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             DateTime current = DateTime.Now;
             TimeSpan untilEnd = this.Auction.EndDate.TimeOfDay - current.TimeOfDay;
             TimeSpan untilStart = this.Auction.StartDate.TimeOfDay - current.TimeOfDay;
-             
+
             this.HadStarted = untilStart < TimeSpan.Zero; //// true if current time > start time
             this.HadEnded = untilEnd < TimeSpan.Zero; //// true if current time > end time 
 
-            this.IsActive = HadStarted && !HadEnded;
+            this.IsActive = this.HadStarted && !this.HadEnded;
 
             Log.Info("Auction::UpdateStatus: updated!");
         }
@@ -133,15 +139,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// Ends the auction.
         /// </summary>
         /// <param name="offeror">The offeror.</param>
-        /// <returns></returns>
+        /// <returns>true if the auction had ended.</returns>
         public bool EndAuction(PersonOfferor offeror)
-        { 
+        {
             bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
-            if(end_result)
+            if (end_result)
             {
                 this.Auction.EndDate = DateTime.Now;
-                OnAuctionEnded();
-                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction); 
+                this.OnAuctionEnded();
+                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
             }
 
             return end_result;
@@ -163,6 +169,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         {
             this.HadStarted = true;
             Log.Info("AUCTION STARTED!");
-        } 
+        }
     }
 }

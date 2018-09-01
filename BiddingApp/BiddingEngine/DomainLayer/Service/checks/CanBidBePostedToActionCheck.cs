@@ -5,7 +5,7 @@
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------   
 
-namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
+namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
 {
     using System;
     using System.Collections.Generic;
@@ -18,13 +18,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
     /// <summary>
     /// this is the check in order to allow a bid occur.
     /// </summary>
-    class CanBidBePostedToActionCheck
+    public class CanBidBePostedToActionCheck
     {
         /// <summary>
         /// Initializes the <see cref="CanBidBePostedToActionCheck" /> class.
         /// </summary>
         /// <param name="bid">The bid.</param>
         /// <param name="auction">The auction.</param>
+        /// <returns>true if the bid can be posted to auction</returns>
         public static bool DoCheck(Bid bid, Auction auction)
         {
             DomainDataStorage dataStorage = DomainDataStorage.GetInstance();

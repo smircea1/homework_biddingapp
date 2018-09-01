@@ -134,9 +134,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <param name="person">The person.</param>
         /// <param name="category">The category.</param>
         /// <returns>true if he did, false either</returns>
-        public bool DidPersonHitMaxCategoryListLimit(Person person, Category category)
-        {
-            PersonOfferor offeror = DomainDataStorage.GetInstance().PersonOfferorTable.FetchPersonOfferorByPerson(person);
+        public bool DidPersonHitMaxCategoryListLimit(PersonOfferor offeror, Category category)
+        { 
             PersonOfferorService personOfferorService = new PersonOfferorService(offeror);
 
             int counted = personOfferorService.CountActiveAuctionsInCategory(category);
@@ -151,9 +150,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         /// <param name="person">The person.</param>
         /// <returns>true if he did, false either</returns>
-        public bool DidPersonHitMaxListLimit(Person person)
-        {
-            PersonOfferor offeror = DomainDataStorage.GetInstance().PersonOfferorTable.FetchPersonOfferorByPerson(person);
+        public bool DidPersonHitMaxListLimit(PersonOfferor offeror)
+        { 
             PersonOfferorService personOfferorService = new PersonOfferorService(offeror);
 
             int counted = personOfferorService.CountAllActiveAuctions();
@@ -206,7 +204,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
                 return;
             }
 
-            this. ;
+            //this. ;
 
             bool shouldBan = Rating < minRatingAllowedForBidding;
 

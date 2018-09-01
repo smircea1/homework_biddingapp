@@ -5,7 +5,7 @@
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------   
 
-namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
+namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
 {
     using System;
     using System.Collections.Generic;
@@ -18,8 +18,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
     /// <summary>
     /// Tests if an offeror can close a certain auction
     /// </summary>
-    class CanOfferorEndAuctionCheck
+    public class CanOfferorEndAuctionCheck
     {
+        /// <summary>
+        /// Does the check.
+        /// </summary>
+        /// <param name="offeror">The offeror.</param>
+        /// <param name="auction">The auction.</param>
+        /// <returns>true if this offeror can end the auction</returns>
         public static bool DoCheck(PersonOfferor offeror, AuctionService auction)
         {
             if (offeror == null)

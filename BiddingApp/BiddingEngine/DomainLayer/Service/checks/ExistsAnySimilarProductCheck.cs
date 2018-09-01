@@ -4,9 +4,8 @@
 // </copyright> 
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------   
-
-
-namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
+ 
+namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
 {
     using System;
     using System.Collections.Generic;
@@ -20,8 +19,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
     /// <summary>
     /// checks if the product already exists.
     /// </summary>
-    class ExistsAnySimilarProductCheck
+    public class ExistsAnySimilarProductCheck
     {
+        /// <summary>
+        /// Does the check.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns>true if any similar product is found.</returns>
         public static bool DoCheck(Product product)
         {
             IProductTable table = DomainDataStorage.GetInstance().ProductTable;

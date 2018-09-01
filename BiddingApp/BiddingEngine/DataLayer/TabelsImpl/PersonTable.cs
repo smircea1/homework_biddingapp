@@ -46,5 +46,15 @@ namespace BiddingApp.BiddingEngine.DataLayer.TabelsImpl
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Updates the person.
+        /// </summary>
+        /// <param name="person">The person.</param>
+        /// <exception cref="NotImplementedException">not impl.</exception>
+        public void UpdatePerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

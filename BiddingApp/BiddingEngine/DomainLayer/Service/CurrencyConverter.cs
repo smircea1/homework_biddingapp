@@ -25,15 +25,20 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         private static ICurrencyTable currencyTable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CurrencyConverter"/> class.
+        /// The converter
         /// </summary>
-        public CurrencyConverter()
+        private static CurrencyConverter instance;
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="CurrencyConverter"/> class from being created.
+        /// </summary>
+        private CurrencyConverter()
         {
             currencyTable = DomainDataStorage.GetInstance().CurrencyTable;
             this.UpdateRates();
             this.UpdateDbCurrencies();
         }
-
+        
         /// <summary>
         /// Gets the available currencies.
         /// </summary>
@@ -49,6 +54,20 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// The currencies rates.
         /// </value>
         public Dictionary<Currency, double> CurrenciesRates { get; private set; }
+         
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        /// <returns>the instance</returns>
+        public static CurrencyConverter GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new CurrencyConverter();
+            }
+
+            return instance;
+        }
 
         /// <summary>
         /// Does the exchange.

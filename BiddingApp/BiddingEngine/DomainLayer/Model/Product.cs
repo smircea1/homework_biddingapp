@@ -22,8 +22,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         internal Product()
         {
-            this.Id = 0;
-            this.Categories = new List<Category>();
+            this.Id = 0; 
         }
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The categories.
         /// </value>
-        public List<Category> Categories { get; set; }
+        public Category Category { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -92,25 +91,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             public void SetDescription(string description)
             {
                 this.pending.Description = description;
-            }
-
-            /// <summary>
-            /// Adds the category.
-            /// </summary>
-            /// <param name="category">The category.</param>
-            public void AddCategory(Category category)
-            {
-                this.pending.Categories.Add(category);
-            }
-
-            /// <summary>
-            /// Removes the category.
-            /// </summary>
-            /// <param name="category">The category.</param>
-            public void RemoveCategory(Category category)
-            {
-                this.pending.Categories.Remove(category);
-            }
+            }  
 
             /// <summary>
             /// Builds this instance.
@@ -133,7 +114,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                     throw new Exception("description is empty!");
                 }
 
-                if (this.pending.Categories.Count == 0)
+                if(this.pending.Category == null)
+                {
+                    return null;
+                }
+
+                if (this.pending.Category == null)
                 {
                     throw new Exception("No category selected!");
                 }
