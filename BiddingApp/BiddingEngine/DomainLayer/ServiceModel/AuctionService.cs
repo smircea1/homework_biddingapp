@@ -90,8 +90,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             if (end_result)
             {
                 this.Auction.EndDate = DateTime.Now;
-                this.OnAuctionEnded();
                 DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
+                this.UpdateStatus();
             }
 
             return end_result;
@@ -151,14 +151,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             }
 
             Log.Info("Auction::SetupTimers: Timers set ended!");
-        } 
+        }  
 
         /// <summary>
         /// Called when [auction ended].
         /// </summary>
         private void OnAuctionEnded()
         {
-            this.HadEnded = true;
+            this.UpdateStatus(); 
             Log.Info("AUCTION ENDED!");
         }
 
@@ -167,7 +167,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         private void OnAuctionStarted()
         {
-            this.HadStarted = true;
+            this.UpdateStatus();
             Log.Info("AUCTION STARTED!");
         }
     }
