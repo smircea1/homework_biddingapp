@@ -29,11 +29,11 @@ namespace BiddingApp
             string connectionString = ConfigurationManager.ConnectionStrings["MySQL"].ConnectionString; 
             MySqlConnection conn = new MySqlConnection(connectionString);
              
-            Currency currencyA = new Currency(null);
+            Currency currencyA = new Currency() { Name = null};
             currencyA.ValidateObject();
 
             double valueA = 234.2;
-            Currency currencyB = new Currency("ron");
+            Currency currencyB = new Currency() { Name = "ron" };
              
             ////double converted_value = CurrencyConverter.DoExchange(currencyA, currencyB, valueA);
 

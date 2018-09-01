@@ -38,7 +38,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             this.UpdateRates();
             this.UpdateDbCurrencies();
         }
-        
+
         /// <summary>
         /// Gets the available currencies.
         /// </summary>
@@ -54,7 +54,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// The currencies rates.
         /// </value>
         public Dictionary<Currency, double> CurrenciesRates { get; private set; }
-         
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
@@ -94,9 +94,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             this.CurrenciesRates = new Dictionary<Currency, double>()
             {
-                { new Currency("usd"), 1.0 },
-                { new Currency("eur"), 0.85 },
-                { new Currency("ron"), 0.25 },
+                { new Currency() { Name = "usd" }, 1.0 },
+                { new Currency() { Name = "eur" }, 0.85 },
+                { new Currency() { Name = "ron" }, 0.25 },
             };
 
             this.AvailableCurrencies = new List<Currency>(this.CurrenciesRates.Keys);

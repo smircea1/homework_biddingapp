@@ -17,15 +17,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// This is the product that an auction is based on.
     /// </summary>
     public class Product
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Product" /> class.
-        /// </summary>
-        public Product()
-        {
-            this.Id = 0;
-        }
-
+    {  
         /// <summary>
         /// Gets or sets the identifier product.
         /// </summary>

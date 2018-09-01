@@ -50,12 +50,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                 throw new Exception("Sender is required!");
             }
 
-            if(personOfferorMark.Mark < 0 || personOfferorMark.Mark > 100)
+            if (personOfferorMark.Mark < 0 || personOfferorMark.Mark > 100)
             {
                 throw new Exception("Mark is out of range(0, 100)!");
             }
 
-            if(personOfferorMark.DateOccur == null)
+            if (personOfferorMark.DateOccur == null)
             {
                 throw new Exception("DateOccur is required!");
             }

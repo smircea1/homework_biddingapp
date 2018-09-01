@@ -17,17 +17,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// This represents a money currency
     /// </summary>
     public class Currency
-    {   
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Currency"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param> 
-        public Currency(string name)
-        {
-            this.Id = 0;
-            this.Name = name; 
-        }
-
+    {    
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>

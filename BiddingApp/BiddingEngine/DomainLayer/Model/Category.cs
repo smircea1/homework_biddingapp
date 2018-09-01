@@ -18,15 +18,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The category of a product
     /// </summary>
     public class Category
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Category"/> class.
-        /// </summary> 
-        public Category()
-        {
-            this.Id = 0;
-        }
-
+    {  
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>

@@ -25,7 +25,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <exception cref="Exception">Name is required!</exception>
         public static void ValidateObject(this Category category)
         {
-            if(category.Name == null)
+            if (category.Name == null)
             {
                 throw new Exception("Name is required!");
             }

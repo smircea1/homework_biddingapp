@@ -31,7 +31,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </exception>
         public static void ValidateObject(this Product product)
         {
-            if(product.Category == null)
+            if (product.Category == null)
             {
                 throw new Exception("Category is requried!");
             }

@@ -19,16 +19,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// An auction
     /// </summary>
     public class Auction
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Auction"/> class.
-        /// </summary>
-        public Auction()
-        {
-            this.Id = 0; 
-            this.StartValue = 0;
-        }
-
+    {  
         /// <summary>
         /// Gets or sets the identifier auction.
         /// </summary>

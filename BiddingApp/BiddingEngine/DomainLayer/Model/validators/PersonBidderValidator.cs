@@ -25,7 +25,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <exception cref="Exception">Person is required!</exception>
         public static void ValidateObject(this PersonBidder personBidder)
         {
-            if(personBidder.Person == null)
+            if (personBidder.Person == null)
             {
                 throw new Exception("Person is required!");
             }
