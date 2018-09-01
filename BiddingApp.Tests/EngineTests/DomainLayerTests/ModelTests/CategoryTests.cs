@@ -29,9 +29,11 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         [InlineData(1, null)]
         public void CreateCategoryOfferor_ShouldThrow(int id, string name)
         {
-            Category category = new Category();
-            category.Id = id;
-            category.Name = name;
+            Category category = new Category
+            {
+                Id = id,
+                Name = name
+            };
 
             Assert.ThrowsAny<Exception>(() => category.ValidateObject());
         }
