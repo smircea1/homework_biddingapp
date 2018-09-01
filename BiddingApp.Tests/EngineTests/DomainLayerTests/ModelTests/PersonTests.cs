@@ -19,6 +19,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 
             var person = personBuilder.Build();
 
+            Assert.NotNull(person);
             Assert.Equal("Gigi", person.Name);
             Assert.Equal(1, person.Id);
         }
