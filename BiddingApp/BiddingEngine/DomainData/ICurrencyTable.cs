@@ -20,6 +20,13 @@ namespace BiddingApp.BiddingEngine.DomainData
     public interface ICurrencyTable
     {
         /// <summary>
+        /// Inserts the currency.
+        /// </summary>
+        /// <param name="currency">The currency.</param>
+        /// <returns>the id of inserted currency</returns>
+        int InsertCurrency(Currency currency);
+
+        /// <summary>
         /// Fetches all currencies.
         /// </summary>
         /// <returns>all available currencies.</returns>

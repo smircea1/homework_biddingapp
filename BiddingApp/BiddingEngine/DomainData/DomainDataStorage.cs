@@ -38,6 +38,10 @@ namespace BiddingApp.BiddingEngine.DomainData
             this.AuctionTable = this.databaseConneection.As<IAuctionTable>();
             this.BidTable = this.databaseConneection.As<IBidTable>();
             this.CategoryTable = this.databaseConneection.As<ICategoryTable>();
+            this.CurrencyTable = this.databaseConneection.As<ICurrencyTable>(); 
+            this.PersonBidderTable = this.databaseConneection.As<IPersonBidderTable>();
+            this.PersonMarkTable = this.databaseConneection.As<IPersonMarkTable>();
+            this.PersonOfferorTable = this.databaseConneection.As<IPersonOfferorTable>(); 
             this.PersonTable = this.databaseConneection.As<IPersonTable>();
             this.ProductTable = this.databaseConneection.As<IProductTable>();  
         }
@@ -65,6 +69,38 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// The category table.
         /// </value>
         public ICategoryTable CategoryTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the currency table.
+        /// </summary>
+        /// <value>
+        /// The currency table.
+        /// </value>
+        public ICurrencyTable CurrencyTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the person bidder table.
+        /// </summary>
+        /// <value>
+        /// The person bidder table.
+        /// </value>
+        public IPersonBidderTable PersonBidderTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the person mark table.
+        /// </summary>
+        /// <value>
+        /// The person mark table.
+        /// </value>
+        public IPersonMarkTable PersonMarkTable { get; internal set; }
+
+        /// <summary>
+        /// Gets the person offeror table.
+        /// </summary>
+        /// <value>
+        /// The person offeror table.
+        /// </value>
+        public IPersonOfferorTable PersonOfferorTable { get; internal set; }
 
         /// <summary>
         /// Gets the person table.

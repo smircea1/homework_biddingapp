@@ -101,13 +101,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BiddingEngine\DataLayer\TabelsImpl\PersonTable.cs" />
     <Compile Include="BiddingEngine\DomainData\DomainDataStorage.cs" />
     <Compile Include="BiddingEngine\DomainData\IAuctionTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IBidTable.cs" />
     <Compile Include="BiddingEngine\DomainData\ICategoryTable.cs" />
+    <Compile Include="BiddingEngine\DomainData\ICurrencyTable.cs" />
+    <Compile Include="BiddingEngine\DomainData\IPersonBidderTable.cs" />
+    <Compile Include="BiddingEngine\DomainData\IPersonMarkTable.cs" />
+    <Compile Include="BiddingEngine\DomainData\IPersonOfferorTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IPersonTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IProductTable.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\PersonBidder.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\PersonOfferor.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Model\PersonMark.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\AuctionService.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\ServiceModel\PersonOfferorService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\PersonService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\ProductService.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\Actions\PersonBrokerActions.cs" />
@@ -117,11 +126,12 @@
     <Compile Include="BiddingEngine\DomainLayer\Model\Bid.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Category.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Currency.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\checks\BidToActionCheck.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\checks\PostAuctionToBrokerCheck.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\CurrencyConverter.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Person.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="BiddingEngine\DomainLayer\Model\Money.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Product.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\Utils\LevenshteinDistance.cs" />
     <Compile Include="Program.cs" />
@@ -140,9 +150,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BiddingEngine\DataLayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

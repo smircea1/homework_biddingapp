@@ -11,6 +11,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
 
     /// <summary>
@@ -19,16 +20,49 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     public class CurrencyConverter
     {
         /// <summary>
+        /// The currency table
+        /// </summary>
+        private static ICurrencyTable currencyTable;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CurrencyConverter"/> class.
+        /// </summary>
+        public CurrencyConverter()
+        {
+            currencyTable = DomainDataStorage.GetInstance().CurrencyTable;
+            this.UpdateRates();
+            this.UpdateDbCurrencies();
+        }
+
+        /// <summary>
+        /// Gets the available currencies.
+        /// </summary>
+        /// <value>
+        /// The available currencies.
+        /// </value>
+        public List<Currency> AvailableCurrencies { get; private set; }
+
+        /// <summary>
+        /// Gets the currencies rates.
+        /// </summary>
+        /// <value>
+        /// The currencies rates.
+        /// </value>
+        public Dictionary<Currency, double> CurrenciesRates { get; private set; }
+
+        /// <summary>
         /// Does the exchange.
         /// </summary>
         /// <param name="fromCurrency">From currency.</param>
         /// <param name="toCurrency">To currency.</param>
         /// <param name="value">The value.</param>
         /// <returns>The exchanged value.</returns>
-        public static double DoExchange(Currency fromCurrency, Currency toCurrency, double value)
+        public double DoExchange(Currency fromCurrency, Currency toCurrency, double value)
         {
-            double usd_value = value * fromCurrency.Rate;
-            double result = usd_value * toCurrency.Rate;
+            double result = 0;
+            //// converts from X to USD then USD to Y
+            double usd_value = value * this.CurrenciesRates[fromCurrency];
+            result = usd_value * this.CurrenciesRates[toCurrency];
 
             return result;
         }
@@ -37,36 +71,51 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// Updates the rates.
         /// Not implemented. get them from internet idk.
         /// </summary>
-        public static void UpdateRates()
+        public void UpdateRates()
         {
+            this.CurrenciesRates = new Dictionary<Currency, double>()
+            {
+                { new Currency("usd"), 1.0 },
+                { new Currency("eur"), 0.85 },
+                { new Currency("ron"), 0.25 },
+            };
+
+            this.AvailableCurrencies = new List<Currency>(this.CurrenciesRates.Keys);
         }
 
         /// <summary>
-        /// Holds te current currencies
+        /// Gets the name of the currency by.
         /// </summary>
-        public class CurrencyRates
+        /// <param name="name">The name.</param>
+        /// <returns>The found currency or null</returns>
+        public Currency GetCurrencyByName(string name)
         {
-            /// <summary>
-            /// The currencies
-            /// USD TO USD
-            /// EUR TO USD
-            /// LEU TO USD
-            /// </summary>
-            private static Dictionary<string, Currency> currencies = new Dictionary<string, Currency>()
-            {
-                { "USD", new Currency("USD", 1.0) },
-                { "Euro", new Currency("Euro", 1.16805) },
-                { "Ron", new Currency("Ron", 0.251395) },
-            };
+            string nameLower = name.ToLower();
 
-            /// <summary>
-            /// Gets the currency by its name.
-            /// </summary>
-            /// <param name="name">The name.</param>
-            /// <returns>The currency object by its name.</returns>
-            public static Currency GetCurrencyByName(string name)
+            foreach (Currency currency in this.AvailableCurrencies)
             {
-                return currencies[name];
+                if (currency.Name.Equals(nameLower))
+                {
+                    return currency;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Updates the database currencies.
+        /// </summary>
+        private void UpdateDbCurrencies()
+        {
+            List<Currency> currencies = currencyTable.FetchAllCurrencies();
+
+            foreach (Currency currency in this.AvailableCurrencies)
+            {
+                if (!currencies.Contains(currency))
+                {
+                    currency.Id = currencyTable.InsertCurrency(currency);
+                }
             }
         }
     }

@@ -10,13 +10,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     using System.Collections.Generic;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
+    using BiddingApp.BiddingEngine.DomainLayer.Service.checks;
     using BiddingApp.BiddingEngine.DomainLayer.ServiceModel;
 
     /// <summary>
     /// The broker that keeps and handles the auctions
     /// </summary>
     public class BiddingBroker
-    {
+    { 
+        /// <summary>
+        /// The log
+        /// </summary>
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+         
         /// <summary>
         /// The instance
         /// </summary>
@@ -59,33 +65,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             return BiddingBroker.instance;
         }
 
-        /// <summary>
-        /// Dids the person hit maximum category list limit.
-        /// </summary>
-        /// <param name="person">The person.</param>
-        /// <param name="category">The category.</param>
-        /// <returns>true if he did, false either</returns>
-        public bool DidPersonHitMaxCategoryListLimit(Person person, Category category)
-        {
-            PersonService personService = new PersonService(person);
-            int max_in_category = BiddingBroker.configs.MaxInProgressByCategory;
-            int current_in_category = personService.CountActiveAuctionsInCategory(category);
-
-            return current_in_category >= max_in_category;
-        }
-
-        /// <summary>
-        /// Dids the person hit maximum list limit.
-        /// </summary>
-        /// <param name="person">The person.</param>
-        /// <returns>true if he did, false either</returns>
-        public bool DidPersonHitMaxListLimit(Person person)
-        {
-            int max_in_progress = BiddingBroker.configs.MaxInProgress;
-            int counted_in_progress = person.GetInProgressAuctions().Count;
-
-            return counted_in_progress >= max_in_progress;
-        }
 
         /// <summary>
         /// Registers the auction.
@@ -94,6 +73,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>False if the register auction has failed.</returns>
         public bool RegisterAuction(Person person, Auction auction)
         {
+            PostAuctionToBrokerCheck.DoCheck(auction);
             // if it's older
             if (DateTime.Now.CompareTo(auction.StartDate) < 0)
             {
@@ -119,16 +99,25 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>false if the bid registration had failed.</returns>
         public bool RegisterBid(Bid bid, Auction auction)
         {
-            AuctionService auctionService = new AuctionService(auction);
-            if (auctionService.IsEnded)
+            bool goodBid = BidToActionCheck.DoCheck(bid, auction);
+
+            if (!goodBid)
             {
+                //// throw
                 return false;
             }
 
-            auctionService.Auction.HistoryBids.Add(auction.CurrentBid);
-            auction.CurrentBid = bid;
+            AuctionService auctionService = new AuctionService(auction);
 
-            //// NOTICE CURRENT BIDDER HAS CHANGED
+            if (!auctionService.IsActive)
+            {
+                //// auction not started or already ended.
+                return false;
+            }
+
+            domainDataStorage.BidTable.Insert(bid); 
+
+            //// MAYBE NOTICE CURRENT BIDDER HAS CHANGED
 
             return true;
         }
@@ -138,8 +127,27 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         /// <param name="auction">The auction.</param>
         /// <returns>False if the end auction had failed.</returns>
-        public bool EndAuction(Person owner, Auction auction)
-        { 
+        public bool EndAuction(Person person, Auction auction)
+        {
+            PersonOfferor offeror = domainDataStorage.PersonOfferorTable.FetchPersonOfferorByPerson(person);
+
+            AuctionService auctionService = new AuctionService(auction);
+
+            if(offeror.Id != auctionService.Auction.PersonOfferor.Id)
+            {
+                // does not belongs to.
+                return false;
+            }
+
+            if (auctionService.HadEnded)
+            {
+                return false;
+            }
+
+            auction.EndDate = DateTime.Now;
+            domainDataStorage.AuctionTable.UpdateAuction(auction);
+
+
             if (!owner.GetInProgressAuctions().Remove(auction))
             {
                 return false; // cannot remove auction, it may didn't exist.

@@ -52,7 +52,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Actions
             Auction.Builder auctionBuilder = new Auction.Builder();
             auctionBuilder.SetEndDate(end);
             auctionBuilder.SetStartDate(start);
-            auctionBuilder.SetStartingMoney(startingMoney);
+            auctionBuilder.SetStartingMoney(startingMoney); 
             auctionBuilder.SetProduct(product);
             auctionBuilder.SetOwner(person.Id);
 

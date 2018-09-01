@@ -88,6 +88,18 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public double StartValue { get; set; }
 
         /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        /// <summary>
         /// The builder of an auction.
         /// </summary>
         public class Builder
@@ -176,7 +188,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             {
                 if (this.pending.PersonOfferor == null)
                 {
-                    throw new Exception("you must provide an action owner!");
+                    throw new Exception("you must provide an action offeror!");
                 }
 
                 if (this.pending.Product == null)

@@ -13,6 +13,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
 
     /// <summary>
@@ -43,7 +44,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         {
             this.Auction = auction;
             this.UpdateStatus();
-            this.HistoryBids = new List<Bid>(); 
+            this.HistoryBids = new List<Bid>(); // not used yet
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <value>
         ///   <c>true</c> if this instance is ended; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEnded { get; internal set; }
+        public bool HadEnded { get; internal set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is open.
@@ -76,59 +77,26 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <value>
         ///   <c>true</c> if this instance is open; otherwise, <c>false</c>.
         /// </value>
-        public bool IsOpen { get; internal set; }
+        public bool HadStarted { get; internal set; } 
 
-        /// <summary>
-        /// Determines whether [is bid eligible] [the specified bid].
-        /// </summary>
-        /// <param name="bid">The bid.</param>
-        /// <returns>
-        ///   <c>true</c> if [is bid eligible] [the specified bid]; otherwise, <c>false</c>.
-        /// </returns>
-        internal bool IsBidEligible(Bid bid)
-        { 
-            ////Bid current_bid = this.Auction.CurrentBid;
-            ////if (current_bid == null)
-            ////{
-            ////    //// If there is no bid, then bid over the starting price
-            ////    current_bid = new Bid(this.Auction.I, this.Auction.StartingMoney);
-            ////}
-
-            //////// The same person cannot bid its own bid.
-            ////if (current_bid.IdBidder == bid.IdBidder)
-            ////{
-            ////    return false;
-            ////}
-
-            //////// The bid should be already exchanged to auction's currency
-            ////if (!bid.Offered.Currency.Name.Equals(this.Auction.GetCurrency().Name))
-            ////{
-            ////    return false;
-            ////}
-
-            ////Money current_bid_money = current_bid.Offered;
-
-            //////// Max current price + 50% * current price
-            ////double max_new_bid_value = current_bid_money.Value + (current_bid_money.Value / 2);
-
-            //////// Price should be bigger than existent one, but not bigger than 50% + current price
-            ////bool price_ok = bid.Offered.Value > current_bid_money.Value && bid.Offered.Value < max_new_bid_value;
-            bool price_ok = false;
-            return price_ok;
-        }
-
-
+        public bool IsActive { get; internal set; }
+         
         /// <summary>
         /// Updates the status.
         /// </summary>
         internal void UpdateStatus()
         {
+            this.Auction = DomainDataStorage.GetInstance().AuctionTable.FetchAuctionById(this.Auction.Id);
+
             DateTime current = DateTime.Now;
             TimeSpan untilEnd = this.Auction.EndDate.TimeOfDay - current.TimeOfDay;
             TimeSpan untilStart = this.Auction.StartDate.TimeOfDay - current.TimeOfDay;
 
-            this.IsOpen = untilStart < TimeSpan.Zero; //// true if current time > start time
-            this.IsEnded = untilEnd < TimeSpan.Zero; //// true if current time > end time 
+
+            this.HadStarted = untilStart < TimeSpan.Zero; //// true if current time > start time
+            this.HadEnded = untilEnd < TimeSpan.Zero; //// true if current time > end time 
+
+            this.IsActive = HadStarted && !HadEnded;
 
             Log.Info("Auction::UpdateStatus: updated!");
         }
@@ -136,7 +104,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Setups the timers.
         /// </summary>
-        internal void SetupTimers()
+        internal void StartTimers()
         {
             Log.Info("Auction::SetupTimers: Timers set begin!");
 
@@ -146,7 +114,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
 
             this.UpdateStatus();
 
-            if (!this.IsOpen)
+            if (!this.HadStarted)
             {
                 this.startTimer = new System.Threading.Timer(
                 x => { this.OnAuctionStarted(); }, null, untilStart, Timeout.InfiniteTimeSpan);
@@ -154,7 +122,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
                 Log.Info("Auction::SetupTimers: Start timer had started.");
             }
 
-            if (!this.IsEnded)
+            if (!this.HadEnded)
             {
                 this.endTimer = new System.Threading.Timer(
                 x => { this.OnAuctionEnded(); }, null, untilEnd, Timeout.InfiniteTimeSpan);
@@ -170,7 +138,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         private void OnAuctionEnded()
         {
-            this.IsEnded = true;
+            this.HadEnded = true;
             Log.Info("AUCTION ENDED!");
         }
 
@@ -179,7 +147,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         private void OnAuctionStarted()
         {
-            this.IsOpen = true;
+            this.HadStarted = true;
             Log.Info("AUCTION STARTED!");
         } 
     }

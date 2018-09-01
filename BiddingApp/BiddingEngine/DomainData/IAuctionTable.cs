@@ -27,6 +27,19 @@ namespace BiddingApp.BiddingEngine.DomainData
         int InsertAuction(Auction auction);
 
         /// <summary>
+        /// Updates the auction.
+        /// </summary>
+        /// <param name="auction">The auction.</param>
+        void UpdateAuction(Auction auction);
+
+        /// <summary>
+        /// Fetches the auction by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>the selected auction or null</returns>
+        Auction FetchAuctionById(int id);
+
+        /// <summary>
         /// Fetches the offeror auctions.
         /// </summary>
         /// <param name="offeror">The offeror.</param>
