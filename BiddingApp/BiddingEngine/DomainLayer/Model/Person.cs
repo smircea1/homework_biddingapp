@@ -98,7 +98,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
                 ////    return null;
                 ////}
 
-                if (this.pending.Name.Length == 0)
+                if (string.IsNullOrWhiteSpace(this.pending.Name))
                 {
                     return null;
                 }
