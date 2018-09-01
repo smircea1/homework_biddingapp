@@ -21,21 +21,21 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <summary>
         /// Validates the object.
         /// </summary>
-        /// <param name="personBidder">The person bidder.</param>
+        /// <param name="obj">The person bidder.</param>
         /// <exception cref="System.Exception">
         /// Invalid Id!
         /// or
         /// Person is required!
         /// </exception>
         /// <exception cref="Exception">Person is required!</exception>
-        public static void ValidateObject(this PersonBidder personBidder)
+        public static void ValidateObject(this PersonBidder obj)
         {
-            if (personBidder.Id < 0)
+            if (obj.Id < 0)
             {
                 throw new Exception("Invalid Id!"); 
             }
 
-            if (personBidder.Person == null)
+            if (obj.Person == null)
             {
                 throw new Exception("Person is required!");
             }

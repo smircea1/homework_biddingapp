@@ -21,7 +21,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <summary>
         /// Validates the auction.
         /// </summary>
-        /// <param name="auction">The auction.</param>
+        /// <param name="obj">The auction.</param>
         /// <exception cref="System.Exception">
         /// Invalid Id!
         /// or
@@ -52,45 +52,45 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Start date is after end date!
         /// or
         /// StartValue must be greater than 0</exception>
-        public static void ValidateObject(this Auction auction)
+        public static void ValidateObject(this Auction obj)
         {
-            if (auction.Id < 0)
+            if (obj.Id < 0)
             {
                 throw new Exception("Invalid Id!");
             }
 
-            if (auction.PersonOfferor == null)
+            if (obj.PersonOfferor == null)
             {
                 throw new Exception("PersonOfferor is required!");
             }
 
-            if (auction.Product == null)
+            if (obj.Product == null)
             {
                 throw new Exception("Product is required!");
             }
 
-            if (auction.Currency == null)
+            if (obj.Currency == null)
             {
                 throw new Exception("Currency is required!");
             }
 
-            if (auction.StartDate == null)
+            if (obj.StartDate == null)
             {
                 throw new Exception("StartDate is required!");
             }
 
-            if (auction.EndDate == null)
+            if (obj.EndDate == null)
             {
                 throw new Exception("EndDate is required!");
             }
 
-            if (auction.StartDate.CompareTo(auction.EndDate) >= 0)
+            if (obj.StartDate.CompareTo(obj.EndDate) >= 0)
             {
                 // cannot start after end date or if they are the same.
                 throw new Exception("Start date is after end date!");
             }
 
-            if (auction.StartValue < 0)
+            if (obj.StartValue < 0)
             {
                 throw new Exception("StartValue must be greater than 0!");
             }

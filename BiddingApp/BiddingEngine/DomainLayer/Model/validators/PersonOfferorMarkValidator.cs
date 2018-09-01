@@ -21,7 +21,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <summary>
         /// Validates the object.
         /// </summary>
-        /// <param name="personOfferorMark">The person offeror mark.</param>
+        /// <param name="obj">The person offeror mark.</param>
         /// <exception cref="System.Exception">
         /// Invalid Id!
         /// or
@@ -44,34 +44,34 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// Mark is out of range(0, 100)!
         /// or
         /// DateOccur is required!</exception>
-        public static void ValidateObject(this PersonOfferorMark personOfferorMark)
+        public static void ValidateObject(this PersonOfferorMark obj)
         {
-            if (personOfferorMark.Id < 0)
+            if (obj.Id < 0)
             {
                 throw new Exception("Invalid Id!");
             }
 
-            if (personOfferorMark.Sender == null)
+            if (obj.Sender == null)
             {
                 throw new Exception("Sender is required!");
             }
 
-            if (personOfferorMark.Receiver == null)
+            if (obj.Receiver == null)
             {
                 throw new Exception("Receiver is required!");
             }
 
-            if (personOfferorMark.Sender == null)
+            if (obj.Sender == null)
             {
                 throw new Exception("Sender is required!");
             }
 
-            if (personOfferorMark.Mark < 0 || personOfferorMark.Mark > 100)
+            if (obj.Mark <= 0 || obj.Mark > 10)
             {
-                throw new Exception("Mark is out of range(0, 100)!");
+                throw new Exception("Mark is out of range(1, 10)!");
             }
 
-            if (personOfferorMark.DateOccur == null)
+            if (obj.DateOccur == null)
             {
                 throw new Exception("DateOccur is required!");
             }
