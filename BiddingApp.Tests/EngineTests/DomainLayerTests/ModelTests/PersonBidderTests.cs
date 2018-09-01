@@ -17,6 +17,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             var personBidder = new PersonBidder();
             personBidder.Person = person;
 
+            personBidder.ValidateObject();
             Assert.NotNull(personBidder);
         }
 
