@@ -78,11 +78,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
             catch (Exception e)
             {
-                Log.Info(e.Message);
+                Log.Info("RegisterPerson: " + e.Message);
                 return false;
             }
 
             domainDataStorage.PersonTable.InsertPerson(person);
+
+            Log.Info("RegisterPerson: " + person.Name + " inserted with success.");
 
             return true;
         }

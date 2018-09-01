@@ -38,11 +38,9 @@ namespace BiddingApp.BiddingEngine.DataLayer.TabelsImpl
         /// Inserts the specified person.
         /// </summary>
         /// <param name="person">The person.</param>
-        /// <returns>
-        /// the inserted id
-        /// </returns>
-        /// <exception cref="NotImplementedException"> not implemented yet.</exception>
-        public int InsertPerson(Person person)
+        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException">not implemented yet.</exception>
+        public void InsertPerson(Person person)
         {
             throw new NotImplementedException();
         }

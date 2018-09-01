@@ -27,11 +27,11 @@ namespace BiddingApp
         public static void Main(string[] args)
         {
             BiddingBroker broker = BiddingBroker.GetInstance();
-            Person personA = new Person() { Name = null };
-            Person personB = new Person() { Name = "gigica" };
+            Person badPerson = new Person() { Name = null };
+            Person goodPerson = new Person() { Name = "gigica" };
 
-            broker.RegisterPerson(personA);
-            broker.RegisterPerson(personB);
+            broker.RegisterPerson(badPerson);
+            broker.RegisterPerson(goodPerson);
 
 
 

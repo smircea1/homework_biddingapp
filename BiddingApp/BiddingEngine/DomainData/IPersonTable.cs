@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="person">The person.</param>
         /// <returns>the inserted id</returns>
-        int InsertPerson(Person person);
+        void InsertPerson(Person person);
 
         /// <summary>
         /// Updates the person.
