@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <param name="sender">The sender.</param>
         /// <param name="receiver">The receiver.</param>
         /// <param name="mark">The mark.</param>
-        public PersonMark(Person sender, Person receiver, int mark)
+        public PersonMark(Person sender, PersonOfferor receiver, int mark)
         {
             this.Id = 0;
             this.Sender = sender;
@@ -54,7 +54,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The receiver.
         /// </value>
-        public Person Receiver { get; set; }
+        public PersonOfferor Receiver { get; set; }
 
         /// <summary>
         /// Gets or sets the mark.

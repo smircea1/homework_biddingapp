@@ -32,5 +32,11 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <param name="id">The identifier.</param>
         /// <returns>the product by id</returns>
         Product FetchProductById(int id);
+
+        /// <summary>
+        /// Fetches all products.
+        /// </summary>
+        /// <returns>all products from DB.</returns>
+        List<Product> FetchAllProducts();
     }
 }

@@ -19,8 +19,28 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
     /// <summary>
     /// wrapper for offeror
     /// </summary>
-    internal class PersonOfferorService
-    { 
+    public class PersonOfferorService
+    {
+        /// <summary>
+        /// The default rating
+        /// </summary>
+        private static int defaultRating = int.Parse(ConfigurationManager.AppSettings.Get("DefaultRating"));
+
+        /// <summary>
+        /// The reviews counted for rating
+        /// </summary>
+        private static int reviewsCountedForRating = int.Parse(ConfigurationManager.AppSettings.Get("ReviewsCountedForRating"));
+
+        /// <summary>
+        /// The minimum rating allowed for bidding
+        /// </summary>
+        private static int minRatingAllowedForBidding = int.Parse(ConfigurationManager.AppSettings.Get("MinRatingAllowedForBidding"));
+
+        /// <summary>
+        /// The banned days for bad rating
+        /// </summary>
+        private static int bannedDaysForBadRating = int.Parse(ConfigurationManager.AppSettings.Get("BannedDaysForBadRating"));
+
         /// <summary>
         /// The maximum in progress
         /// </summary>
@@ -47,6 +67,22 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// The offeror.
         /// </value>
         public PersonOfferor Offeror { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is banned.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is banned; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsBanned { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the rating.
+        /// </summary>
+        /// <value>
+        /// The rating.
+        /// </value>
+        public double Rating { get; internal set; }
 
         /// <summary>
         /// Counts the active auctions in category.
@@ -125,6 +161,61 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             int max_in_progress = maxInProgress;
 
             return counted >= max_in_progress;
+        }
+
+
+        /// <summary>
+        /// Updates the rating.
+        /// </summary>
+        private void UpdateRating()
+        {
+            IPersonMarkTable personMarkTable = DomainDataStorage.GetInstance().PersonMarkTable;
+
+            List<PersonMark> personMarks = personMarkTable.FetchPersonOfferorMarks(this.Offeror);
+
+            int totalScore = 0;
+            int countedMarks = Math.Min(personMarks.Count, reviewsCountedForRating);
+
+            for (int i = 0; i < countedMarks; i++)
+            {
+                totalScore += personMarks.ElementAt(i).Mark;
+            }
+
+            if (countedMarks == 0)
+            {
+                this.Rating = defaultRating;
+            } else
+            {
+                this.Rating = totalScore / countedMarks;
+            }
+        }
+
+        /// <summary>
+        /// Does the ban if needed.
+        /// </summary>
+        private void DoBanIfNeeded()
+        {
+            TimeSpan untilEnd = this.Offeror.LastBannedDate.TimeOfDay - DateTime.Now.TimeOfDay;
+
+            int alreadyBannedDays = untilEnd.Days;
+
+            bool isAlreadyBanned = bannedDaysForBadRating > alreadyBannedDays;
+
+            if (isAlreadyBanned)
+            {
+                return;
+            }
+
+            this. ;
+
+            bool shouldBan = Rating < minRatingAllowedForBidding;
+
+            if (shouldBan && !isAlreadyBanned)
+            {
+                IsBanned = true;
+                this.Offeror.LastBannedDate = DateTime.Now;
+                DomainDataStorage.GetInstance().PersonOfferorTable.UpdatePersonOfferor(this.Offeror);
+            }
         }
     }
 }

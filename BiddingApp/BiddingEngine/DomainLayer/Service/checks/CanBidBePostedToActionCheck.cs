@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="BidToActionCheck.cs" company="Transilvania University of Brasov"> 
+// <copyright file="CanBidBePostedToActionCheck.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
@@ -18,10 +18,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.checks
     /// <summary>
     /// this is the check in order to allow a bid occur.
     /// </summary>
-    class BidToActionCheck
+    class CanBidBePostedToActionCheck
     {
         /// <summary>
-        /// Initializes the <see cref="BidToActionCheck" /> class.
+        /// Initializes the <see cref="CanBidBePostedToActionCheck" /> class.
         /// </summary>
         /// <param name="bid">The bid.</param>
         /// <param name="auction">The auction.</param>

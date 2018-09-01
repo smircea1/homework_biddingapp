@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// The except chars
         /// </summary>
-        private static readonly char[] ExceptChars = { '.', ',', ':', '?', '!' };
+        private static readonly char[] LevensteinExceptChars = { '.', ',', ':', '?', '!' };
 
         /// <summary>
         /// The level for string duplicate
@@ -55,7 +55,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <returns>
         ///   <c>true</c> if [is duplicate in] [the specified products]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsDuplicateIn(List<Product> products)
+        public bool HasSimilarDescriptionToAnyFrom(List<Product> products)
         {
             string actual_description = PrepareDescriptionForLevenstein(this.Product.Description);
 
@@ -83,7 +83,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
 
             result = result.ToLower();
 
-            RemoveCharsFromString(result, ExceptChars);
+            RemoveCharsFromString(result, LevensteinExceptChars);
 
             return result;
         }

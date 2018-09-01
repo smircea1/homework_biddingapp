@@ -15,11 +15,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
     using System.Threading.Tasks;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
+    using BiddingApp.BiddingEngine.DomainLayer.Service.checks;
 
     /// <summary>
     /// Wraps an auction in order to be used by the broker
     /// </summary>
-    internal class AuctionService
+    public class AuctionService
     {
         /// <summary>
         /// The log
@@ -43,17 +44,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public AuctionService(Auction auction)
         {
             this.Auction = auction;
-            this.UpdateStatus();
-            this.HistoryBids = new List<Bid>(); // not used yet
-        }
-
-        /// <summary>
-        /// Gets or sets the bids history.
-        /// </summary>
-        /// <value>
-        /// The bids history.
-        /// </value>
-        public List<Bid> HistoryBids { get; internal set; }
+            this.UpdateStatus(); 
+        } 
 
         /// <summary>
         /// Gets or sets the auction.
@@ -88,11 +80,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         {
             this.Auction = DomainDataStorage.GetInstance().AuctionTable.FetchAuctionById(this.Auction.Id);
 
+            if(this.Auction == null)
+            {
+                return;
+            }
+
             DateTime current = DateTime.Now;
             TimeSpan untilEnd = this.Auction.EndDate.TimeOfDay - current.TimeOfDay;
             TimeSpan untilStart = this.Auction.StartDate.TimeOfDay - current.TimeOfDay;
-
-
+             
             this.HadStarted = untilStart < TimeSpan.Zero; //// true if current time > start time
             this.HadEnded = untilEnd < TimeSpan.Zero; //// true if current time > end time 
 
@@ -131,6 +127,24 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             }
 
             Log.Info("Auction::SetupTimers: Timers set ended!");
+        }
+
+        /// <summary>
+        /// Ends the auction.
+        /// </summary>
+        /// <param name="offeror">The offeror.</param>
+        /// <returns></returns>
+        public bool EndAuction(PersonOfferor offeror)
+        { 
+            bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
+            if(end_result)
+            {
+                this.Auction.EndDate = DateTime.Now;
+                OnAuctionEnded();
+                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction); 
+            }
+
+            return end_result;
         }
 
         /// <summary>

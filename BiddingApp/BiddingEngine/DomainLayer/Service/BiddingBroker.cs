@@ -73,7 +73,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>False if the register auction has failed.</returns>
         public bool RegisterAuction(Person person, Auction auction)
         {
-            PostAuctionToBrokerCheck.DoCheck(auction);
+            bool canPost = CanAuctionBePostedCheck.DoCheck(person, auction);
             // if it's older
             if (DateTime.Now.CompareTo(auction.StartDate) < 0)
             {
@@ -99,7 +99,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>false if the bid registration had failed.</returns>
         public bool RegisterBid(Bid bid, Auction auction)
         {
-            bool goodBid = BidToActionCheck.DoCheck(bid, auction);
+            bool goodBid = CanBidBePostedToActionCheck.DoCheck(bid, auction);
 
             if (!goodBid)
             {
@@ -127,35 +127,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         /// <param name="auction">The auction.</param>
         /// <returns>False if the end auction had failed.</returns>
-        public bool EndAuction(Person person, Auction auction)
-        {
-            PersonOfferor offeror = domainDataStorage.PersonOfferorTable.FetchPersonOfferorByPerson(person);
-
-            AuctionService auctionService = new AuctionService(auction);
-
-            if(offeror.Id != auctionService.Auction.PersonOfferor.Id)
-            {
-                // does not belongs to.
-                return false;
-            }
-
-            if (auctionService.HadEnded)
-            {
-                return false;
-            }
-
-            auction.EndDate = DateTime.Now;
-            domainDataStorage.AuctionTable.UpdateAuction(auction);
-
-
-            if (!owner.GetInProgressAuctions().Remove(auction))
-            {
-                return false; // cannot remove auction, it may didn't exist.
-            }
-
-            owner.GetFinishedAuctions().Add(auction);
-
-            return true;
+        public bool EndAuction(PersonOfferor offeror, Auction auction)
+        { 
+            AuctionService auctionService = new AuctionService(auction); 
+            return auctionService.EndAuction(offeror);
         }  
 
         private void LoadAuctions()

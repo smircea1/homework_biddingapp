@@ -45,7 +45,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// The identifier person.
         /// </value>
         public Person Person { get; set; }
-         
+
+        /// <summary>
+        /// Gets or sets the last banned date.
+        /// </summary>
+        /// <value>
+        /// The last banned date.
+        /// </value>
+        public DateTime LastBannedDate { get; set; }
+
         /// <summary>
         /// Gets or sets the auctions in progress.
         /// </summary>
