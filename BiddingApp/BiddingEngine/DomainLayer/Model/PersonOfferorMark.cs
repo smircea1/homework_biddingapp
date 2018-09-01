@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PersonMark.cs" company="Transilvania University of Brasov"> 
+// <copyright file="PersonOfferorMark.cs" company="Transilvania University of Brasov"> 
 //     Copyright (c) Transilvania University of Brasov. All rights reserved. 
 // </copyright> 
 // <author>Stoica Mircea</author> 
@@ -17,15 +17,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// <summary>
     /// User mark.
     /// </summary>
-    public class PersonMark
+    public class PersonOfferorMark
     { 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PersonMark"/> class.
+        /// Initializes a new instance of the <see cref="PersonOfferorMark"/> class.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="receiver">The receiver.</param>
         /// <param name="mark">The mark.</param>
-        public PersonMark(Person sender, PersonOfferor receiver, int mark)
+        public PersonOfferorMark(Person sender, PersonOfferor receiver, int mark)
         {
             this.Id = 0;
             this.Sender = sender;
@@ -46,8 +46,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The sender.
-        /// </value>
-        [Required(ErrorMessage = "Sender is required")]
+        /// </value> 
         public Person Sender { get; set; }
 
         /// <summary>
@@ -55,8 +54,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The receiver.
-        /// </value>
-        [Required(ErrorMessage = "Receiver is required")]
+        /// </value> 
         public PersonOfferor Receiver { get; set; }
 
         /// <summary>
@@ -64,8 +62,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The mark.
-        /// </value>
-        [Required(ErrorMessage = "Mark is required")]
+        /// </value> 
         public int Mark { get; set; }
 
         /// <summary>
@@ -73,8 +70,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The date.
-        /// </value>
-        [Required(ErrorMessage = "DateOccur is required")]
+        /// </value> 
         public DateTime DateOccur { get; set; }
     }
 }

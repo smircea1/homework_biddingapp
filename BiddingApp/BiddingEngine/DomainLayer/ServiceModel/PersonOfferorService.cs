@@ -171,7 +171,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         {
             IPersonMarkTable personMarkTable = DomainDataStorage.GetInstance().PersonMarkTable;
 
-            List<PersonMark> personMarks = personMarkTable.FetchPersonOfferorMarks(this.Offeror);
+            List<PersonOfferorMark> personMarks = personMarkTable.FetchPersonOfferorMarks(this.Offeror);
 
             int totalScore = 0;
             int countedMarks = Math.Min(personMarks.Count, reviewsCountedForRating);

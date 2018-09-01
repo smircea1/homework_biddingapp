@@ -25,10 +25,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         public Auction()
         {
-            this.Id = 0;
-            this.PersonOfferor = null;
-            this.Product = null;
-            this.Currency = null;
+            this.Id = 0; 
             this.StartValue = 0;
         }
 
@@ -45,8 +42,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier offeror.
-        /// </value>
-        [Required(ErrorMessage = "PersonOfferor is required")]
+        /// </value> 
         public PersonOfferor PersonOfferor { get; set; }
 
         /// <summary>
@@ -54,8 +50,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier product.
-        /// </value>
-        [Required(ErrorMessage = "Product is required")]
+        /// </value> 
         public Product Product { get; set; }
 
         /// <summary>
@@ -63,8 +58,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier currency.
-        /// </value>
-        [Required(ErrorMessage = "Currency is required")]
+        /// </value> 
         public Currency Currency { get; set; }
 
         /// <summary>
@@ -72,8 +66,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The start date.
-        /// </value>
-        [Required(ErrorMessage = "StartDate is required")]
+        /// </value> 
         public DateTime StartDate { get; set; }
 
         /// <summary>
@@ -81,8 +74,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The end date.
-        /// </value>
-        [Required(ErrorMessage = "EndDate is required")]
+        /// </value> 
         public DateTime EndDate { get; set; }
 
         /// <summary>
@@ -90,9 +82,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The start value.
-        /// </value>
-        [Required(ErrorMessage = "StartValue is required")]
-        [Range(0, 100, ErrorMessage = "StartValue must be between $1 and $100")]
+        /// </value> 
         public double StartValue { get; set; }
 
         /// <summary>

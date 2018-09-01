@@ -39,8 +39,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The name.
-        /// </value>
-        [Required(ErrorMessage = "Name is required")]
+        /// </value> 
         public string Name { get; set; }
 
         /// <summary>

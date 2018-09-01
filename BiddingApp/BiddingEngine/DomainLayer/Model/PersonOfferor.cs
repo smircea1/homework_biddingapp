@@ -42,8 +42,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier person.
-        /// </value>
-        [Required(ErrorMessage = "Person is required")]
+        /// </value> 
         public Person Person { get; set; }
 
         /// <summary>

@@ -29,18 +29,18 @@ namespace BiddingApp
             string connectionString = ConfigurationManager.ConnectionStrings["MySQL"].ConnectionString; 
             MySqlConnection conn = new MySqlConnection(connectionString);
              
-            Currency currencyA = new Currency("usd");
+            Currency currencyA = new Currency(null);
+            currencyA.ValidateObject();
+
             double valueA = 234.2;
             Currency currencyB = new Currency("ron");
-            
-
-
+             
             ////double converted_value = CurrencyConverter.DoExchange(currencyA, currencyB, valueA);
 
             ////IAuctionTable auctionTable = DomainDataStorage.GetInstance().AuctionTable;
             ////auctionTable.InsertAuction(auctionA);
 
-            System.Console.WriteLine("inserted!");
+            System.Console.WriteLine("app ended!");
         }
     }
 }

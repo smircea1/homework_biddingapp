@@ -39,8 +39,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The categories.
-        /// </value>
-        [Required(ErrorMessage = "Category is required")]
+        /// </value> 
         public Category Category { get; set; }
 
         /// <summary>
@@ -48,8 +47,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The name.
-        /// </value>
-        [Required(ErrorMessage = "Name is required")]
+        /// </value> 
         public string Name { get; set; }
 
         /// <summary>
@@ -57,8 +55,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The description.
-        /// </value>
-        [Required(ErrorMessage = "Description is required")]
+        /// </value> 
         public string Description { get; set; } 
     }
 }

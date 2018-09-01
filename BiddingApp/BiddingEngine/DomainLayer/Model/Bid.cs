@@ -24,10 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         private Bid()
         {
-            this.Id = 0;
-            this.PersonBidder = null;
-            this.Auction = null;
-            this.Currency = null;
+            this.Id = 0; 
         }
 
         /// <summary>
@@ -43,8 +40,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier owner.
-        /// </value>
-        [Required(ErrorMessage = "PersonBidder is required")]
+        /// </value> 
         public PersonBidder PersonBidder { get; set; }
 
         /// <summary>
@@ -52,8 +48,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier auction.
-        /// </value>
-        [Required(ErrorMessage = "Auction is required")]
+        /// </value> 
         public Auction Auction { get; set; }
 
         /// <summary>
@@ -61,8 +56,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The identifier currency.
-        /// </value>
-        [Required(ErrorMessage = "Currency is required")]
+        /// </value> 
         public Currency Currency { get; set; }
 
         /// <summary>
@@ -70,8 +64,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The value.
-        /// </value>
-        [Required(ErrorMessage = "Value is required")]
+        /// </value> 
         public double Value { get; set; }
 
         /// <summary>
@@ -79,8 +72,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The date.
-        /// </value>
-        [Required(ErrorMessage = "Date is required")]
+        /// </value> 
         public DateTime Date { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="personMark">The person mark.</param>
         /// <returns>the inserted id</returns>
-        int InsertPersonMark(PersonMark personMark);
+        int InsertPersonMark(PersonOfferorMark personMark);
 
         /// <summary>
         /// Fetches the person marks.
@@ -33,6 +33,6 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <returns>
         /// All persons marks
         /// </returns>
-        List<PersonMark> FetchPersonOfferorMarks(PersonOfferor offeror);
+        List<PersonOfferorMark> FetchPersonOfferorMarks(PersonOfferor offeror);
     }
 }

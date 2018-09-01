@@ -18,16 +18,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The category of a product
     /// </summary>
     public class Category
-    {  
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="Category"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        public Category(string name)
+        /// </summary> 
+        public Category()
         {
             this.Id = 0;
-            this.Name = name;
-            this.SubCategories = new List<Category>();
         }
 
         /// <summary>
@@ -43,16 +40,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </summary>
         /// <value>
         /// The name.
-        /// </value>
-        [Required(ErrorMessage = "Name is required")]
+        /// </value> 
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the sub categories.
-        /// </summary>
-        /// <value>
-        /// The sub categories.
-        /// </value>
-        public List<Category> SubCategories { get; set; } 
     }
 }
