@@ -85,9 +85,18 @@
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonOfferorTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\ProductsTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\AuctionServiceTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\PersonServiceTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\ProductServiceTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\UtilsTests\LevenshteinDistanceTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\PersonOfferorServiceTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\BiddingBrokerTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\CategoriesUpdaterTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\CanAuctionBePostedCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\CanBidBePostedToActionCheckTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\CanOfferorEndAuctionCheckTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\ExistsAnySimilarProductCheckTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\CurrencyConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

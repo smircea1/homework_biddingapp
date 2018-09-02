@@ -10,6 +10,6 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.ChecksTests
 {
     public class CanAuctionBePostedCheckTests
     {
-        [Fact]
+        
     }
 }
