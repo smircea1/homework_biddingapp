@@ -19,7 +19,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
     /// <summary>
     /// Wraps an product for the service.
     /// </summary>
-    internal class ProductService
+    public class ProductService
     {
         /// <summary>
         /// The except chars
