@@ -11,7 +11,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
 {
     public class PersonServiceTests
     {
-        public static Person GetPerson()
+        private static Person GetPerson()
         {
             return new Person
             {
@@ -21,7 +21,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             };
         }
 
-        public static PersonService GetPersonService()
+        private static PersonService GetPersonService()
         {
             return new PersonService(GetPerson());
         }
