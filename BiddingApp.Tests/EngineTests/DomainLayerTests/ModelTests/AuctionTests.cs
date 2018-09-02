@@ -5,132 +5,94 @@
 // <author>Stoica Mircea</author> 
 //-----------------------------------------------------------------------  
 
-namespace BiddingApp.Tests.DomainLayerTests.ModelTets
+namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 {
     using BiddingApp.BiddingEngine.DomainLayer;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
     using System;
-    using Xunit; 
+    using Xunit;
 
     public class AuctionTests
     {
-        readonly Currency usd_currency = CurrencyConverter.GetInstance().GetCurrencyByName("usd");
+        private static readonly int Id = 1;
+        private static readonly PersonOfferor PersonOfferor = 
+            new PersonOfferor { IdOfferor = 1 };
+        private static readonly Product Product =
+            new Product();
+        private static readonly Currency Currency =
+            new Currency();
+        private static readonly DateTime StartDate =
+            DateTime.Now.AddDays(-1);
+        private static readonly DateTime EndDate =
+            DateTime.Now.AddDays(1);
+        private static readonly double StartValue = 1;
 
-        //private Product productA;
-        //private Person personA;
-        //private Auction auctionA;
-
-        //private DateTime startDate;
-        //private DateTime endDate;
-
-        //private Person personB;
-
-        public AuctionTests()
+        private Auction GetAuctionInstance()
         {
-            ////Product.Builder product_builder = new Product.Builder();
-            ////product_builder.SetName("AProduct");
-            ////product_builder.AddCategory(new Category("Food"));
+            var auction = new Auction();
+            auction.IdAuction = Id;
+            auction.PersonOfferor = PersonOfferor;
+            auction.Product = Product;
+            auction.Currency = Currency;
+            auction.StartDate = StartDate;
+            auction.EndDate = EndDate;
+            auction.StartValue = StartValue;
 
-            ////this.productA = product_builder.Build();
-
-            ////Person.Builder person_builder = new Person.Builder();
-            ////person_builder.SetId(123);
-            ////person_builder.SetName("PersonA");
-
-            ////this.personA = person_builder.Build();
-
-            ////person_builder = new Person.Builder();
-            ////person_builder.SetId(123);
-            ////person_builder.SetName("PersonB");
-
-            ////this.personB = person_builder.Build();
-
-            ////this.startDate = DateTime.Now;
-            ////this.endDate = DateTime.Now.AddMinutes(30);
-
-            ////Money starting_money = new Money(this.usd_currency, 20);
-
-            ////Auction.Builder auction_builder = new Auction.Builder();
-            ////auction_builder.SetOwner(this.personA.Id);
-            ////auction_builder.SetStartDate(this.startDate);
-            ////auction_builder.SetEndDate(this.endDate);
-            ////auction_builder.SetProduct(this.productA);
-            ////auction_builder.SetStartingMoney(starting_money);
-
-            ////this.auctionA = auction_builder.Build(); 
+            return auction;
         }
 
         [Fact]
-        void GetBidsHistory_ShouldReturnNonNullList()
+        public void CreateAuction_ShouldInstantiateAuction()
         {
-            ////Assert.NotNull(auctionA.GetBidsHistory());
+            Auction auction = GetAuctionInstance();
+            auction.ValidateObject();
+            Assert.NotNull(auction);
         }
 
         [Fact]
-        void GetCurrency_ShouldReturnNonNullCurrency()
+        public void CreateAuction_ShouldThrowBadId()
         {
-            ////Assert.NotNull(auctionA.GetCurrency());
+            Auction auction = GetAuctionInstance();
+            auction.IdAuction = -1;
+
+            Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
 
         [Fact]
-        void IsBidEligible_ShouldReturnTrueIfBidIsOK()
-        { 
-            ////Money bad_money = new Money(this.usd_currency, 31); 
-            ////Money bad_money2 = new Money(this.usd_currency, 2); 
-            ////Money good_money = new Money(this.usd_currency, 29);
+        public void CreateAuction_ShouldThrowBadProduct()
+        {
+            Auction auction = GetAuctionInstance();
+            auction.Product = null;
 
-            ////Bid bad_bid = new Bid(this.personA.Id, bad_money);
-            ////Bid bad_bid2 = new Bid(this.personB.Id, bad_money2);
-            ////Bid bad_bid3 = new Bid(this.personA.Id, good_money);
-
-            ////Bid good_bid = new Bid(this.personB.Id, good_money);
-
-            ////Assert.False(this.auctionA.IsBidEligible(bad_bid)); // will fail due to price + 50% * price
-            ////Assert.False(this.auctionA.IsBidEligible(bad_bid2)); // will fail due to low price
-            ////Assert.False(this.auctionA.IsBidEligible(bad_bid3)); // will fail cuz he bids own bid
-
-            ////Assert.True(this.auctionA.IsBidEligible(good_bid));
+            Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
 
         [Fact]
-        void AuctionBuilder_ShouldBuildAnAuction()
+        public void CreateAuction_ShouldThrowBadCurrency()
         {
-            ////Auction.Builder builder = new Auction.Builder();
+            Auction auction = GetAuctionInstance();
+            auction.Currency = null;
 
-            ////Money bad = new Money(this.usd_currency, -1);
-            ////Money good = new Money(this.usd_currency, 1);
+            Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
+        }
 
-            //////// Empty build attempt
-            ////Assert.ThrowsAny<Exception>(builder.Build);
-             
-            //////// Incomplete build attempt
-            ////builder.SetOwner(this.personA.Id);
-            ////Assert.ThrowsAny<Exception>(builder.Build);
+        [Fact]
+        public void CreateAuction_ShouldThrowBadStartValue()
+        {
+            Auction auction = GetAuctionInstance();
+            auction.StartValue = -1;
 
-            //////// Incomplete build attempt
-            ////builder.SetProduct(this.productA);
-            ////Assert.ThrowsAny<Exception>(builder.Build);
+            Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
+        }
 
-            //////// Incomplete build attempt
-            ////builder.SetProduct(this.productA);
-            ////Assert.ThrowsAny<Exception>(builder.Build);
+        [Fact]
+        public void CreateAuction_ShouldThrowBadDate()
+        {
+            Auction auction = GetAuctionInstance();
+            auction.StartDate = DateTime.Now.AddDays(1);
+            auction.EndDate = DateTime.Now.AddDays(-1);
 
-            //////// badDate
-            ////builder.SetStartDate(this.endDate);
-            ////builder.SetEndDate(this.startDate);
-            ////Assert.ThrowsAny<Exception>(builder.Build);
-             
-            //////// Incomplete build attempt 
-            ////builder.SetStartDate(this.startDate);
-            ////builder.SetEndDate(this.endDate);
-            ////Assert.ThrowsAny<Exception>(builder.Build);
-
-            //////// bad money attempt 
-            ////builder.SetStartingMoney(bad);
-            ////Assert.ThrowsAny<Exception>(builder.Build);
-
-            ////builder.SetStartingMoney(good);
-            ////Assert.NotNull(builder.Build());
+            Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
     }
 }
