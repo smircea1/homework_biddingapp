@@ -86,6 +86,7 @@
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\ProductsTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\AuctionServiceTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\InstanceHelper.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\PersonServiceTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\ProductServiceTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\UtilsTests\LevenshteinDistanceTests.cs" />
