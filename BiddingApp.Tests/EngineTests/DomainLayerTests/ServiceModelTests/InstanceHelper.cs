@@ -75,9 +75,17 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             };
         }
 
-        public static AuctionService GetAuctionService()
+        public static AuctionService GetAuctionService(Auction auction)
         {
+            if (auction != null) return new AuctionService(auction);
             return new AuctionService(GetAuction());
         }
+
+        public static PersonOfferorService GetPersonOfferorService(PersonOfferor personOfferor)
+        {
+            if (personOfferor != null) return new PersonOfferorService(personOfferor);
+            return new PersonOfferorService(GetPersonOfferor());
+        }
+
     }
 }
