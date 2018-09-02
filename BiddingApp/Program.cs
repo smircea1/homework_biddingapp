@@ -32,12 +32,9 @@ namespace BiddingApp
             Person badPerson3 = new Person() { Name = "gigica", Phone = null };
             Person goodPerson = new Person() { Name = "gigica", Phone = "07299544321" };
 
-            broker.RegisterPerson(badPerson);
-            broker.RegisterPerson(badPerson2);
-            broker.RegisterPerson(badPerson3);
 
-            broker.RegisterPerson(goodPerson);
-
+            goodPerson = broker.RegisterPerson(goodPerson);
+             
             CurrencyConverter converter = broker.GetCurrencyConverter();
             
             Currency ronCurrency = converter.GetCurrencyByName("ron");
@@ -63,15 +60,22 @@ namespace BiddingApp
             Auction badAuction2 = new Auction() { EndDate = startDate, StartDate = endDate, StartValue = startValue };
             badAuction2.Product = goodProduct;
              
-            Auction goodAuction = new Auction() { EndDate = startDate, StartDate = endDate, StartValue = startValue };
+            Auction goodAuction = new Auction() { StartDate = startDate, EndDate = endDate, StartValue = startValue };
             goodAuction.Product = goodProduct;
             goodAuction.Currency = eurCurrency;
-
-            broker.RegisterAuction(goodPerson, badAuction);
+             
             broker.RegisterAuction(goodPerson, goodAuction);
 
             Bid bid = new Bid() { Auction = goodAuction, Date = DateTime.Now, Currency = goodAuction.Currency, Value = 124 };
-            broker.RegisterBid(goodPerson, bid, goodAuction);
+
+            try
+            {
+                broker.RegisterBid(goodPerson, bid, goodAuction);
+            } 
+            catch(Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
 
             System.Console.WriteLine("app ended!");
         }

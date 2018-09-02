@@ -74,7 +74,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// true if it succeeds
         /// </returns>
         /// <exception cref="System.Exception">Person is already registered!</exception>
-        public bool RegisterPerson(Person person)
+        public Person RegisterPerson(Person person)
         {
             PersonOfferor offeror;
             PersonBidder bidder;
@@ -96,27 +96,27 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                  
                 if (exists != null)
                 {
-                    person = exists; //// to update the id.
-                    return true; //// just login
+                    person = exists; //// to update the id. 
+                    return person;
                 }
             }
             catch (Exception e)
             {
                 Log.Info("RegisterPerson: " + e.Message);
-                return false;
+                throw e;
             }
 
             //// at this point person doesn't exist into db. 
 
-            //// the actual insert
-            personTable.InsertPerson(person);
-            person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
-             
-            offeror = new PersonOfferor() { Person = person };
-            bidder = new PersonBidder() { Person = person };
-
             try
-            {
+            { 
+                //// the actual insert
+                personTable.InsertPerson(person);
+                person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
+
+                offeror = new PersonOfferor() { Person = person };
+                bidder = new PersonBidder() { Person = person };
+
                 personOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
                 personBidderTable.InsertPersonBidder(person.IdPerson, bidder);
 
@@ -125,10 +125,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             catch (Exception e)
             {
                 Log.Info("RegisterPerson: failed to do roles for person.");
-                return false;
+                throw e;
             }
-             
-            return true;
+
+            return person;
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
             catch (Exception e)
             {
-                return false;
+                throw e;
             }
              
             List<Auction> offerorAuctions = auctionTable.FetchOfferorAuctions(offeror); 

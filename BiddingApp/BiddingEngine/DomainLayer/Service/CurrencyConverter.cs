@@ -98,20 +98,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// Gets the name of the currency by.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns>The found currency or null</returns>
+        /// <returns>
+        /// The found currency or null
+        /// </returns>
         public Currency GetCurrencyByName(string name)
         {
             string nameLower = name.ToLower();
 
-            foreach (Currency currency in this.AvailableCurrencies)
-            {
-                if (currency.Name.Equals(nameLower))
-                {
-                    return currency;
-                }
-            }
-
-            throw new Exception(name + " not found as currency!");
+            return CurrencyTable.FetchCurrencyByName(name); 
         }
 
         /// <summary>
