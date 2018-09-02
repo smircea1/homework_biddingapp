@@ -44,6 +44,16 @@ namespace BiddingApp.BiddingEngine.DomainData
         Auction FetchAuctionById(int id);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="IAuctionTable" /> interface.
+        /// </summary>
+        /// <param name="idOfferor">The identifier offeror.</param>
+        /// <param name="idProduct">The identifier product.</param>
+        /// <returns>
+        /// selected auction or null
+        /// </returns>
+        Auction FetchAuctionByIds(int idOfferor, int idProduct);
+
+        /// <summary>
         /// Fetches the offeror auctions.
         /// </summary>
         /// <param name="offeror">The offeror.</param>

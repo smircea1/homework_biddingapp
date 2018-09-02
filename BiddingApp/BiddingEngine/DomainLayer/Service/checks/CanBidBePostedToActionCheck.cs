@@ -32,27 +32,33 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// true if the bid can be posted to auction
         /// </returns>
         public static bool DoCheck(PersonBidder personBidder, Bid bid, Auction auction, Bid highest_bid)
-        {   
+        {    
             AuctionService auctionService = new AuctionService(auction);
 
-            // is active (started & not ended)? 
+            //// is active (started & not ended)? 
             if (!auctionService.IsActive)
             {
                 return false;
-            } 
+            }
+
+            //// they are in the same currency?
+            if (!bid.Currency.Equals(auction.Currency))
+            {
+                return false;
+            }
+
+            //// there is no bid & this bid value is bigger than auction start value.
+            if (highest_bid == null)
+            {
+                return bid.Value > auction.StartValue; 
+            }
 
             // bid his bid?
             if (highest_bid.PersonBidder.Id == bid.PersonBidder.Id)
             {
                 return false;
             }
-
-            // they are in the same currency?
-            if (!bid.Currency.Equals(auction.Currency))
-            {
-                return false;
-            }
-
+             
             double highest_value = highest_bid.Value;
             double incoming_value = bid.Value;
 

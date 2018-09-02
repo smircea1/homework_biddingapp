@@ -51,7 +51,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <value>
         /// The currencies rates.
         /// </value>
-        public Dictionary<Currency, double> CurrenciesRates { get; private set; }
+        public Dictionary<string, double> CurrenciesRates { get; private set; }
 
         /// <summary>
         /// Gets or sets the currency table.
@@ -72,8 +72,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             double result = 0;
             //// converts from X to USD then USD to Y
-            double usd_value = value * this.CurrenciesRates[fromCurrency];
-            result = usd_value * this.CurrenciesRates[toCurrency];
+            double usd_value = value * this.CurrenciesRates[fromCurrency.Name];
+            result = usd_value * this.CurrenciesRates[toCurrency.Name];
 
             return result;
         }
@@ -84,14 +84,17 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         public void UpdateRates()
         {
-            this.CurrenciesRates = new Dictionary<Currency, double>()
-            {
-                { new Currency() { Name = "usd" }, 1.0 },
-                { new Currency() { Name = "eur" }, 0.85 },
-                { new Currency() { Name = "ron" }, 0.25 },
-            };
+            this.AvailableCurrencies = new List<Currency>();
+            this.AvailableCurrencies.Add(new Currency() { Name = "usd" });
+            this.AvailableCurrencies.Add(new Currency() { Name = "eur" });
+            this.AvailableCurrencies.Add(new Currency() { Name = "ron" }); 
 
-            this.AvailableCurrencies = new List<Currency>(this.CurrenciesRates.Keys);
+            this.CurrenciesRates = new Dictionary<string, double>()
+            {
+                { "usd", 1.0 },
+                { "eur", 0.85 },
+                { "ron", 0.25 },
+            }; 
         }
 
         /// <summary>
@@ -105,7 +108,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             string nameLower = name.ToLower();
 
-            return CurrencyTable.FetchCurrencyByName(name); 
+            return this.CurrencyTable.FetchCurrencyByName(name); 
         }
 
         /// <summary>

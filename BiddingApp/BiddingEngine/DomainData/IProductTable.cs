@@ -22,8 +22,19 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Inserts the product.
         /// </summary>
+        /// <param name="idCategory">The identifier category.</param>
         /// <param name="product">The product.</param>
-        void InsertProduct(Product product);
+        void InsertProduct(int idCategory, Product product);
+
+        /// <summary>
+        /// Fetches the product by all attributes.
+        /// </summary>
+        /// <param name="idCategory">The identifier category.</param>
+        /// <param name="product">The product.</param>
+        /// <returns>
+        /// the product with ID
+        /// </returns>
+        Product FetchProductByAllAttributes(int idCategory, Product product);
 
         /// <summary>
         /// Fetches the product by identifier.
