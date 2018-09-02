@@ -22,8 +22,9 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Inserts the person bidder.
         /// </summary>
+        /// <param name="idPerson">The identifier person.</param>
         /// <param name="personOfferor">The person offeror.</param>
-        void InsertPersonOfferor(int IdPerson, PersonOfferor personOfferor);
+        void InsertPersonOfferor(int idPerson, PersonOfferor personOfferor);
 
         /// <summary>
         /// Updates the person offeror.
@@ -35,7 +36,18 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Fetches the person bidder by person.
         /// </summary>
         /// <param name="person">The person.</param>
-        /// <returns>the offeror role of the person</returns>
+        /// <returns>
+        /// the offeror role of the person
+        /// </returns>
         PersonOfferor FetchPersonOfferorByPerson(Person person);
+
+        /// <summary>
+        /// Fetches the person offeror by identifier.
+        /// </summary>
+        /// <param name="idOfferor">The identifier offeror.</param>
+        /// <returns>
+        /// the offeror role of the person
+        /// </returns>
+        PersonOfferor FetchPersonOfferorById(int idOfferor);
     }
 }

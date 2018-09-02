@@ -22,8 +22,11 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Inserts the auction.
         /// </summary>
+        /// <param name="idOfferor">The identifier offeror.</param>
+        /// <param name="idProduct">The identifier product.</param>
+        /// <param name="idCurrency">The identifier currency.</param>
         /// <param name="auction">The auction.</param>
-        void InsertAuction(Auction auction);
+        void InsertAuction(int idOfferor, int idProduct, int idCurrency, Auction auction);
 
         /// <summary>
         /// Updates the auction.
@@ -35,20 +38,26 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Fetches the auction by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>the selected auction or null</returns>
+        /// <returns>
+        /// the selected auction or null
+        /// </returns>
         Auction FetchAuctionById(int id);
 
         /// <summary>
         /// Fetches the offeror auctions.
         /// </summary>
         /// <param name="offeror">The offeror.</param>
-        /// <returns>offeror's auctions</returns>
+        /// <returns>
+        /// offeror's auctions
+        /// </returns>
         List<Auction> FetchOfferorAuctions(PersonOfferor offeror);
 
         /// <summary>
         /// Fetches all auctions.
         /// </summary>
-        /// <returns>all auctions existing.</returns>
+        /// <returns>
+        /// all auctions existing.
+        /// </returns>
         List<Auction> FetchAllAuctions();
 
         /// <summary>
@@ -56,7 +65,9 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="offerer">The offerer.</param>
         /// <param name="category">The category.</param>
-        /// <returns>returns all user's auction is specified category</returns>
+        /// <returns>
+        /// returns all user's auction is specified category
+        /// </returns>
         List<Auction> FetchOfferorAuctionsByCategory(PersonOfferor offerer, Category category);
     }
 }

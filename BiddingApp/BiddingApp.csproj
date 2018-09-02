@@ -132,6 +132,7 @@
     <Compile Include="BiddingEngine\DomainLayer\Model\Bid.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Category.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Currency.cs" />
+    <Compile Include="BiddingEngine\DomainLayer\Service\CategoriesUpdater.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\Checks\CanBidBePostedToActionCheck.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\Checks\CanOfferorEndAuctionCheck.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Service\Checks\CanAuctionBePostedCheck.cs" />
@@ -142,7 +143,9 @@
     </Compile>
     <Compile Include="BiddingEngine\DomainLayer\Model\Product.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\Utils\LevenshteinDistance.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Program.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

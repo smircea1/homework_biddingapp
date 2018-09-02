@@ -17,12 +17,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     /// <summary>
     /// Converts currencies
     /// </summary>
-    public class CurrencyConverter
+    internal class CurrencyConverter
     {
         /// <summary>
         /// The currency table
         /// </summary>
-        private static ICurrencyTable currencyTable;
+        private static ICurrencyTable currencyTable = DomainDataStorage.GetInstance().CurrencyTable;
 
         /// <summary>
         /// The converter
@@ -33,8 +33,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// Prevents a default instance of the <see cref="CurrencyConverter"/> class from being created.
         /// </summary>
         private CurrencyConverter()
-        {
-            currencyTable = DomainDataStorage.GetInstance().CurrencyTable;
+        { 
             this.UpdateRates();
             this.UpdateDbCurrencies();
         }

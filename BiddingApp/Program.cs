@@ -44,7 +44,31 @@ namespace BiddingApp
 
             double rons = 54;
             double eurs = converter.DoExchange(ronCurrency, eurCurrency, rons);
+
+            Product badProduct = new Product() { Name = null };
+            Product goodProduct = new Product() { Name = "Mouse" , Description = "Logitech"};
+
+            goodProduct.Category = broker.GetCategoryByName("PC Periferics");
+
+
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = DateTime.Now.AddSeconds(10);
+
+            double startValue = 123.3;
+
+            Auction badAuction = new Auction() { EndDate = endDate, StartDate = startDate, StartValue = startValue}; 
+            badAuction.Product = badProduct;
+
+            Auction badAuction2 = new Auction() { EndDate = startDate, StartDate = endDate, StartValue = startValue };
+            badAuction2.Product = goodProduct;
              
+            Auction goodAuction = new Auction() { EndDate = startDate, StartDate = endDate, StartValue = startValue };
+            goodAuction.Product = goodProduct;
+            goodAuction.Currency = eurCurrency;
+
+            broker.RegisterAuction(goodPerson, goodAuction);
+
+
             System.Console.WriteLine("app ended!");
         }
     }

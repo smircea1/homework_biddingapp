@@ -22,14 +22,17 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Inserts the person bidder.
         /// </summary>
+        /// <param name="idPerson">The identifier person.</param>
         /// <param name="personBidder">The person bidder.</param>
-        void InsertPersonBidder(int IdPerson, PersonBidder personBidder);
+        void InsertPersonBidder(int idPerson, PersonBidder personBidder);
 
         /// <summary>
         /// Fetches the person bidder by person.
         /// </summary>
         /// <param name="person">The person.</param>
-        /// <returns>the bidder found</returns>
+        /// <returns>
+        /// the bidder found
+        /// </returns>
         PersonBidder FetchPersonBidderByPerson(Person person);
     }
 }

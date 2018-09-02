@@ -28,11 +28,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public int IdCategory { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier parent category.
+        /// </summary>
+        /// <value>
+        /// The identifier parent category.
+        /// </value>
+        public int IdParent { get; set; }
+
+        /// <summary>
         /// Gets or sets the name.
         /// </summary>
         /// <value>
         /// The name.
         /// </value> 
-        public string Name { get; set; }
+        public string Name { get; set; } 
     }
 }

@@ -26,16 +26,29 @@ namespace BiddingApp.BiddingEngine.DomainData
         void InsertCategory(Category category);
 
         /// <summary>
+        /// Fetches the name of the category by.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The category
+        /// </returns>
+        Category FetchCategoryByName(string name);
+
+        /// <summary>
         /// Fetches all categories.
         /// </summary>
-        /// <returns>All available categories</returns>
+        /// <returns>
+        /// All available categories
+        /// </returns>
         List<Category> FetchAllCategories();
 
         /// <summary>
         /// Fetches the sub categories.
         /// </summary>
         /// <param name="category">The category.</param>
-        /// <returns>Category's subcategories.</returns>
+        /// <returns>
+        /// Category's subcategories.
+        /// </returns>
         List<Category> FetchSubCategories(Category category);
     }
 }
