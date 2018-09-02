@@ -25,11 +25,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// The instance
-        /// </summary>
-        private static BiddingBroker instance = null; 
-
-        /// <summary>
         /// The auctions
         /// </summary>
         private List<Auction> auctions = new List<Auction>();
@@ -55,11 +50,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         private List<Currency> availableCurrencies;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="BiddingBroker"/> class from being created.
+        /// Initializes a new instance of the <see cref="BiddingBroker"/> class.
         /// </summary>
+        /// <param name="tablesProvider">The tables provider.</param>
         public BiddingBroker(ITablesProvider tablesProvider)
         {
-            auctions = new List<Auction>();
+            this.auctions = new List<Auction>();
 
             this.currencyConverter = new CurrencyConverter(tablesProvider);
 
@@ -68,7 +64,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             this.UpdateCategories();
             this.UpdateCurrencies();
             this.LoadAuctions();
-        } 
+        }
 
         /// <summary>
         /// Registers the person.
@@ -78,14 +74,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// true if it succeeds
         /// </returns>
         /// <exception cref="System.Exception">Person is already registered!</exception>
-        public bool RegisterPerson(Person person)
+        public Person RegisterPerson(Person person)
         {
             PersonOfferor offeror;
             PersonBidder bidder;
 
-            IPersonTable personTable = tablesProvider.GetPersonTable();
-            IPersonBidderTable personBidderTable = tablesProvider.GetPersonBidderTable();
-            IPersonOfferorTable personOfferorTable = tablesProvider.GetPersonOfferorTable();
+            IPersonTable personTable = this.tablesProvider.GetPersonTable();
+            IPersonBidderTable personBidderTable = this.tablesProvider.GetPersonBidderTable();
+            IPersonOfferorTable personOfferorTable = this.tablesProvider.GetPersonOfferorTable();
 
             try
             { 
@@ -100,27 +96,27 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                  
                 if (exists != null)
                 {
-                    person = exists; //// to update the id.
-                    return true; //// just login
+                    person = exists; //// to update the id. 
+                    return person;
                 }
             }
             catch (Exception e)
             {
                 Log.Info("RegisterPerson: " + e.Message);
-                return false;
+                throw e;
             }
 
             //// at this point person doesn't exist into db. 
 
-            //// the actual insert
-            personTable.InsertPerson(person);
-            person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
-             
-            offeror = new PersonOfferor() { Person = person };
-            bidder = new PersonBidder() { Person = person };
-
             try
-            {
+            { 
+                //// the actual insert
+                personTable.InsertPerson(person);
+                person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
+
+                offeror = new PersonOfferor() { Person = person };
+                bidder = new PersonBidder() { Person = person };
+
                 personOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
                 personBidderTable.InsertPersonBidder(person.IdPerson, bidder);
 
@@ -129,10 +125,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             catch (Exception e)
             {
                 Log.Info("RegisterPerson: failed to do roles for person.");
-                return false;
+                throw e;
             }
-             
-            return true;
+
+            return person;
         }
 
         /// <summary>
@@ -146,9 +142,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <exception cref="System.Exception">Person is not registered!</exception>
         public bool RegisterAuction(Person person, Auction auction)
         {
-            IPersonOfferorTable personOfferorTable = tablesProvider.GetPersonOfferorTable();
-            IProductTable productTable = tablesProvider.GetProductTable();
-            IAuctionTable auctionTable = tablesProvider.GetAuctionTable();
+            IPersonOfferorTable personOfferorTable = this.tablesProvider.GetPersonOfferorTable();
+            IProductTable productTable = this.tablesProvider.GetProductTable();
+            IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
 
             PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(person);
              
@@ -170,7 +166,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
             catch (Exception e)
             {
-                return false;
+                throw e;
             }
              
             List<Auction> offerorAuctions = auctionTable.FetchOfferorAuctions(offeror); 
@@ -200,23 +196,30 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// Registers the bid.
         /// </summary>
+        /// <param name="person">The person.</param>
         /// <param name="bid">The bid.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>
-        /// false if the bid registration had failed.
-        /// </returns>
-        public void RegisterBid(Bid bid, Auction auction)
-        { 
+        /// <exception cref="System.Exception">INVALID BID!</exception>
+        public void RegisterBid(Person person, Bid bid, Auction auction)
+        {
+            IPersonBidderTable personBidderTable = this.tablesProvider.GetPersonBidderTable();
+            IBidTable bidTable = this.tablesProvider.GetBidTable();
+
             try
             {
-                IBidTable bidTable = tablesProvider.GetBidTable();
+                PersonBidder personBidder = personBidderTable.FetchPersonBidderByPerson(person);
+
+                bid.PersonBidder = personBidder;
+
                 Bid highest_bid = this.GetHighestBid(auction);
-                bool isOkToPostBid = CanBidBePostedToActionCheck.DoCheck(bid, auction, highest_bid);
+
+                bool isOkToPostBid = CanBidBePostedToActionCheck.DoCheck(personBidder, bid, auction, highest_bid);
                 if (!isOkToPostBid)
                 {
                     throw new Exception("INVALID BID!");
                 }
-                bidTable.Insert(bid);
+
+                bidTable.InsertBid(personBidder.Id, auction.IdAuction, auction.Currency.IdCurrency, bid);
             }
             catch (Exception e)
             {
@@ -230,7 +233,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>All available categories.</returns>
         public List<Category> GetAvailableCategories()
         {
-            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+            ICategoryTable categoryTable = this.tablesProvider.GetCategoryTable();
             List<Category> categories = categoryTable.FetchAllCategories(); 
             return categories;
         }
@@ -263,7 +266,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <exception cref="System.Exception">Currency not found!</exception>
         public Currency GetCurrencyByName(string name)
         { 
-            foreach(Currency currency in availableCurrencies)
+            foreach (Currency currency in this.availableCurrencies)
             {
                 if (currency.Name.Equals(name))
                 {
@@ -277,7 +280,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// Gets the currency converter.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>This currency converter</returns>
         public CurrencyConverter GetCurrencyConverter()
         {
             return this.currencyConverter;
@@ -290,7 +293,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <param name="auction">The auction.</param>
         public void EndAuction(PersonOfferor offeror, Auction auction)
         {
-            IAuctionTable auctionTable = tablesProvider.GetAuctionTable();
+            IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
             try
             {
                 AuctionService auctionService = new AuctionService(auction);
@@ -310,7 +313,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private void LoadAuctions()
         {
-            IAuctionTable auctionTable = tablesProvider.GetAuctionTable();
+            IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
             try
             {
                 List<Auction> auctions = auctionTable.FetchAllAuctions();
@@ -331,9 +334,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         private void UpdateCategories()
         {
             try
-            {
-                CategoriesUpdater.tablesProvider = tablesProvider;
-                CategoriesUpdater.UpdateCategories();
+            { 
+                CategoriesUpdater.UpdateCategories(this.tablesProvider);
                 this.availableCategories = CategoriesUpdater.GetAllAvailableCategories();
             } 
             catch (Exception e)
@@ -347,7 +349,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private void UpdateCurrencies()
         {
-            this.availableCurrencies = currencyConverter.AvailableCurrencies;
+            this.availableCurrencies = this.currencyConverter.AvailableCurrencies;
         }
 
         /// <summary>
@@ -359,7 +361,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </returns>
         private Bid GetHighestBid(Auction auction)
         {
-            IBidTable bidTable = tablesProvider.GetBidTable();
+            IBidTable bidTable = this.tablesProvider.GetBidTable();
             try
             {
                 return bidTable.FetchAuctionHighestBid(auction);

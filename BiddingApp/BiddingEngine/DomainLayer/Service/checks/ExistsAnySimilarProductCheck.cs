@@ -25,7 +25,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// Does the check.
         /// </summary>
         /// <param name="product">The product.</param>
-        /// <returns>true if any similar product is found.</returns>
+        /// <param name="existingProducts">The existing products.</param>
+        /// <returns>
+        /// true if any similar product is found.
+        /// </returns>
         public static bool DoCheck(Product product, List<Product> existingProducts)
         {  
             ProductService productService = new ProductService(product);

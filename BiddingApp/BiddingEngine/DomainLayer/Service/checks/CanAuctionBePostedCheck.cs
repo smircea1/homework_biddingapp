@@ -26,7 +26,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// </summary>
         /// <param name="personOfferor">The person offeror.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>true if the auction can be posted.</returns>
+        /// <param name="offerorAuctions">The offeror auctions.</param>
+        /// <param name="allProducts">All products.</param>
+        /// <returns>
+        /// true if the auction can be posted.
+        /// </returns>
         public static bool DoCheck(PersonOfferor personOfferor, Auction auction, List<Auction> offerorAuctions, List<Product> allProducts)
         {  
             PersonOfferorService offerorService = new PersonOfferorService(personOfferor);
@@ -46,7 +50,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
 
             //// can't have more than this in specified category.
             List<Auction> offerorCategoryAuctions = new List<Auction>();
-            foreach(Auction listed_auction in offerorAuctions)
+            foreach (Auction listed_auction in offerorAuctions)
             {
                 if (listed_auction.Product.Category.Name.Equals(auction.Product.Category.Name))
                 {

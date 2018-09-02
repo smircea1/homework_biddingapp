@@ -32,6 +32,23 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The name.
         /// </value> 
-        public string Name { get; set; } 
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if(!(obj is  Currency))
+            {
+                return false;
+            }
+
+            return ((Currency)obj).Name.Equals(this.Name); 
+        }
     }
 }

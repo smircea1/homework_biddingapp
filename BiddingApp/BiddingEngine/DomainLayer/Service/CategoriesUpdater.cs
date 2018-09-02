@@ -26,7 +26,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// </summary>
         private static DomainDataStorage domainDataStorage = DomainDataStorage.GetInstance();
 
-        public static ITablesProvider tablesProvider { internal get; set; }
+        /// <summary>
+        /// Gets or sets the tables provider.
+        /// </summary>
+        /// <value>
+        /// The tables provider.
+        /// </value>
+        public static ITablesProvider TablesProvider { internal get; set; }
 
         /// <summary>
         /// Gets all available categories.
@@ -34,14 +40,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <returns>returns all available categories</returns>
         public static List<Category> GetAllAvailableCategories()
         {
-            return tablesProvider.GetCategoryTable().FetchAllCategories();
+            return TablesProvider.GetCategoryTable().FetchAllCategories();
         }
 
         /// <summary>
         /// Updates the categories.
         /// </summary>
-        public static void UpdateCategories()
+        /// <param name="tablesProvider">The tables provider.</param>
+        public static void UpdateCategories(ITablesProvider tablesProvider)
         {
+            TablesProvider = tablesProvider;
             try
             {
                 UpdateElectronics();
@@ -61,7 +69,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         {
             List<Category> electronicCategories = new List<Category>();
 
-            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+            ICategoryTable categoryTable = TablesProvider.GetCategoryTable();
 
             Category electronics = new Category { Name = "Electronics" };
             //// ELECTRONICS
@@ -95,7 +103,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         {
             List<Category> homeCategories = new List<Category>();
 
-            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+            ICategoryTable categoryTable = TablesProvider.GetCategoryTable();
 
             Category home = new Category { Name = "Home" };
             //// HOME
@@ -127,7 +135,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <param name="list">The list.</param>
         private static void InsertCategoryList(List<Category> list)
         {
-            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+            ICategoryTable categoryTable = TablesProvider.GetCategoryTable();
 
             foreach (Category category in list)
             {

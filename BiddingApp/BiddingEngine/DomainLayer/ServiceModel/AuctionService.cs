@@ -46,10 +46,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             try
             {
                 auction.ValidateObject(); 
-            } catch (Exception e)
+            } 
+            catch (Exception e)
             {
                 throw e;
             }
+
             this.Auction = auction;
             this.UpdateStatus();
         }
@@ -90,7 +92,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// Ends the auction.
         /// </summary>
         /// <param name="offeror">The offeror.</param>
-        /// <returns>true if the auction had ended.</returns>
         public void EndAuction(PersonOfferor offeror)
         {
             try
@@ -101,6 +102,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             {
                 throw e;
             }
+
             this.Auction.EndDate = DateTime.Now;  
 
             this.UpdateStatus(); 
