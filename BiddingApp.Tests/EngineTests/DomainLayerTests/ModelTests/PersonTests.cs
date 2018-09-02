@@ -10,7 +10,6 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 {
     public class PersonTests
     {
-        // TODO: check this
         [Fact]
         public void CreatePerson_ShouldInstantiatePerson()
         {

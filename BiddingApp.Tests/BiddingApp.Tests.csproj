@@ -85,6 +85,7 @@
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonOfferorTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\PersonTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\ProductsTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceModelTests\UtilsTests\LevenshteinDistanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
