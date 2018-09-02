@@ -63,14 +63,14 @@ namespace BiddingApp
             Auction goodAuction = new Auction() { StartDate = startDate, EndDate = endDate, StartValue = startValue };
             goodAuction.Product = goodProduct;
             goodAuction.Currency = eurCurrency;
-             
-            broker.RegisterAuction(goodPerson, goodAuction);
+
+            Auction registeredAuction = broker.RegisterAuction(goodPerson, goodAuction);
 
             Bid bid = new Bid() { Auction = goodAuction, Date = DateTime.Now, Currency = goodAuction.Currency, Value = 124 };
 
             try
             {
-                broker.RegisterBid(goodPerson, bid, goodAuction);
+                broker.RegisterBid(goodPerson, bid, registeredAuction);
             } 
             catch(Exception e)
             {

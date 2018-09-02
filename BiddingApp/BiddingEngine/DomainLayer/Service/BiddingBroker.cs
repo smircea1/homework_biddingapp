@@ -140,7 +140,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// False if the register auction has failed.
         /// </returns>
         /// <exception cref="System.Exception">Person is not registered!</exception>
-        public bool RegisterAuction(Person person, Auction auction)
+        public Auction RegisterAuction(Person person, Auction auction)
         {
             IPersonOfferorTable personOfferorTable = this.tablesProvider.GetPersonOfferorTable();
             IProductTable productTable = this.tablesProvider.GetProductTable();
@@ -153,6 +153,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 auction.PersonOfferor = offeror ?? throw new Exception("BAD OFFEROR");
 
                 auction.ValidateObject();
+
+                auction.Currency.ValidateObject();
+                auction.Product.ValidateObject();
 
                 if (auction.IdAuction != 0)
                 {
@@ -176,21 +179,30 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
             if (!canPost)
             {
-                return false;
+                throw new Exception("CanAuctionBePostedCheck failed!");
             }
 
             Currency currency = auction.Currency;
+            Category productCategory = auction.Product.Category;
+             
+            productTable.InsertProduct(productCategory.IdCategory, auction.Product); 
 
-            productTable.InsertProduct(auction.Product);
-            Product selectedProduct = null;
+            Product selectedProduct = productTable.FetchProductByAllAttributes(productCategory.IdCategory, auction.Product);
+            selectedProduct.Category = productCategory;
 
             auctionTable.InsertAuction(offeror.IdOfferor, selectedProduct.IdProduct, currency.IdCurrency, auction);
+
+            auction = auctionTable.FetchAuctionByIds(offeror.IdOfferor, selectedProduct.IdProduct);
+            auction.PersonOfferor = offeror;
+            auction.Product = selectedProduct;
+            auction.Currency = currency;
+
             this.auctions.Add(auction);
 
             AuctionService auctionService = new AuctionService(auction);
             auctionService.StartTimers();
 
-            return true;
+            return auction;
         }
 
         /// <summary>

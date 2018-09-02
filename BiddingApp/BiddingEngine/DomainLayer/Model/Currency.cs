@@ -43,7 +43,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// </returns>
         public override bool Equals(object obj)
         {
-            if(!(obj is  Currency))
+            if (!(obj is Currency))
             {
                 return false;
             }

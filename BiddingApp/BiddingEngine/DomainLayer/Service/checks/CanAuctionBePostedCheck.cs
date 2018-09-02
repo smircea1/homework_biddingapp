@@ -64,14 +64,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
                 return false;
             }
 
-            AuctionService auctionService = new AuctionService(auction);
-
-            //// already exists in db
-            bool alreadyExists = auctionService.Auction != null;
-            if (alreadyExists)
-            {
-                return false;
-            }
+            AuctionService auctionService = new AuctionService(auction); 
 
             //// if it's older
             if (DateTime.Now.CompareTo(auction.StartDate) > 0)
