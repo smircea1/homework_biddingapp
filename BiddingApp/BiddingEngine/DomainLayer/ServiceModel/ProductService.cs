@@ -77,7 +77,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>returns the string lowered without exception chars.</returns>
-        private static string PrepareDescriptionForLevenstein(string input)
+        public static string PrepareDescriptionForLevenstein(string input)
         {
             string result = input;
 
@@ -94,7 +94,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <param name="source">The source.</param>
         /// <param name="oldChar">The old character.</param>
         /// <returns>returns the string without the specified chars.</returns>
-        private static string RemoveCharsFromString(string source, char[] oldChar)
+        public static string RemoveCharsFromString(string source, char[] oldChar)
         {
             return string.Join(string.Empty, source.ToCharArray().Where(a => !oldChar.Contains(a)).ToArray());
         }
