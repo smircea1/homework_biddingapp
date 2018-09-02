@@ -26,7 +26,7 @@ namespace BiddingApp
         /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
         {
-            BiddingBroker broker = BiddingBroker.GetInstance();
+            BiddingBroker broker = new BiddingBroker(DomainDataStorage.GetInstance());
             Person badPerson = new Person() { Name = null };
             Person badPerson2 = new Person() { Name = null, Phone = "07299544321" };
             Person badPerson3 = new Person() { Name = "gigica", Phone = null };
@@ -38,7 +38,7 @@ namespace BiddingApp
 
             broker.RegisterPerson(goodPerson);
 
-            CurrencyConverter converter = CurrencyConverter.GetInstance();
+            CurrencyConverter converter = broker.GetCurrencyConverter();
             Currency ronCurrency = converter.GetCurrencyByName("ron");
             Currency eurCurrency = converter.GetCurrencyByName("eur");
 
@@ -66,8 +66,11 @@ namespace BiddingApp
             goodAuction.Product = goodProduct;
             goodAuction.Currency = eurCurrency;
 
+            broker.RegisterAuction(goodPerson, badAuction);
             broker.RegisterAuction(goodPerson, goodAuction);
 
+
+            
 
             System.Console.WriteLine("app ended!");
         }

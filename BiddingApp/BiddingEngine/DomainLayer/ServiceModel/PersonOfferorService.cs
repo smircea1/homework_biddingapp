@@ -82,50 +82,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <value>
         /// The rating.
         /// </value>
-        public double Rating { get; internal set; }
-
-        /// <summary>
-        /// Counts the active auctions in category.
-        /// </summary>
-        /// <param name="categorySeachingFor">The category seaching for.</param>
-        /// <returns>The number of the in progress auctions in category.</returns>
-        public int CountActiveAuctionsInCategory(Category categorySeachingFor)
-        {
-            List<Auction> offerorAuctions = DomainDataStorage.GetInstance().AuctionTable.FetchOfferorAuctionsByCategory(this.Offeror, categorySeachingFor);
-            int counted = 0;
-
-            foreach (Auction auction in offerorAuctions)
-            {
-                AuctionService auctionService = new AuctionService(auction);
-                if (!auctionService.HadEnded && auctionService.HadStarted)
-                {
-                    counted++;
-                }
-            }
-
-            return counted;
-        }
-
-        /// <summary>
-        /// Counts all active auctions.
-        /// </summary>
-        /// <returns>count of active auctions.</returns>
-        public int CountAllActiveAuctions()
-        {
-            List<Auction> offerorAuctions = DomainDataStorage.GetInstance().AuctionTable.FetchOfferorAuctions(this.Offeror);
-            int counted = 0;
-
-            foreach (Auction auction in offerorAuctions)
-            {
-                AuctionService auctionService = new AuctionService(auction);
-                if (!auctionService.HadEnded && auctionService.HadStarted)
-                {
-                    counted++;
-                }
-            }
-
-            return counted;
-        }
+        public double Rating { get; internal set; } 
 
         /// <summary>
         /// Dids the person hit maximum category list limit.
@@ -135,11 +92,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <returns>
         /// true if he did, false either
         /// </returns>
-        public bool DidPersonHitMaxCategoryListLimit(PersonOfferor offeror, Category category)
+        public bool DidPersonHitMaxCategoryListLimit(PersonOfferor offeror, Category category, List<Auction> auctions)
         { 
             PersonOfferorService personOfferorService = new PersonOfferorService(offeror);
 
-            int counted = personOfferorService.CountActiveAuctionsInCategory(category);
+            int counted = personOfferorService.CountActiveAuctionsInCategory(category, auctions);
 
             int max_in_category = maxInProgressByCategory;
 
@@ -153,11 +110,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <returns>
         /// true if he did, false either
         /// </returns>
-        public bool DidPersonHitMaxListLimit(PersonOfferor offeror)
+        public bool DidPersonHitMaxListLimit(PersonOfferor offeror, List<Auction> auctions)
         { 
             PersonOfferorService personOfferorService = new PersonOfferorService(offeror);
 
-            int counted = personOfferorService.CountAllActiveAuctions();
+            int counted = personOfferorService.CountAllActiveAuctions(auctions);
 
             int max_in_progress = maxInProgress;
 
@@ -167,11 +124,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Updates the rating.
         /// </summary>
-        private void UpdateRating()
+        private void UpdateRatingBasedOnMarks(List<PersonOfferorMark> personMarks)
         {
-            IPersonMarkTable personMarkTable = DomainDataStorage.GetInstance().PersonMarkTable;
+            ////IPersonMarkTable personMarkTable = DomainDataStorage.GetInstance().PersonMarkTable;
 
-            List<PersonOfferorMark> personMarks = personMarkTable.FetchPersonOfferorMarks(this.Offeror);
+            ////List<PersonOfferorMark> personMarks = personMarkTable.FetchPersonOfferorMarks(this.Offeror);
 
             int totalScore = 0;
             int countedMarks = Math.Min(personMarks.Count, reviewsCountedForRating);
@@ -194,29 +151,71 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Does the ban if needed.
         /// </summary>
-        private void DoBanIfNeeded()
+        ////private void DoBanIfNeeded()
+        ////{
+        ////    TimeSpan untilEnd = this.Offeror.LastBannedDate.TimeOfDay - DateTime.Now.TimeOfDay;
+
+        ////    int alreadyBannedDays = untilEnd.Days;
+
+        ////    bool isAlreadyBanned = bannedDaysForBadRating > alreadyBannedDays;
+
+        ////    if (isAlreadyBanned)
+        ////    {
+        ////        return;
+        ////    }
+
+        ////    ////this. ;
+
+        ////    bool shouldBan = this.Rating < minRatingAllowedForBidding;
+
+        ////    if (shouldBan && !isAlreadyBanned)
+        ////    {
+        ////        this.IsBanned = true;
+        ////        this.Offeror.LastBannedDate = DateTime.Now;
+        ////        DomainDataStorage.GetInstance().PersonOfferorTable.UpdatePersonOfferor(this.Offeror);
+        ////    }
+        ////}
+
+        /// <summary>
+        /// Counts the active auctions in category.
+        /// </summary>
+        /// <param name="categorySeachingFor">The category seaching for.</param>
+        /// <returns>The number of the in progress auctions in category.</returns>
+        private int CountActiveAuctionsInCategory(Category categorySeachingFor, List<Auction> offerorAuctions)
+        { 
+            int counted = 0;
+
+            foreach (Auction auction in offerorAuctions)
+            {
+                AuctionService auctionService = new AuctionService(auction);
+                if (!auctionService.HadEnded && auctionService.HadStarted)
+                {
+                    counted++;
+                }
+            }
+
+            return counted;
+        }
+
+        /// <summary>
+        /// Counts all active auctions.
+        /// </summary>
+        /// <returns>count of active auctions.</returns>
+        private int CountAllActiveAuctions(List<Auction> offerorAuctions)
         {
-            TimeSpan untilEnd = this.Offeror.LastBannedDate.TimeOfDay - DateTime.Now.TimeOfDay;
+            ////List<Auction> offerorAuctions = DomainDataStorage.GetInstance().AuctionTable.FetchOfferorAuctions(this.Offeror);
+            int counted = 0;
 
-            int alreadyBannedDays = untilEnd.Days;
-
-            bool isAlreadyBanned = bannedDaysForBadRating > alreadyBannedDays;
-
-            if (isAlreadyBanned)
+            foreach (Auction auction in offerorAuctions)
             {
-                return;
+                AuctionService auctionService = new AuctionService(auction);
+                if (!auctionService.HadEnded && auctionService.HadStarted)
+                {
+                    counted++;
+                }
             }
 
-            ////this. ;
-
-            bool shouldBan = this.Rating < minRatingAllowedForBidding;
-
-            if (shouldBan && !isAlreadyBanned)
-            {
-                this.IsBanned = true;
-                this.Offeror.LastBannedDate = DateTime.Now;
-                DomainDataStorage.GetInstance().PersonOfferorTable.UpdatePersonOfferor(this.Offeror);
-            }
+            return counted;
         }
     }
 }

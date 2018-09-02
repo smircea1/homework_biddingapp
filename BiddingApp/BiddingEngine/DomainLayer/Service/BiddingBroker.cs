@@ -27,17 +27,22 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// The instance
         /// </summary>
-        private static BiddingBroker instance = null;
-
-        /// <summary>
-        /// The domain data storage
-        /// </summary>
-        private static DomainDataStorage domainDataStorage = DomainDataStorage.GetInstance();
+        private static BiddingBroker instance = null; 
 
         /// <summary>
         /// The auctions
         /// </summary>
-        private readonly List<Auction> auctions = new List<Auction>();
+        private List<Auction> auctions = new List<Auction>();
+
+        /// <summary>
+        /// The tables provider
+        /// </summary>
+        private ITablesProvider tablesProvider;
+
+        /// <summary>
+        /// The currency converter
+        /// </summary>
+        private CurrencyConverter currencyConverter;
 
         /// <summary>
         /// The available categories
@@ -52,26 +57,18 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// Prevents a default instance of the <see cref="BiddingBroker"/> class from being created.
         /// </summary>
-        private BiddingBroker()
+        public BiddingBroker(ITablesProvider tablesProvider)
         {
+            auctions = new List<Auction>();
+
+            this.currencyConverter = new CurrencyConverter(tablesProvider);
+
+            this.tablesProvider = tablesProvider;
+
             this.UpdateCategories();
             this.UpdateCurrencies();
             this.LoadAuctions();
-        }
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <returns>this instance.</returns>
-        public static BiddingBroker GetInstance()
-        {
-            if (BiddingBroker.instance == null)
-            {
-                BiddingBroker.instance = new BiddingBroker();
-            }
-
-            return BiddingBroker.instance;
-        }
+        } 
 
         /// <summary>
         /// Registers the person.
@@ -85,6 +82,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             PersonOfferor offeror;
             PersonBidder bidder;
+
+            IPersonTable personTable = tablesProvider.GetPersonTable();
+            IPersonBidderTable personBidderTable = tablesProvider.GetPersonBidderTable();
+            IPersonOfferorTable personOfferorTable = tablesProvider.GetPersonOfferorTable();
+
             try
             { 
                 if (person.IdPerson != 0)
@@ -94,7 +96,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
                 person.ValidateObject();
 
-                Person exists = domainDataStorage.PersonTable.FetchPersonByPhone(person.Phone);
+                Person exists = personTable.FetchPersonByPhone(person.Phone);
                  
                 if (exists != null)
                 {
@@ -111,16 +113,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             //// at this point person doesn't exist into db. 
 
             //// the actual insert
-            domainDataStorage.PersonTable.InsertPerson(person);
-            person = domainDataStorage.PersonTable.FetchPersonByPhone(person.Phone); //// in order to update Id
+            personTable.InsertPerson(person);
+            person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
              
             offeror = new PersonOfferor() { Person = person };
             bidder = new PersonBidder() { Person = person };
 
             try
             {
-                domainDataStorage.PersonOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
-                domainDataStorage.PersonBidderTable.InsertPersonBidder(person.IdPerson, bidder);
+                personOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
+                personBidderTable.InsertPersonBidder(person.IdPerson, bidder);
 
                 Log.Info("RegisterPerson: " + person.Name + " person id =" + person.IdPerson + " inserted with success.");
             }
@@ -144,7 +146,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <exception cref="System.Exception">Person is not registered!</exception>
         public bool RegisterAuction(Person person, Auction auction)
         {
-            PersonOfferor offeror = domainDataStorage.PersonOfferorTable.FetchPersonOfferorByPerson(person);
+            IPersonOfferorTable personOfferorTable = tablesProvider.GetPersonOfferorTable();
+            IProductTable productTable = tablesProvider.GetProductTable();
+            IAuctionTable auctionTable = tablesProvider.GetAuctionTable();
+
+            PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(person);
              
             try
             {
@@ -165,9 +171,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             catch (Exception e)
             {
                 return false;
-            } 
+            }
+             
+            List<Auction> offerorAuctions = auctionTable.FetchOfferorAuctions(offeror); 
+            List<Product> existingProducts = productTable.FetchAllProducts();
 
-            bool canPost = CanAuctionBePostedCheck.DoCheck(offeror, auction);
+            bool canPost = CanAuctionBePostedCheck.DoCheck(offeror, auction, offerorAuctions, existingProducts);
 
             if (!canPost)
             {
@@ -175,11 +184,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
 
             Currency currency = auction.Currency;
-             
-            domainDataStorage.ProductTable.InsertProduct(auction.Product);
+
+            productTable.InsertProduct(auction.Product);
             Product selectedProduct = null;
 
-            domainDataStorage.AuctionTable.InsertAuction(offeror.IdOfferor, selectedProduct.IdProduct, currency.IdCurrency, auction);
+            auctionTable.InsertAuction(offeror.IdOfferor, selectedProduct.IdProduct, currency.IdCurrency, auction);
             this.auctions.Add(auction);
 
             AuctionService auctionService = new AuctionService(auction);
@@ -196,21 +205,23 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>
         /// false if the bid registration had failed.
         /// </returns>
-        public bool RegisterBid(Bid bid, Auction auction)
-        {
-            bool isOkToPostBid = CanBidBePostedToActionCheck.DoCheck(bid, auction);
-
-            if (!isOkToPostBid)
+        public void RegisterBid(Bid bid, Auction auction)
+        { 
+            try
             {
-                //// throw
-                return false;
+                IBidTable bidTable = tablesProvider.GetBidTable();
+                Bid highest_bid = this.GetHighestBid(auction);
+                bool isOkToPostBid = CanBidBePostedToActionCheck.DoCheck(bid, auction, highest_bid);
+                if (!isOkToPostBid)
+                {
+                    throw new Exception("INVALID BID!");
+                }
+                bidTable.Insert(bid);
             }
-
-            domainDataStorage.BidTable.Insert(bid);
-
-            //// MAYBE NOTICE CURRENT BIDDER HAS CHANGED
-
-            return true;
+            catch (Exception e)
+            {
+                throw e;
+            } 
         }
 
         /// <summary>
@@ -219,7 +230,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <returns>All available categories.</returns>
         public List<Category> GetAvailableCategories()
         {
-            List<Category> categories = domainDataStorage.CategoryTable.FetchAllCategories(); 
+            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+            List<Category> categories = categoryTable.FetchAllCategories(); 
             return categories;
         }
 
@@ -245,10 +257,30 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// Gets the name of the currency by.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns>the currency found or null</returns>
+        /// <returns>
+        /// the currency found or null
+        /// </returns>
+        /// <exception cref="System.Exception">Currency not found!</exception>
         public Currency GetCurrencyByName(string name)
         { 
-            return null;
+            foreach(Currency currency in availableCurrencies)
+            {
+                if (currency.Name.Equals(name))
+                {
+                    return currency;
+                }
+            }
+
+            throw new Exception("Currency not found!");
+        }
+
+        /// <summary>
+        /// Gets the currency converter.
+        /// </summary>
+        /// <returns></returns>
+        public CurrencyConverter GetCurrencyConverter()
+        {
+            return this.currencyConverter;
         }
 
         /// <summary>
@@ -256,13 +288,21 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         /// <param name="offeror">The offeror.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>
-        /// False if the end auction had failed.
-        /// </returns>
-        public bool EndAuction(PersonOfferor offeror, Auction auction)
+        public void EndAuction(PersonOfferor offeror, Auction auction)
         {
-            AuctionService auctionService = new AuctionService(auction);
-            return auctionService.EndAuction(offeror);
+            IAuctionTable auctionTable = tablesProvider.GetAuctionTable();
+            try
+            {
+                AuctionService auctionService = new AuctionService(auction);
+
+                auctionService.EndAuction(offeror);
+
+                auctionTable.UpdateAuction(auctionService.Auction); 
+            }
+            catch (Exception e)
+            {
+                throw e;
+            } 
         }
 
         /// <summary>
@@ -270,9 +310,21 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private void LoadAuctions()
         {
-            List<Auction> auctions = domainDataStorage.AuctionTable.FetchAllAuctions();
+            IAuctionTable auctionTable = tablesProvider.GetAuctionTable();
+            try
+            {
+                List<Auction> auctions = auctionTable.FetchAllAuctions();
+                if (auctions != null)
+                {
+                    this.auctions = auctions;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Info(e);
+            }
         }
-         
+
         /// <summary>
         /// Updates the categories.
         /// </summary>
@@ -280,14 +332,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             try
             {
+                CategoriesUpdater.tablesProvider = tablesProvider;
                 CategoriesUpdater.UpdateCategories();
+                this.availableCategories = CategoriesUpdater.GetAllAvailableCategories();
             } 
             catch (Exception e)
             {
                 Log.Info("UpdateCategories: " + e.Message);
-            }
-
-            this.availableCategories = CategoriesUpdater.GetAllAvailableCategories();
+            } 
         }
 
         /// <summary>
@@ -295,7 +347,27 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private void UpdateCurrencies()
         {
-            this.availableCurrencies = CurrencyConverter.GetInstance().AvailableCurrencies;
+            this.availableCurrencies = currencyConverter.AvailableCurrencies;
+        }
+
+        /// <summary>
+        /// Gets the highest bid.
+        /// </summary>
+        /// <param name="auction">The auction.</param>
+        /// <returns>
+        /// the highest bid if exists else it throws
+        /// </returns>
+        private Bid GetHighestBid(Auction auction)
+        {
+            IBidTable bidTable = tablesProvider.GetBidTable();
+            try
+            {
+                return bidTable.FetchAuctionHighestBid(auction);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

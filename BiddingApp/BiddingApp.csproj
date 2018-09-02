@@ -111,6 +111,7 @@
     <Compile Include="BiddingEngine\DomainData\IPersonOfferorTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IPersonTable.cs" />
     <Compile Include="BiddingEngine\DomainData\IProductTable.cs" />
+    <Compile Include="BiddingEngine\DomainData\ITablesProvider.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\Validators\AuctionValidator.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\PersonBidder.cs" />
     <Compile Include="BiddingEngine\DomainLayer\Model\PersonOfferor.cs" />

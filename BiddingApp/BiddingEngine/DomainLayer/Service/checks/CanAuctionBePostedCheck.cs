@@ -27,7 +27,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// <param name="personOfferor">The person offeror.</param>
         /// <param name="auction">The auction.</param>
         /// <returns>true if the auction can be posted.</returns>
-        public static bool DoCheck(PersonOfferor personOfferor, Auction auction)
+        public static bool DoCheck(PersonOfferor personOfferor, Auction auction, List<Auction> offerorAuctions, List<Product> allProducts)
         {  
             PersonOfferorService offerorService = new PersonOfferorService(personOfferor);
 
@@ -38,14 +38,23 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
             }
 
             //// can't have more than this.
-            bool hasMaxAuctions = offerorService.DidPersonHitMaxListLimit(personOfferor);
+            bool hasMaxAuctions = offerorService.DidPersonHitMaxListLimit(personOfferor, offerorAuctions);
             if (hasMaxAuctions)
             {
                 return false;
             }
 
             //// can't have more than this in specified category.
-            bool hasMaxInCategory = offerorService.DidPersonHitMaxCategoryListLimit(personOfferor, auction.Product.Category);
+            List<Auction> offerorCategoryAuctions = new List<Auction>();
+            foreach(Auction listed_auction in offerorAuctions)
+            {
+                if (listed_auction.Product.Category.Name.Equals(auction.Product.Category.Name))
+                {
+                    offerorCategoryAuctions.Add(listed_auction);
+                }
+            }
+
+            bool hasMaxInCategory = offerorService.DidPersonHitMaxCategoryListLimit(personOfferor, auction.Product.Category, offerorCategoryAuctions);
             if (hasMaxInCategory)
             {
                 return false;
@@ -69,9 +78,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
                 {
                     return false;
                 }
-            } 
+            }
 
-            bool anySimilarExists = ExistsAnySimilarProductCheck.DoCheck(auction.Product);
+            bool anySimilarExists = ExistsAnySimilarProductCheck.DoCheck(auction.Product, allProducts);
 
             //// should not be similar.
             if (anySimilarExists)

@@ -27,19 +27,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// <param name="bid">The bid.</param>
         /// <param name="auction">The auction.</param>
         /// <returns>true if the bid can be posted to auction</returns>
-        public static bool DoCheck(Bid bid, Auction auction)
-        { 
-            IBidTable bidTable = DomainDataStorage.GetInstance().BidTable;
-
+        public static bool DoCheck(Bid bid, Auction auction, Bid highest_bid)
+        {   
             AuctionService auctionService = new AuctionService(auction);
 
             // is active (started & not ended)? 
             if (!auctionService.IsActive)
             {
                 return false;
-            }
-
-            Bid highest_bid = bidTable.FetchAuctionHighestBid(auction);
+            } 
 
             // bid his bid?
             if (highest_bid.PersonBidder.Id == bid.PersonBidder.Id)

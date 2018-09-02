@@ -26,11 +26,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// </summary>
         /// <param name="product">The product.</param>
         /// <returns>true if any similar product is found.</returns>
-        public static bool DoCheck(Product product)
-        {
-            IProductTable table = DomainDataStorage.GetInstance().ProductTable;
-            List<Product> existingProducts = table.FetchAllProducts();
-
+        public static bool DoCheck(Product product, List<Product> existingProducts)
+        {  
             ProductService productService = new ProductService(product);
             
             return productService.HasSimilarDescriptionToAnyFrom(existingProducts);

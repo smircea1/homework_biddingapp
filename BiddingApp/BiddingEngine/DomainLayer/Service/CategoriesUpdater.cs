@@ -26,13 +26,15 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// </summary>
         private static DomainDataStorage domainDataStorage = DomainDataStorage.GetInstance();
 
+        public static ITablesProvider tablesProvider { internal get; set; }
+
         /// <summary>
         /// Gets all available categories.
         /// </summary>
         /// <returns>returns all available categories</returns>
         public static List<Category> GetAllAvailableCategories()
         {
-            return domainDataStorage.CategoryTable.FetchAllCategories();
+            return tablesProvider.GetCategoryTable().FetchAllCategories();
         }
 
         /// <summary>
@@ -59,16 +61,18 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         {
             List<Category> electronicCategories = new List<Category>();
 
+            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+
             Category electronics = new Category { Name = "Electronics" };
             //// ELECTRONICS
             try
             {
-                domainDataStorage.CategoryTable.InsertCategory(electronics);
-                electronics = domainDataStorage.CategoryTable.FetchCategoryByName(electronics.Name);
+                categoryTable.InsertCategory(electronics);
+                electronics = categoryTable.FetchCategoryByName(electronics.Name);
             } 
             catch (Exception)
             {
-                electronics = domainDataStorage.CategoryTable.FetchCategoryByName(electronics.Name);
+                electronics = categoryTable.FetchCategoryByName(electronics.Name);
             }
 
             if (electronics == null)
@@ -91,16 +95,18 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         {
             List<Category> homeCategories = new List<Category>();
 
+            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+
             Category home = new Category { Name = "Home" };
             //// HOME
             try
             {
-                domainDataStorage.CategoryTable.InsertCategory(home);
-                home = domainDataStorage.CategoryTable.FetchCategoryByName(home.Name);
+                categoryTable.InsertCategory(home);
+                home = categoryTable.FetchCategoryByName(home.Name);
             } 
             catch (Exception)
             {
-                home = domainDataStorage.CategoryTable.FetchCategoryByName(home.Name);
+                home = categoryTable.FetchCategoryByName(home.Name);
             }
 
             if (home == null)
@@ -121,11 +127,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <param name="list">The list.</param>
         private static void InsertCategoryList(List<Category> list)
         {
+            ICategoryTable categoryTable = tablesProvider.GetCategoryTable();
+
             foreach (Category category in list)
             {
                 try
                 {
-                    domainDataStorage.CategoryTable.InsertCategory(category);
+                    categoryTable.InsertCategory(category);
                 } 
                 catch (Exception e)
                 {

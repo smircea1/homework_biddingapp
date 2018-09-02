@@ -15,7 +15,7 @@ namespace BiddingApp.BiddingEngine.DomainData
     /// this is the link between domain and it's storage.
     /// this holds all the tables.
     /// </summary>
-    public class DomainDataStorage
+    public class DomainDataStorage : ITablesProvider
     {
         /// <summary>
         /// The instance
@@ -28,6 +28,51 @@ namespace BiddingApp.BiddingEngine.DomainData
         private MySqlConnection databaseConneection = null;
 
         /// <summary>
+        /// The auction table
+        /// </summary>
+        private IAuctionTable auctionTable;
+
+        /// <summary>
+        /// The bid table
+        /// </summary>
+        private IBidTable bidTable;
+
+        /// <summary>
+        /// The category table
+        /// </summary>
+        private ICategoryTable categoryTable;
+
+        /// <summary>
+        /// The currency table
+        /// </summary>
+        private ICurrencyTable currencyTable;
+
+        /// <summary>
+        /// The person bidder table
+        /// </summary>
+        private IPersonBidderTable personBidderTable;
+
+        /// <summary>
+        /// The person mark table
+        /// </summary>
+        private IPersonMarkTable personMarkTable;
+
+        /// <summary>
+        /// The person offeror table
+        /// </summary>
+        private IPersonOfferorTable personOfferorTable;
+
+        /// <summary>
+        /// The person table
+        /// </summary>
+        private IPersonTable personTable;
+
+        /// <summary>
+        /// The product table
+        /// </summary>
+        private IProductTable productTable;
+
+        /// <summary>
         /// Prevents a default instance of the <see cref="DomainDataStorage"/> class from being created.
         /// </summary>
         private DomainDataStorage()
@@ -35,89 +80,17 @@ namespace BiddingApp.BiddingEngine.DomainData
             string connectionString = ConfigurationManager.ConnectionStrings["MySQL"].ConnectionString;
             this.databaseConneection = new MySqlConnection(connectionString);
 
-            this.AuctionTable = this.databaseConneection.As<IAuctionTable>();
-            this.BidTable = this.databaseConneection.As<IBidTable>();
-            this.CategoryTable = this.databaseConneection.As<ICategoryTable>();
-            this.CurrencyTable = this.databaseConneection.As<ICurrencyTable>(); 
-            this.PersonBidderTable = this.databaseConneection.As<IPersonBidderTable>();
-            this.PersonMarkTable = this.databaseConneection.As<IPersonMarkTable>();
-            this.PersonOfferorTable = this.databaseConneection.As<IPersonOfferorTable>(); 
-            this.PersonTable = this.databaseConneection.As<IPersonTable>();
-            this.ProductTable = this.databaseConneection.As<IProductTable>();  
+            this.auctionTable = this.databaseConneection.As<IAuctionTable>();
+            this.bidTable = this.databaseConneection.As<IBidTable>();
+            this.categoryTable = this.databaseConneection.As<ICategoryTable>();
+            this.currencyTable = this.databaseConneection.As<ICurrencyTable>(); 
+            this.personBidderTable = this.databaseConneection.As<IPersonBidderTable>();
+            this.personMarkTable = this.databaseConneection.As<IPersonMarkTable>();
+            this.personOfferorTable = this.databaseConneection.As<IPersonOfferorTable>(); 
+            this.personTable = this.databaseConneection.As<IPersonTable>();
+            this.productTable = this.databaseConneection.As<IProductTable>();  
         }
-
-        /// <summary>
-        /// Gets the auction table.
-        /// </summary>
-        /// <value>
-        /// The auction table.
-        /// </value>
-        public IAuctionTable AuctionTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the bid table.
-        /// </summary>
-        /// <value>
-        /// The bid table.
-        /// </value>
-        public IBidTable BidTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the category table.
-        /// </summary>
-        /// <value>
-        /// The category table.
-        /// </value>
-        public ICategoryTable CategoryTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the currency table.
-        /// </summary>
-        /// <value>
-        /// The currency table.
-        /// </value>
-        public ICurrencyTable CurrencyTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the person bidder table.
-        /// </summary>
-        /// <value>
-        /// The person bidder table.
-        /// </value>
-        public IPersonBidderTable PersonBidderTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the person mark table.
-        /// </summary>
-        /// <value>
-        /// The person mark table.
-        /// </value>
-        public IPersonMarkTable PersonMarkTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the person offeror table.
-        /// </summary>
-        /// <value>
-        /// The person offeror table.
-        /// </value>
-        public IPersonOfferorTable PersonOfferorTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the person table.
-        /// </summary>
-        /// <value>
-        /// The person table.
-        /// </value>
-        public IPersonTable PersonTable { get; internal set; }
-
-        /// <summary>
-        /// Gets the product table.
-        /// </summary>
-        /// <value>
-        /// The product table.
-        /// </value>
-        public IProductTable ProductTable { get; internal set; }
-
+        
         /// <summary>
         /// Gets the instance.
         /// </summary>
@@ -130,6 +103,89 @@ namespace BiddingApp.BiddingEngine.DomainData
             }
 
             return DomainDataStorage.instance;
+        }
+
+        /// <summary>
+        /// Gets the auction table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public IAuctionTable GetAuctionTable()
+        {
+            return this.auctionTable;
+        }
+
+        /// <summary>
+        /// Gets the bid table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public IBidTable GetBidTable()
+        {
+            return this.bidTable;
+        }
+
+        /// <summary>
+        /// Gets the category table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public ICategoryTable GetCategoryTable()
+        {
+            return this.categoryTable;
+        }
+
+        /// <summary>
+        /// Gets the currency table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public ICurrencyTable GetCurrencyTable()
+        {
+            return this.currencyTable;
+        }
+
+        /// <summary>
+        /// Gets the person bidder table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public IPersonBidderTable GetPersonBidderTable()
+        {
+            return this.personBidderTable;
+        }
+
+        /// <summary>
+        /// Gets the person mark table.
+        /// </summary>
+        /// <returns>
+        /// the table
+        /// </returns>
+        public IPersonMarkTable GetPersonMarkTable()
+        {
+            return this.personMarkTable;
+        }
+
+        /// <summary>
+        /// Gets the person offeror table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public IPersonOfferorTable GetPersonOfferorTable()
+        {
+            return this.personOfferorTable;
+        }
+
+        /// <summary>
+        /// Gets the person table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public IPersonTable GetPersonTable()
+        {
+            return this.personTable;
+        }
+
+        /// <summary>
+        /// Gets the product table.
+        /// </summary>
+        /// <returns>the table</returns>
+        public IProductTable GetProductTable()
+        {
+            return this.productTable;
         }
     }
 }

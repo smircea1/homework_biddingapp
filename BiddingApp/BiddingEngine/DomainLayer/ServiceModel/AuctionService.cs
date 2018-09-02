@@ -43,6 +43,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <param name="auction">The auction.</param>
         public AuctionService(Auction auction)
         {
+            try
+            {
+                auction.ValidateObject(); 
+            } catch (Exception e)
+            {
+                throw e;
+            }
             this.Auction = auction;
             this.UpdateStatus();
         }
@@ -78,23 +85,25 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
         /// </value>
         public bool IsActive { get; internal set; }
-         
+
         /// <summary>
         /// Ends the auction.
         /// </summary>
         /// <param name="offeror">The offeror.</param>
         /// <returns>true if the auction had ended.</returns>
-        public bool EndAuction(PersonOfferor offeror)
+        public void EndAuction(PersonOfferor offeror)
         {
-            bool end_result = CanOfferorEndAuctionCheck.DoCheck(offeror, this);
-            if (end_result)
+            try
             {
-                this.Auction.EndDate = DateTime.Now;
-                DomainDataStorage.GetInstance().AuctionTable.UpdateAuction(this.Auction);
-                this.UpdateStatus();
+                CanOfferorEndAuctionCheck.DoCheck(offeror, this);
+            } 
+            catch (Exception e)
+            {
+                throw e;
             }
+            this.Auction.EndDate = DateTime.Now;  
 
-            return end_result;
+            this.UpdateStatus(); 
         }
 
         /// <summary>
@@ -102,13 +111,6 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         internal void UpdateStatus()
         {
-            this.Auction = DomainDataStorage.GetInstance().AuctionTable.FetchAuctionById(this.Auction.IdAuction);
-
-            if (this.Auction == null)
-            {
-                return;
-            }
-
             DateTime current = DateTime.Now;
             TimeSpan untilEnd = this.Auction.EndDate.TimeOfDay - current.TimeOfDay;
             TimeSpan untilStart = this.Auction.StartDate.TimeOfDay - current.TimeOfDay;
@@ -151,14 +153,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             }
 
             Log.Info("Auction::SetupTimers: Timers set ended!");
-        }  
+        }
 
         /// <summary>
         /// Called when [auction ended].
         /// </summary>
         private void OnAuctionEnded()
         {
-            this.UpdateStatus(); 
+            this.UpdateStatus();
             Log.Info("AUCTION ENDED!");
         }
 

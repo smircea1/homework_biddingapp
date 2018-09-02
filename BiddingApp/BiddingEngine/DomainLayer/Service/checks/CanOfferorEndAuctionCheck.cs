@@ -25,26 +25,30 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// </summary>
         /// <param name="offeror">The offeror.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>true if this offeror can end the auction</returns>
-        public static bool DoCheck(PersonOfferor offeror, AuctionService auction)
+        /// <exception cref="System.Exception">
+        /// Offeror is null!
+        /// or
+        /// Offeror does not have enough privileges for this!
+        /// or
+        /// Auction is already ended!
+        /// </exception>
+        public static void DoCheck(PersonOfferor offeror, AuctionService auction)
         {
             if (offeror == null)
             {
-                return false;
+                throw new Exception("Offeror is null!");
             }
 
             if (offeror.IdOfferor != auction.Auction.PersonOfferor.IdOfferor)
             {
                 // does not belongs to.
-                return false;
+                throw new Exception("Offeror does not have enough privileges for this!"); 
             }
 
             if (auction.HadEnded)
             {
-                return false;
-            }
-
-            return true;
+                throw new Exception("Auction is already ended!");
+            } 
         }
     }
 }
