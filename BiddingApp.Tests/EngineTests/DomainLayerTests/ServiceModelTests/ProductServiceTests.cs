@@ -30,5 +30,124 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
 
             return new ProductService(product);
         }
+
+        private static List<Product> GetGoodDescriptionProducts()
+        {
+            List<Product> producs = new List<Product>();
+            var category = new Category
+            {
+                IdCategory = 1,
+                IdParent = 2,
+                Name = "Electronics"
+            };
+
+            var product1 = new Product
+            {
+                IdProduct = 1,
+                Name = "PC",
+                Category = category,
+                Description = "asd"
+            };
+
+            var product2 = new Product
+            {
+                IdProduct = 1,
+                Name = "PC",
+                Category = category,
+                Description = "dsa"
+            };
+
+            producs.Add(product1);
+            producs.Add(product2);
+
+            return producs;
+        }
+
+        private static List<Product> GetBadDescriptionProducts()
+        {
+            List<Product> producs = new List<Product>();
+            var category = new Category
+            {
+                IdCategory = 1,
+                IdParent = 2,
+                Name = "Electronics"
+            };
+
+            var product1 = new Product
+            {
+                IdProduct = 1,
+                Name = "PC",
+                Category = category,
+                Description = "asd"
+            };
+
+            var product2 = new Product
+            {
+                IdProduct = 1,
+                Name = "PC",
+                Category = category,
+                Description = "i7, 1070 GTX, 16GB"
+            };
+
+            producs.Add(product1);
+            producs.Add(product2);
+
+            return producs;
+        }
+
+        [Fact]
+        public void CreateService_ShouldInstantiateProductService()
+        {
+            var productService = GetProductService();
+            Assert.NotNull(productService);
+        }
+
+        [Fact]
+        public void HasSimilarDescriptionToAnyFrom_ShouldReturnFalse()
+        {
+            var productService = GetProductService();
+            Assert.False(productService.HasSimilarDescriptionToAnyFrom(GetGoodDescriptionProducts()));
+        }
+
+        [Fact]
+        public void HasSimilarDescriptionToAnyFrom_ShouldReturnTrue()
+        {
+            var productService = GetProductService();
+            Assert.True(productService.HasSimilarDescriptionToAnyFrom(GetBadDescriptionProducts()));
+        }
+
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("hello", "hello")]
+        [InlineData("Hello", "hello")]
+        [InlineData("hello-", "hello-")]
+        [InlineData(".", "")]
+        [InlineData(",", "")]
+        [InlineData(":", "")]
+        [InlineData("?", "")]
+        [InlineData("asd!", "asd")]
+        public void PrepareDescriptionForLevenstein__ShouldLowerAndRemoveChars(string text, string result)
+        {
+            string preparedText = ProductService.PrepareDescriptionForLevenstein(text);
+            Assert.Equal(preparedText, result);
+        }
+
+        [Fact]
+        public void RemoveCharsFromString_ShouldRemoveComma()
+        {
+            string source = ",";
+            char[] charsToReplase = {','};
+            string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
+            Assert.Equal("", preparedText);
+        }
+
+        [Fact]
+        public void RemoveCharsFromString_ShouldRemoveMultipleCHars()
+        {
+            string source = ".:?!,";
+            char[] charsToReplase = { '.', ',', ':', '?', '!' };
+            string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
+            Assert.Equal("", preparedText);
+        }
     }
 }
