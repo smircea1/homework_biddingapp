@@ -83,7 +83,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
 
             result = result.ToLower();
 
-            RemoveCharsFromString(result, LevensteinExceptChars);
+            result = RemoveCharsFromString(result, LevensteinExceptChars);
 
             return result;
         }
