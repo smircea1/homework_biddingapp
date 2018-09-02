@@ -143,7 +143,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
                 {
                     categoryTable.InsertCategory(category);
                 } 
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }

@@ -39,15 +39,6 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <returns>
         /// the offeror role of the person
         /// </returns>
-        PersonOfferor FetchPersonOfferorByPerson(Person person);
-
-        /// <summary>
-        /// Fetches the person offeror by identifier.
-        /// </summary>
-        /// <param name="idOfferor">The identifier offeror.</param>
-        /// <returns>
-        /// the offeror role of the person
-        /// </returns>
-        PersonOfferor FetchPersonOfferorById(int idOfferor);
+        PersonOfferor FetchPersonOfferorByPerson(Person person); 
     }
 }

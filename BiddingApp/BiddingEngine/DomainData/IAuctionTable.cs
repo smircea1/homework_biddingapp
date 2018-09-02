@@ -32,16 +32,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Updates the auction.
         /// </summary>
         /// <param name="auction">The auction.</param>
-        void UpdateAuction(Auction auction);
-
-        /// <summary>
-        /// Fetches the auction by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>
-        /// the selected auction or null
-        /// </returns>
-        Auction FetchAuctionById(int id);
+        void UpdateAuction(Auction auction); 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IAuctionTable" /> interface.

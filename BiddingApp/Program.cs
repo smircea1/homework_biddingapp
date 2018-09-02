@@ -64,8 +64,9 @@ namespace BiddingApp
             goodAuction.Product = goodProduct;
             goodAuction.Currency = eurCurrency;
 
-            Auction registeredAuction = broker.RegisterAuction(goodPerson, goodAuction);
+            Auction registeredAuction = broker.RegisterAuction(goodPerson, goodAuction); 
 
+            //// OK TILL HERE !
             Bid bid = new Bid() { Auction = goodAuction, Date = DateTime.Now, Currency = goodAuction.Currency, Value = 124 };
 
             try

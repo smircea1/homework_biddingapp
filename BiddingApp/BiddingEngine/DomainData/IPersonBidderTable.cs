@@ -29,10 +29,10 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Fetches the person bidder by person.
         /// </summary>
-        /// <param name="person">The person.</param>
+        /// <param name="idPerson">The identifier person.</param>
         /// <returns>
         /// the bidder found
         /// </returns>
-        PersonBidder FetchPersonBidderByPerson(Person person);
+        PersonBidder FetchPersonBidderByIdPerson(int idPerson);
     }
 }

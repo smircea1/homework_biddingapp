@@ -8,6 +8,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
     using BiddingApp.BiddingEngine.DomainLayer.Service;
@@ -25,9 +26,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// The minimum rating allowed for bidding
+        /// </summary>
+        private static int minRatingAllowedForBidding = int.Parse(ConfigurationManager.AppSettings.Get("MinRatingAllowedForBidding"));
+
+        /// <summary>
         /// The auctions
         /// </summary>
-        private List<Auction> auctions = new List<Auction>();
+        private List<Auction> auctions = new List<Auction>(); 
 
         /// <summary>
         /// The tables provider
@@ -147,7 +153,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
 
             PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(person);
-             
+            Currency currency = auction.Currency;
+            Category category = auction.Product.Category;
+
             try
             {
                 auction.PersonOfferor = offeror ?? throw new Exception("BAD OFFEROR");
@@ -157,9 +165,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 auction.Currency.ValidateObject();
                 auction.Product.ValidateObject();
 
-                if (auction.IdAuction != 0)
-                {
-                    throw new Exception("Auction is already registered");
+                Product product = productTable.FetchProductByAllAttributes(auction.Product.Category.IdCategory, auction.Product);
+                product.Category = category;
+
+                Auction fetched = auctionTable.FetchAuctionByIds(offeror.IdOfferor, product.IdProduct);
+
+                if (fetched.IdAuction != 0)
+                { 
+                    fetched.PersonOfferor = offeror; 
+                    fetched.Product = product; 
+                    fetched.Currency = currency;
+
+                    return fetched;
+                    ////throw new Exception("Auction is already registered");
                 } 
 
                 if (auction.Currency.IdCurrency == 0)
@@ -180,15 +198,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             if (!canPost)
             {
                 throw new Exception("CanAuctionBePostedCheck failed!");
-            }
-
-            Currency currency = auction.Currency;
-            Category productCategory = auction.Product.Category;
+            } 
              
-            productTable.InsertProduct(productCategory.IdCategory, auction.Product); 
+            productTable.InsertProduct(category.IdCategory, auction.Product); 
 
-            Product selectedProduct = productTable.FetchProductByAllAttributes(productCategory.IdCategory, auction.Product);
-            selectedProduct.Category = productCategory;
+            Product selectedProduct = productTable.FetchProductByAllAttributes(category.IdCategory, auction.Product);
+            selectedProduct.Category = category;
 
             auctionTable.InsertAuction(offeror.IdOfferor, selectedProduct.IdProduct, currency.IdCurrency, auction);
 
@@ -219,7 +234,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
             try
             {
-                PersonBidder personBidder = personBidderTable.FetchPersonBidderByPerson(person);
+                PersonBidder personBidder = personBidderTable.FetchPersonBidderByIdPerson(person.IdPerson);
 
                 bid.PersonBidder = personBidder;
 
@@ -237,6 +252,58 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             {
                 throw e;
             } 
+        }
+
+        /// <summary>
+        /// Posts the mark.
+        /// </summary>
+        /// <param name="fromPerson">From person.</param>
+        /// <param name="toPerson">To person.</param>
+        /// <param name="mark">The mark.</param>
+        /// <exception cref="System.Exception">A PERSON IS NOT REGISTERED!</exception>
+        public void PostMark(Person fromPerson, Person toPerson, int mark)
+        {
+            IPersonOfferorTable personOfferorTable = this.tablesProvider.GetPersonOfferorTable();
+            IPersonMarkTable personMarkTable = this.tablesProvider.GetPersonMarkTable();
+
+            fromPerson.ValidateObject();
+            toPerson.ValidateObject();
+           
+            if (fromPerson.IdPerson == 0 || toPerson.IdPerson == 0)
+            {
+                throw new Exception("A PERSON IS NOT REGISTERED!");
+            }
+
+            PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(toPerson);
+
+            PersonOfferorMark markObj = new PersonOfferorMark() { DateOccur = DateTime.Now, Mark = mark, Receiver = offeror, Sender = fromPerson };
+
+            personMarkTable.InsertPersonMark(markObj);
+
+            PersonOfferorService offerorService = new PersonOfferorService(offeror);
+
+            List<PersonOfferorMark> marks = personMarkTable.FetchPersonOfferorMarks(offeror);
+
+            offerorService.UpdateRatingBasedOnMarks(marks);
+
+            if (offerorService.Rating < minRatingAllowedForBidding)
+            {
+                offeror.LastBannedDate = DateTime.Now;
+                offerorService.UpdateIsBanned();
+                personOfferorTable.UpdatePersonOfferor(offeror);
+            }
+        }
+
+        /// <summary>
+        /// Gets the person by phone.
+        /// </summary>
+        /// <param name="phone">The phone.</param>
+        /// <returns>the found person</returns>
+        public Person GetPersonByPhone(string phone)
+        {
+            IPersonTable personTable = this.tablesProvider.GetPersonTable();
+
+            return personTable.FetchPersonByPhone(phone);
         }
 
         /// <summary>

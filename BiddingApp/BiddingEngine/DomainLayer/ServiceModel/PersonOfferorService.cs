@@ -29,12 +29,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// The reviews counted for rating
         /// </summary>
-        private static int reviewsCountedForRating = int.Parse(ConfigurationManager.AppSettings.Get("ReviewsCountedForRating"));
-
-        /// <summary>
-        /// The minimum rating allowed for bidding
-        /// </summary>
-        private static int minRatingAllowedForBidding = int.Parse(ConfigurationManager.AppSettings.Get("MinRatingAllowedForBidding"));
+        private static int reviewsCountedForRating = int.Parse(ConfigurationManager.AppSettings.Get("ReviewsCountedForRating")); 
 
         /// <summary>
         /// The banned days for bad rating
@@ -56,8 +51,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         /// <param name="offeror">The offeror.</param>
         public PersonOfferorService(PersonOfferor offeror)
-        {
+        { 
+            offeror.ValidateObject();
+
             this.Offeror = offeror;
+
+            this.UpdateIsBanned();
         }
 
         /// <summary>
@@ -127,12 +126,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// Updates the rating.
         /// </summary>
         /// <param name="personMarks">The person marks.</param>
-        private void UpdateRatingBasedOnMarks(List<PersonOfferorMark> personMarks)
-        {
-            ////IPersonMarkTable personMarkTable = DomainDataStorage.GetInstance().PersonMarkTable;
-
-            ////List<PersonOfferorMark> personMarks = personMarkTable.FetchPersonOfferorMarks(this.Offeror);
-
+        internal void UpdateRatingBasedOnMarks(List<PersonOfferorMark> personMarks)
+        { 
             int totalScore = 0;
             int countedMarks = Math.Min(personMarks.Count, reviewsCountedForRating);
 
@@ -148,7 +143,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             else
             {
                 this.Rating = totalScore / countedMarks;
-            }
+            } 
+        }
+
+        /// <summary>
+        /// Updates the is banned.
+        /// </summary>
+        internal void UpdateIsBanned()
+        {
+            TimeSpan remainingBanned = this.Offeror.LastBannedDate.TimeOfDay - DateTime.Now.TimeOfDay; 
+            this.IsBanned = remainingBanned > TimeSpan.Zero;
         }
 
         /// <summary>
