@@ -41,37 +41,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         }
 
         /// <summary>
-        /// Gets or sets the product.
+        /// Gets the product.
         /// </summary>
         /// <value>
         /// The product.
         /// </value>
         public Product Product { get; internal set; }
-
-        /// <summary>
-        /// Determines whether [is duplicate in] [the specified products].
-        /// </summary>
-        /// <param name="products">The products.</param>
-        /// <returns>
-        ///   <c>true</c> if [is duplicate in] [the specified products]; otherwise, <c>false</c>.
-        /// </returns>
-        public bool HasSimilarDescriptionToAnyFrom(List<Product> products)
-        {
-            string actual_description = PrepareDescriptionForLevenstein(this.Product.Description);
-
-            foreach (Product list_product in products)
-            {
-                string list_product_description = PrepareDescriptionForLevenstein(list_product.Description);
-
-                if (LevenshteinDistance.ComputeDistance(actual_description, list_product_description) < LevelForStringDuplicate)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
+         
         /// <summary>
         /// Prepares the description for levenstein.
         /// </summary>
@@ -97,6 +73,30 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public static string RemoveCharsFromString(string source, char[] oldChar)
         {
             return string.Join(string.Empty, source.ToCharArray().Where(a => !oldChar.Contains(a)).ToArray());
+        }
+
+        /// <summary>
+        /// Determines whether [is duplicate in] [the specified products].
+        /// </summary>
+        /// <param name="products">The products.</param>
+        /// <returns>
+        ///   <c>true</c> if [is duplicate in] [the specified products]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasSimilarDescriptionToAnyFrom(List<Product> products)
+        {
+            string actual_description = PrepareDescriptionForLevenstein(this.Product.Description);
+
+            foreach (Product list_product in products)
+            {
+                string list_product_description = PrepareDescriptionForLevenstein(list_product.Description);
+
+                if (LevenshteinDistance.ComputeDistance(actual_description, list_product_description) < LevelForStringDuplicate)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

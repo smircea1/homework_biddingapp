@@ -20,16 +20,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer
     public class CurrencyConverter
     {
         /// <summary>
-        /// The currency table
+        /// Initializes a new instance of the <see cref="CurrencyConverter"/> class.
         /// </summary>
-        public ICurrencyTable currencyTable; 
+        public CurrencyConverter()
+        {
+        }
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="CurrencyConverter"/> class from being created.
+        /// Initializes a new instance of the <see cref="CurrencyConverter"/> class.
         /// </summary>
+        /// <param name="tablesProvider">The tables provider.</param>
         internal CurrencyConverter(ITablesProvider tablesProvider)
         {
-            this.currencyTable = tablesProvider.GetCurrencyTable();
+            this.CurrencyTable = tablesProvider.GetCurrencyTable();
             this.UpdateRates();
             this.UpdateDbCurrencies();
         }
@@ -48,8 +51,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <value>
         /// The currencies rates.
         /// </value>
-        public Dictionary<Currency, double> CurrenciesRates { get; private set; } 
+        public Dictionary<Currency, double> CurrenciesRates { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the currency table.
+        /// </summary>
+        /// <value>
+        /// The currency table.
+        /// </value>
+        private ICurrencyTable CurrencyTable { get; set; }
+         
         /// <summary>
         /// Does the exchange.
         /// </summary>
@@ -108,7 +119,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private void UpdateDbCurrencies()
         {
-            List<Currency> currencies = currencyTable.FetchAllCurrencies();
+            List<Currency> currencies = this.CurrencyTable.FetchAllCurrencies();
 
             foreach (Currency currency in this.AvailableCurrencies)
             {
@@ -116,7 +127,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 {
                     try
                     {
-                        currencyTable.InsertCurrency(currency);
+                        this.CurrencyTable.InsertCurrency(currency);
                     }
                     catch (Exception e)
                     {

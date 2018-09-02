@@ -39,6 +39,7 @@ namespace BiddingApp
             broker.RegisterPerson(goodPerson);
 
             CurrencyConverter converter = broker.GetCurrencyConverter();
+            
             Currency ronCurrency = converter.GetCurrencyByName("ron");
             Currency eurCurrency = converter.GetCurrencyByName("eur");
 
@@ -69,8 +70,8 @@ namespace BiddingApp
             broker.RegisterAuction(goodPerson, badAuction);
             broker.RegisterAuction(goodPerson, goodAuction);
 
-
-            
+            Bid bid = new Bid() { Auction = goodAuction, Date = DateTime.Now, Currency = goodAuction.Currency, Value = 124 };
+            broker.RegisterBid(goodPerson, bid, goodAuction);
 
             System.Console.WriteLine("app ended!");
         }

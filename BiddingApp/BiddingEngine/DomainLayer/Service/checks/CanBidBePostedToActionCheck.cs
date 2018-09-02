@@ -24,10 +24,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// <summary>
         /// Initializes the <see cref="CanBidBePostedToActionCheck" /> class.
         /// </summary>
+        /// <param name="personBidder">The person bidder.</param>
         /// <param name="bid">The bid.</param>
         /// <param name="auction">The auction.</param>
-        /// <returns>true if the bid can be posted to auction</returns>
-        public static bool DoCheck(Bid bid, Auction auction, Bid highest_bid)
+        /// <param name="highest_bid">The highest bid.</param>
+        /// <returns>
+        /// true if the bid can be posted to auction
+        /// </returns>
+        public static bool DoCheck(PersonBidder personBidder, Bid bid, Auction auction, Bid highest_bid)
         {   
             AuctionService auctionService = new AuctionService(auction);
 
