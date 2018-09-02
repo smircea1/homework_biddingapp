@@ -37,6 +37,13 @@ namespace BiddingApp
             broker.RegisterPerson(badPerson3);
 
             broker.RegisterPerson(goodPerson);
+
+            CurrencyConverter converter = CurrencyConverter.GetInstance();
+            Currency ronCurrency = converter.GetCurrencyByName("ron");
+            Currency eurCurrency = converter.GetCurrencyByName("eur");
+
+            double rons = 54;
+            double eurs = converter.DoExchange(ronCurrency, eurCurrency, rons);
              
             System.Console.WriteLine("app ended!");
         }

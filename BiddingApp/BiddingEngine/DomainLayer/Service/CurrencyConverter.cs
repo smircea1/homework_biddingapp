@@ -119,7 +119,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 }
             }
 
-            return null;
+            throw new Exception(name + " not found as currency!");
         }
 
         /// <summary>
@@ -133,7 +133,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             {
                 if (!currencies.Contains(currency))
                 {
-                    currencyTable.InsertCurrency(currency);
+                    try
+                    {
+                        currencyTable.InsertCurrency(currency);
+                    }
+                    catch (Exception e)
+                    {
+                        // just ignore that they already exist and trigger unique exception.
+                    }
                 }
             }
         }

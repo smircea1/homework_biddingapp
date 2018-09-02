@@ -17,7 +17,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         {
             PersonOfferorMark pom = new PersonOfferorMark();
             pom.DateOccur = new DateTime();
-            pom.Id = 1;
+            pom.IdOfferorMark = 1;
             pom.Mark = 5;
             pom.Sender = new Person();
             pom.Receiver = new PersonOfferor();

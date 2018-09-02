@@ -15,7 +15,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         public void CreateCurrencyOfferor_ShouldInstantiateCurrency()
         {
             Currency currency = new Currency();
-            currency.Id = 1;
+            currency.IdCurrency = 1;
             currency.Name = "USD";
 
             currency.ValidateObject();
@@ -32,7 +32,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         {
             Currency currency = new Currency
             {
-                Id = id,
+                IdCurrency = id,
                 Name = name
             };
 

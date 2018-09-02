@@ -68,8 +68,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <exception cref="System.Exception">Person is already registered!</exception>
         public bool RegisterPerson(Person person)
         {
+            PersonOfferor offeror;
+            PersonBidder bidder;
             try
-            {
+            { 
                 if (person.IdPerson != 0)
                 {
                     throw new Exception("Person is already registered!");
@@ -78,6 +80,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 person.ValidateObject();
 
                 Person exists = domainDataStorage.PersonTable.FetchPersonByPhone(person.Phone);
+                 
                 if (exists != null)
                 {
                     person = exists;
@@ -96,11 +99,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             domainDataStorage.PersonTable.InsertPerson(person);
             person = domainDataStorage.PersonTable.FetchPersonByPhone(person.Phone); //// in order to update Id
              
-            PersonOfferor offeror = new PersonOfferor() { Person = person };
-            PersonBidder bidder = new PersonBidder() { Person = person };
+            offeror = new PersonOfferor() { Person = person };
+            bidder = new PersonBidder() { Person = person };
 
-            domainDataStorage.PersonOfferorTable.InsertPersonOfferor(offeror);
-            domainDataStorage.PersonBidderTable.InsertPersonBidder(bidder);
+            domainDataStorage.PersonOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
+            domainDataStorage.PersonBidderTable.InsertPersonBidder(person.IdPerson, bidder);
              
             Log.Info("RegisterPerson: " + person.Name + " person id =" + person.IdPerson + " inserted with success.");
 
