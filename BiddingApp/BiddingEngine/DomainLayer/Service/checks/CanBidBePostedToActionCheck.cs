@@ -54,7 +54,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
             }
 
             // bid his bid?
-            if (highest_bid.PersonBidder.Id == bid.PersonBidder.Id)
+            if (highest_bid.PersonBidder.IdBidder == bid.PersonBidder.IdBidder)
             {
                 return false;
             }

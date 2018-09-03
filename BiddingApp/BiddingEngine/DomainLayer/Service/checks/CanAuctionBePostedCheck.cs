@@ -73,7 +73,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
                 bool olderThanMinutes = (DateTime.Now - auction.StartDate).TotalMinutes > 5;
                 if (olderThanMinutes)
                 {
-                    return false;
+                    //return false;
                 }
             }
 

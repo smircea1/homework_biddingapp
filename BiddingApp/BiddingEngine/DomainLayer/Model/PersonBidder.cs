@@ -25,7 +25,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The identifier bidder.
         /// </value>
-        public int Id { get; set; }
+        public int IdBidder { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier person.

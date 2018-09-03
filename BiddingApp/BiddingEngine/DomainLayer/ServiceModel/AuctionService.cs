@@ -114,8 +114,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         internal void UpdateStatus()
         {
             DateTime current = DateTime.Now;
-            TimeSpan untilEnd = this.Auction.EndDate.TimeOfDay - current.TimeOfDay;
-            TimeSpan untilStart = this.Auction.StartDate.TimeOfDay - current.TimeOfDay;
+            TimeSpan untilEnd = this.Auction.EndDate - current;
+            TimeSpan untilStart = this.Auction.StartDate - current;
 
             this.HadStarted = untilStart < TimeSpan.Zero; //// true if current time > start time
             this.HadEnded = untilEnd < TimeSpan.Zero; //// true if current time > end time 
@@ -133,8 +133,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
             Log.Info("Auction::SetupTimers: Timers set begin!");
 
             DateTime current = DateTime.Now;
-            TimeSpan untilEnd = this.Auction.EndDate.TimeOfDay - current.TimeOfDay;
-            TimeSpan untilStart = this.Auction.StartDate.TimeOfDay - current.TimeOfDay;
+            TimeSpan untilEnd = this.Auction.EndDate - current;
+            TimeSpan untilStart = this.Auction.StartDate - current;
 
             this.UpdateStatus();
 
