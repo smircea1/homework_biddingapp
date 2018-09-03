@@ -49,11 +49,15 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             Assert.NotNull(auction);
         }
 
-        [Fact]
-        public void CreateAuction_ShouldThrowBadId()
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        [InlineData(-100)]
+        [InlineData(-1000)]
+        public void CreateAuction_ShouldThrowBadId(int id)
         {
             Auction auction = GetAuctionInstance();
-            auction.IdAuction = -1;
+            auction.IdAuction = id;
 
             Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
@@ -76,21 +80,29 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
 
-        [Fact]
-        public void CreateAuction_ShouldThrowBadStartValue()
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        [InlineData(-100)]
+        [InlineData(-1000)]
+        public void CreateAuction_ShouldThrowBadStartValue(int startValue)
         {
             Auction auction = GetAuctionInstance();
-            auction.StartValue = -1;
+            auction.StartValue = startValue;
 
             Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
 
-        [Fact]
-        public void CreateAuction_ShouldThrowBadDate()
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        [InlineData(-100)]
+        [InlineData(-1000)]
+        public void CreateAuction_ShouldThrowBadDate(int endDate)
         {
             Auction auction = GetAuctionInstance();
             auction.StartDate = DateTime.Now.AddDays(1);
-            auction.EndDate = DateTime.Now.AddDays(-1);
+            auction.EndDate = DateTime.Now.AddDays(endDate);
 
             Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
