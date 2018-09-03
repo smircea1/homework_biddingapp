@@ -12,12 +12,12 @@ using BiddingApp.BiddingEngine.DomainLayer;
 using BiddingApp.BiddingEngine.DomainLayer.Model;
 
 namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
-{ 
+{
     public class BiddingBrokerTests
-    {  
+    {
         public BiddingBrokerTests()
         {
-            
+
         }
 
         private ITablesProvider InitMockedDb()
@@ -48,10 +48,10 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
             mock.Setup(x => x.GetAuctionTable()).Returns(auctionsTable);
             mock.Setup(x => x.GetProductTable()).Returns(productTable);
-             
+
             mock.Setup(x => x.GetPersonMarkTable()).Returns(personMarkTable);
             mock.Setup(x => x.GetPersonOfferorTable()).Returns(personOfferorTable);
-             
+
             return mock.Object;
         }
 
@@ -80,7 +80,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
         }
 
         public Auction GetGoodAuction(BiddingBroker broker)
-        { 
+        {
 
             Product goodProduct = GetGoodProduct(broker);
 
@@ -89,7 +89,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
             DateTime startDate = DateTime.Now;
             DateTime endDate = DateTime.Now.AddDays(1);
-             
+
             Auction goodAuction = new Auction()
             {
                 StartDate = startDate,
@@ -112,16 +112,16 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
         [Fact]
         public void RegisterPerson_ShouldInsertThePerson()
-        { 
+        {
             BiddingBroker broker = new BiddingBroker(InitMockedDb());
             Person goodPerson = GetGoodPerson(broker);
-             
+
             Assert.NotEqual(0, goodPerson.IdPerson);
         }
 
         [Fact]
         public void RegisterPerson_ShouldNotInsertThePerson()
-        { 
+        {
             BiddingBroker broker = new BiddingBroker(InitMockedDb());
             Person badPerson2 = new Person() { Name = null, Phone = "07299544321" };
 
@@ -150,9 +150,9 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
             Person badPerson3 = new Person() { Name = "gigica", Phone = null };
 
-            Auction goodAuction = GetGoodAuction(broker);  
+            Auction goodAuction = GetGoodAuction(broker);
 
-            Assert.ThrowsAny<Exception>(() => broker.RegisterAuction(badPerson3, goodAuction));  
+            Assert.ThrowsAny<Exception>(() => broker.RegisterAuction(badPerson3, goodAuction));
         }
 
         [Fact]
@@ -160,20 +160,14 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
         {
             BiddingBroker broker = new BiddingBroker(InitMockedDb());
 
-            Person goodPerson = GetGoodPerson(broker); 
+            Person goodPerson = GetGoodPerson(broker);
             Auction goodAuction = GetGoodAuction(broker);
 
             Product badProduct = new Product() { Name = "bad" };
 
             goodAuction.Product = badProduct;
 
-            Assert.ThrowsAny<Exception>(() => broker.RegisterAuction(goodPerson, goodAuction)); 
-        }
-
-        [Fact]
-        public void RegisterAuction_ShouldThrowExceptionDueLimits()
-        {
-            throw new Exception();
+            Assert.ThrowsAny<Exception>(() => broker.RegisterAuction(goodPerson, goodAuction));
         }
 
         [Fact]
@@ -183,7 +177,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
             Person goodPerson = GetGoodPerson(broker);
             Auction goodAuction = GetGoodAuction(broker);
-            
+
             Auction registeredAuction = broker.RegisterAuction(goodPerson, goodAuction);
 
             Assert.NotNull(registeredAuction);
@@ -205,13 +199,41 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             try
             {
                 broker.RegisterBid(bidder, bid, goodAuction);
-            }
-            catch(Exception e)
+            } catch (Exception e)
             {
                 throwed = true;
             }
 
             Assert.False(throwed);
+        }
+
+
+        [Theory]
+        [InlineData(999)]
+        [InlineData(5)]
+        public void RegisterBid_ShouldThrowExceptionDueValue(double value)
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
+
+            Person goodPerson = GetGoodPerson(broker);
+            Auction goodAuction = GetGoodAuction(broker);
+
+            Auction registeredAuction = broker.RegisterAuction(goodPerson, goodAuction);
+
+            Assert.NotNull(registeredAuction);
+            Assert.NotEqual(0, registeredAuction.IdAuction);
+
+            Person bidder = GetGoodPerson2(broker);
+
+            Bid bid = new Bid()
+            {
+                Currency = goodAuction.Currency,
+                Date = DateTime.Now,
+                Value = value,
+                Auction = goodAuction,
+            };
+
+            Assert.ThrowsAny<Exception>(() => broker.RegisterBid(bidder, bid, goodAuction));
         }
 
         [Fact]
@@ -237,8 +259,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
                 Value = value,
                 Auction = goodAuction,
             };
-             
-            Assert.ThrowsAny<Exception>(() => broker.RegisterBid(bidder, bid, goodAuction)); 
+
+            Assert.ThrowsAny<Exception>(() => broker.RegisterBid(bidder, bid, goodAuction));
         }
 
         [Fact]
@@ -264,7 +286,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
                 Value = bad_value,
                 Auction = goodAuction,
             };
-             
+
             Assert.ThrowsAny<Exception>(() => broker.RegisterBid(bidder, bid, goodAuction));
         }
 
@@ -310,8 +332,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             try
             {
                 broker.EndAuction(goodPerson, goodAuction);
-            }
-            catch(Exception e)
+            } catch (Exception e)
             {
                 didThrow = true;
             }
@@ -331,9 +352,9 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             Assert.NotNull(registeredAuction);
             Assert.NotEqual(0, registeredAuction.IdAuction);
 
-            Person good2 = GetGoodPerson2(broker); 
+            Person good2 = GetGoodPerson2(broker);
 
-            Assert.ThrowsAny<Exception>(() => broker.EndAuction(good2, goodAuction)); 
+            Assert.ThrowsAny<Exception>(() => broker.EndAuction(good2, goodAuction));
         }
 
         [Fact]
@@ -342,19 +363,31 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             BiddingBroker broker = new BiddingBroker(InitMockedDb());
 
             Person goodPerson = GetGoodPerson(broker);
-            Person good2 = GetGoodPerson2(broker);  
+            Person good2 = GetGoodPerson2(broker);
 
             bool didThrown = false;
             try
             {
                 broker.PostMark(goodPerson, good2, 5);
-            }
-            catch(Exception e)
+            } catch (Exception e)
             {
 
             }
 
             Assert.False(didThrown);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(11)]
+        public void PostMark_ShouldThrowDueMarkInvalid(int mark)
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
+
+            Person goodPerson = GetGoodPerson(broker);
+            Person good2 = GetGoodPerson2(broker);
+
+            Assert.ThrowsAny<Exception>(() => broker.PostMark(goodPerson, good2, mark));
         }
 
         [Fact]

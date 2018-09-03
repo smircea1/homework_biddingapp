@@ -24,6 +24,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// The log
         /// </summary>
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+         
+        /// <summary>
+        /// The maximum mark rating
+        /// </summary>
+        private static readonly int MaxMarkRating = int.Parse(ConfigurationManager.AppSettings.Get("MaxMarkRating"));
+
+        /// <summary>
+        /// The minimum mark rating
+        /// </summary>
+        private static readonly int MinMarkRating = 1;
 
         /// <summary>
         /// The minimum rating allowed for bidding
@@ -53,7 +63,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// The available currencies
         /// </summary>
-        private List<Currency> availableCurrencies;
+        private List<Currency> availableCurrencies; 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiddingBroker"/> class.
@@ -257,6 +267,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 }
 
                 bidTable.InsertBid(personBidder.IdBidder, auction.IdAuction, auction.Currency.IdCurrency, bid);
+
+                Log.Info("bid registered!");
             }
             catch (Exception e)
             {
@@ -285,10 +297,17 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             }
 
             PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(toPerson);
+            
+            if (mark > MaxMarkRating || mark < MinMarkRating)
+            {
+                throw new Exception("BadRating");
+            }
 
             PersonOfferorMark markObj = new PersonOfferorMark() { DateOccur = DateTime.Now, Mark = mark, Receiver = offeror, Sender = fromPerson };
 
             personMarkTable.InsertPersonMark(markObj);
+
+            Log.Info("mark registered!");
 
             PersonOfferorService offerorService = new PersonOfferorService(offeror);
 
@@ -392,10 +411,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
                 auctionService.EndAuction(offeror);
 
-                auctionTable.UpdateAuction(auctionService.Auction); 
+                auctionTable.UpdateAuction(auctionService.Auction);
+                Log.Info("auction ended!");
             }
             catch (Exception e)
-            {
+            { 
+                Log.Info("EndAuction :" + e.Message);
                 throw e;
             } 
         }
@@ -413,6 +434,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 {
                     this.auctions = auctions;
                 }
+
+                Log.Info("auctions loaded!");
             }
             catch (Exception e)
             {
@@ -429,6 +452,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             { 
                 CategoriesUpdater.UpdateCategories(this.tablesProvider);
                 this.availableCategories = CategoriesUpdater.GetAllAvailableCategories();
+                Log.Info("UpdateCategories succeed!");
             } 
             catch (Exception e)
             {
@@ -442,6 +466,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         private void UpdateCurrencies()
         {
             this.availableCurrencies = this.currencyConverter.AvailableCurrencies;
+            Log.Info("UpdateCurrencies succeed!");
         }
 
         /// <summary>

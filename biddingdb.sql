@@ -1,1 +1,1 @@
-SELECT * FROM biddingdb.bid;
+SELECT * FROM biddingdb.product;

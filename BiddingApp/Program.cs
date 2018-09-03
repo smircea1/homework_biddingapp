@@ -69,14 +69,7 @@ namespace BiddingApp
             //// OK TILL HERE !
             Bid bid = new Bid() { Auction = goodAuction, Date = DateTime.Now, Currency = goodAuction.Currency, Value = 124 };
 
-            try
-            {
-                broker.RegisterBid(goodPerson, bid, registeredAuction);
-            } 
-            catch(Exception e)
-            {
-                System.Console.WriteLine(e.Message);
-            }
+            broker.RegisterBid(goodPerson, bid, registeredAuction); 
 
             System.Console.WriteLine("app ended!");
         }
