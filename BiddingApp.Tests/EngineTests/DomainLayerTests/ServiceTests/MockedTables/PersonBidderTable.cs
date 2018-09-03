@@ -12,7 +12,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
     {
         List<PersonBidder> list = new List<PersonBidder>();
 
-        int index = 0;
+        int index = 1;
 
         IBidTable bidTable;
 

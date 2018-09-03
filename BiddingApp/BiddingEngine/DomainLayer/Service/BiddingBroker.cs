@@ -342,7 +342,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 }
             }
 
-            return null;
+            throw new Exception("not found");
         }
 
         /// <summary>
@@ -378,13 +378,16 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// Ends the auction.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
+        /// <param name="person">The person.</param>
         /// <param name="auction">The auction.</param>
-        public void EndAuction(PersonOfferor offeror, Auction auction)
+        public void EndAuction(Person person, Auction auction)
         {
             IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
+            IPersonOfferorTable personOfferorTable = this.tablesProvider.GetPersonOfferorTable();
+
             try
             {
+                PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(person);
                 AuctionService auctionService = new AuctionService(auction);
 
                 auctionService.EndAuction(offeror);

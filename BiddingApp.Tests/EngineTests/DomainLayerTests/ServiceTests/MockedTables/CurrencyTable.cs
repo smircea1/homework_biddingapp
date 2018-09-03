@@ -16,8 +16,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
         public CurrencyTable()
         {
-            Currency ronCurrency = new Currency() { Name = "ron" };
-            Currency eurCurrency = new Currency() { Name = "eur" };
+            Currency ronCurrency = new Currency() { Name = "ron", IdCurrency = 1 };
+            Currency eurCurrency = new Currency() { Name = "eur", IdCurrency = 2 };
 
             currencies.Add(ronCurrency);
             currencies.Add(eurCurrency);
@@ -40,6 +40,10 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
         public void InsertCurrency(Currency currency)
         {
+            if (FetchCurrencyByName(currency.Name) != null)
+            {
+                return;
+            }
             currency.IdCurrency = index++;
             currencies.Add(currency);
         }

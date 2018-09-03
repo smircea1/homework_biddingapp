@@ -11,7 +11,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
     class PersonOfferorTable : IPersonOfferorTable
     {
         List<PersonOfferor> list = new List<PersonOfferor>();
-        int index = 0;
+        int index = 1;
 
         public PersonOfferor FetchPersonOfferorByPerson(Person person)
         { 

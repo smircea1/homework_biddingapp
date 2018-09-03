@@ -11,7 +11,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
     class ProductTable : IProductTable
     {
         List<Product> list = new List<Product>();
-        int index = 0;
+        int index = 1;
 
         public List<Product> FetchAllProducts()
         {

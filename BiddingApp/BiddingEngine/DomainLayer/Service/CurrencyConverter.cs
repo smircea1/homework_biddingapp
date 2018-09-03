@@ -118,24 +118,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         public void UpdateDbCurrencies()
         {
-            List<Currency> currencies = this.CurrencyTable.FetchAllCurrencies();
-
             foreach (Currency currency in this.AvailableCurrencies)
             {
-                if (!currencies.Contains(currency))
+                try
                 {
-                    try
-                    {
-                        this.CurrencyTable.InsertCurrency(currency);
-                    }
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
-                    catch (Exception e)
-#pragma warning restore CS0168 // The variable 'e' is declared but never used
-                    {
-                        // just ignore that they already exist and trigger unique exception.
-                    }
+                    this.CurrencyTable.InsertCurrency(currency);
+                } 
+                catch (Exception e)
+                {
+                    // just ignore that they already exist and trigger unique exception.
                 }
             }
+
+            this.AvailableCurrencies = this.CurrencyTable.FetchAllCurrencies(); 
         }
     }
 }
