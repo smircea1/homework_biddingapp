@@ -35,7 +35,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             return new PersonOfferor
             {
                 IdOfferor = 1,
-                LastBannedDate = DateTime.Now.AddDays(-3),
+                LastBannedDate = DateTime.Now.AddDays(-365),
                 Person = GetPerson()
             };
         }
