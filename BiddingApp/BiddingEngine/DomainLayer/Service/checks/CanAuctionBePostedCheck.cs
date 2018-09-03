@@ -22,6 +22,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
     public class CanAuctionBePostedCheck
     {
         /// <summary>
+        /// The log
+        /// </summary>
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+         
+        /// <summary>
         /// Does the check.
         /// </summary>
         /// <param name="personOfferor">The person offeror.</param>
@@ -82,6 +87,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
             //// should not be similar.
             if (anySimilarExists)
             {
+                Log.Info(auction.Product.Name + " already exists due to LevensteinDistance!");
                 return false;
             }
 

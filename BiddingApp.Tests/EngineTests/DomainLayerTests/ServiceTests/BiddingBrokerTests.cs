@@ -210,6 +210,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
         [Theory]
         [InlineData(999)]
+        [InlineData(200)]
         [InlineData(5)]
         public void RegisterBid_ShouldThrowExceptionDueValue(double value)
         {
