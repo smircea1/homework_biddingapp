@@ -32,7 +32,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
             return null;
         }
 
-        public List<Auction> FetchOfferorAuctions(PersonOfferorTable offeror)
+        public List<Auction> FetchOfferorAuctions(PersonOfferor offeror)
         {
             List<Auction> auctions = new List<Auction>();
             foreach(Auction auction in list)
@@ -45,7 +45,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
             return auctions;
         }
 
-        public List<Auction> FetchOfferorAuctionsByCategory(PersonOfferorTable offerer, Category category)
+        public List<Auction> FetchOfferorAuctionsByCategory(PersonOfferor offerer, Category category)
         {
             List<Auction> auctions = new List<Auction>();
             foreach (Auction auction in list)

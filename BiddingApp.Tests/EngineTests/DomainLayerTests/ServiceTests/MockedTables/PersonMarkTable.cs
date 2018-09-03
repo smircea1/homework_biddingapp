@@ -13,7 +13,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
         List<PersonOfferorMark> list = new List<PersonOfferorMark>();
         int index = 0;
 
-        public List<PersonOfferorMark> FetchPersonOfferorMarks(PersonOfferorTable offeror)
+        public List<PersonOfferorMark> FetchPersonOfferorMarks(PersonOfferor offeror)
         {
             List<PersonOfferorMark> result = new List<PersonOfferorMark>();
             foreach (PersonOfferorMark mark in list)

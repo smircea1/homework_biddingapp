@@ -35,6 +35,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             ProductTable productTable = new ProductTable();
 
             PersonMarkTable personMarkTable = new PersonMarkTable();
+            PersonOfferorTable personOfferorTable = new PersonOfferorTable();
+
 
             Mock<ITablesProvider> mock = new Mock<ITablesProvider>();
             mock.Setup(x => x.GetCategoryTable()).Returns(categoryTable);
@@ -49,6 +51,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             mock.Setup(x => x.GetProductTable()).Returns(productTable);
              
             mock.Setup(x => x.GetPersonMarkTable()).Returns(personMarkTable);
+            mock.Setup(x => x.GetPersonOfferorTable()).Returns(personOfferorTable);
 
             tables = mock.Object;
         }

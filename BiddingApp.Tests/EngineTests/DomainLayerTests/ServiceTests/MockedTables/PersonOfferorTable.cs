@@ -27,13 +27,34 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
         public void InsertPersonOfferor(int idPerson, PersonOfferor personOfferor)
         {
-            personOfferor.IdOfferor = index++;
+            PersonOfferor offeror = FetchPersonOfferorByPerson(personOfferor.Person);
+            if(offeror != null)
+            {
+                return;
+            }
 
+            personOfferor.IdOfferor = index++;
+            list.Add(personOfferor);
         }
 
         public void UpdatePersonOfferor(PersonOfferor personOfferor)
         {
-            throw new NotImplementedException();
+            PersonOfferor found = null;
+            foreach (PersonOfferor offeror in list)
+            {
+                if (offeror.IdOfferor == personOfferor.IdOfferor)
+                {
+                    found = offeror;
+                    break;
+                }
+            }
+
+            if(found == null)
+            {
+                return;
+            }
+
+            found.LastBannedDate = personOfferor.LastBannedDate;
         }
     }
 }
