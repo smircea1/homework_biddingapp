@@ -50,6 +50,19 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         }
 
         [Theory]
+        [InlineData(23, 32)]
+        [InlineData(100, 350)]
+        [InlineData(1000, 497432)]
+        public void CreateAuction_ShouldInstantiateAuction02(int id, int startValue)
+        {
+            Auction auction = GetAuctionInstance();
+            auction.ValidateObject();
+            auction.IdAuction = id;
+            auction.StartValue = startValue;
+            Assert.NotNull(auction);
+        }
+
+        [Theory]
         [InlineData(-1)]
         [InlineData(-10)]
         [InlineData(-100)]

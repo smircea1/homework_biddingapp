@@ -34,7 +34,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         }
 
         [Fact]
-        public void CreateBid_ShouldInstantiateAuction()
+        public void CreateBid_ShouldInstantiateBid()
         {
             Bid bid = GetBidInstance();
             bid.ValidateObject();
@@ -65,6 +65,41 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             Bid bid = GetBidInstance();
             bid.Currency = null;
 
+            Assert.ThrowsAny<Exception>(() => bid.ValidateObject());
+        }
+
+        [Fact]
+        public void CreateBid_ShouldInstantiateBid02()
+        {
+            Bid bid = GetBidInstance();
+            bid.Auction.EndDate = DateTime.Now.AddHours(10);
+            bid.Date = DateTime.Now.AddHours(2);
+            bid.IdBid = 100;
+            bid.ValidateObject();
+            Assert.NotNull(bid);
+        }
+
+
+        [Fact]
+        public void CreateBid_ShouldInstantiateBid03()
+        {
+            Bid bid = GetBidInstance();
+            bid.Auction.EndDate = DateTime.Now.AddDays(10);
+            bid.Date = DateTime.Now.AddDays(2);
+            bid.IdBid = 1000;
+            bid.ValidateObject();
+            Assert.NotNull(bid);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        [InlineData(-100)]
+        [InlineData(-1000)]
+        public void CreateBid_ShouldThrowBadId(int id)
+        {
+            var bid = GetBidInstance();
+            bid.IdBid = id;
             Assert.ThrowsAny<Exception>(() => bid.ValidateObject());
         }
     }
