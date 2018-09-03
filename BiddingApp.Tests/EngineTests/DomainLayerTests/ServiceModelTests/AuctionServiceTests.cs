@@ -28,6 +28,34 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             Assert.False(auction.IsActive);
         }
 
+        [Fact]
+        public void EndAuctionTwoTimes_ShouldEndAuction()
+        {
+            AuctionService auction = InstanceHelper.GetAuctionService(null);
+            auction.EndAuction(auction.Auction.PersonOfferor);
+
+            Assert.True(auction.HadEnded);
+            Assert.ThrowsAny<Exception>(() => auction.EndAuction(auction.Auction.PersonOfferor));
+        }
+
+        [Fact]
+        public void CreateAuctionService_ShouldHaveNotNullAuction()
+        {
+            var auction = InstanceHelper.GetAuctionService(null);
+            Assert.NotNull(auction.Auction);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("     ")]
+        [InlineData(null)]
+        public void CreateAuctionService_ShouldNotAccessAuctionVaidatorCurrency(string currency)
+        {
+            var auction = InstanceHelper.GetAuctionService(null);
+            auction.Auction.Currency.Name = currency;
+            Assert.ThrowsAny<Exception>(() => auction.Auction.Currency.ValidateObject());
+        }
+
         //[Fact]
         //public void UpdateStatus_ShouldUpdateStatus()
         //{

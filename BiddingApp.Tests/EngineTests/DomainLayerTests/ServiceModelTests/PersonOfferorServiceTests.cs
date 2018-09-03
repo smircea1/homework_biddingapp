@@ -41,5 +41,27 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             var result = personOfferorService.DidPersonHitMaxListLimit(offeror, auctions);
             Assert.False(result);
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("     ")]
+        [InlineData(null)]
+        public void CreatePersonOfferorService_ShouldThrowInvalidAuctionName(string name)
+        {
+            var personOfferorService = InstanceHelper.GetPersonOfferorService(null);
+            personOfferorService.Offeror.Person.Name = name;
+            Assert.ThrowsAny<Exception>(() => personOfferorService.Offeror.Person.ValidateObject());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("     ")]
+        [InlineData(null)]
+        public void CreatePersonService_ShouldThrowInvalidAuctionPhone(string phone)
+        {
+            var personOfferorService = InstanceHelper.GetPersonOfferorService(null);
+            personOfferorService.Offeror.Person.Phone = phone;
+            Assert.ThrowsAny<Exception>(() => personOfferorService.Offeror.Person.ValidateObject());
+        }
     }
 }

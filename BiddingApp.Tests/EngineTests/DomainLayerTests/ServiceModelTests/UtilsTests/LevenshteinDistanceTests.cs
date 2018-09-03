@@ -17,6 +17,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests.UtilsT
         [InlineData("deea", "andreea", 3)]
         [InlineData("geanta", "janta", 2)]
         [InlineData("brick", "drik", 2)]
+        [InlineData("asd", "dsa", 2)]
         public void LevenshteinDistance_ShouldCerifyExpectedResults(string firstString, string secondString, int expectedResult)
         {
             int result = LevenshteinDistance.ComputeDistance(firstString, secondString);

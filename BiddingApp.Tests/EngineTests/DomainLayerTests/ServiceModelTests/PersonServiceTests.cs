@@ -39,5 +39,27 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             var personService = GetPersonService();
             Assert.NotNull(personService.Person);
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("     ")]
+        [InlineData(null)]
+        public void CreatePersonService_ShouldThrowInvalidPersonName(string name)
+        {
+            var personService = GetPersonService();
+            personService.Person.Name = name;
+            Assert.ThrowsAny<Exception>(() => personService.Person.ValidateObject());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("     ")]
+        [InlineData(null)]
+        public void CreatePersonService_ShouldThrowInvalidPersonPhone(string phone)
+        {
+            var personService = GetPersonService();
+            personService.Person.Phone = phone;
+            Assert.ThrowsAny<Exception>(() => personService.Person.ValidateObject());
+        }
     }
 }
