@@ -72,9 +72,11 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.ChecksTests
             var offeror = InstanceHelper.GetPersonOfferor();
             var auction = InstanceHelper.GetAuction();
             var offerorAuction = new List<Auction>();
+            for (int i = 0; i < 2; i++)
+            {
+                offerorAuction.Add(InstanceHelper.GetAuction());
+            }
             var allProducts = new List<Product>();
-            allProducts.Add(InstanceHelper.GetProduct());
-            allProducts.Add(InstanceHelper.GetProduct());
             var result = CanAuctionBePostedCheck.DoCheck(offeror, auction, offerorAuction, allProducts);
 
             Assert.False(result);
