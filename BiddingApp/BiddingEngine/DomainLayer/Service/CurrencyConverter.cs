@@ -30,7 +30,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// Initializes a new instance of the <see cref="CurrencyConverter"/> class.
         /// </summary>
         /// <param name="tablesProvider">The tables provider.</param>
-        internal CurrencyConverter(ITablesProvider tablesProvider)
+        public CurrencyConverter(ITablesProvider tablesProvider)
         {
             this.CurrencyTable = tablesProvider.GetCurrencyTable();
             this.UpdateRates();
@@ -126,7 +126,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                     {
                         this.CurrencyTable.InsertCurrency(currency);
                     }
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
                     catch (Exception e)
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
                     {
                         // just ignore that they already exist and trigger unique exception.
                     }

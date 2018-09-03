@@ -7,7 +7,7 @@ using Xunit;
 using BiddingApp.BiddingEngine.DomainLayer.Service;
 
 namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
-{
+{ 
     public class BiddingBrokerTests
     {
     }

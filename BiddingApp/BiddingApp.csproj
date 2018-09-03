@@ -144,6 +144,7 @@
     </Compile>
     <Compile Include="BiddingEngine\DomainLayer\Model\Product.cs" />
     <Compile Include="BiddingEngine\DomainLayer\ServiceModel\Utils\LevenshteinDistance.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Program.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

@@ -13,10 +13,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     using System.Text;
     using System.Threading.Tasks;
 
+#pragma warning disable CS0659 // 'Currency' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     /// <summary>
     /// This represents a money currency
     /// </summary>
     public class Currency
+#pragma warning restore CS0659 // 'Currency' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {    
         /// <summary>
         /// Gets or sets the identifier.
