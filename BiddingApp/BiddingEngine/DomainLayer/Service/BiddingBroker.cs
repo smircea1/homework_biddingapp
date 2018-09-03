@@ -153,6 +153,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
 
             PersonOfferor offeror = personOfferorTable.FetchPersonOfferorByPerson(person);
+            offeror.Person = person;
             Currency currency = auction.Currency;
             Category category = auction.Product.Category;
 

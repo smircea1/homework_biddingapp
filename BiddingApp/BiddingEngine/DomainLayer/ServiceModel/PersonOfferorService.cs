@@ -151,7 +151,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         internal void UpdateIsBanned()
         {
-            TimeSpan remainingBanned = this.Offeror.LastBannedDate.TimeOfDay - DateTime.Now.TimeOfDay; 
+            DateTime unbanOccurs = this.Offeror.LastBannedDate.AddDays(bannedDaysForBadRating);
+            TimeSpan remainingBanned = unbanOccurs - DateTime.Now; 
             this.IsBanned = remainingBanned > TimeSpan.Zero;
         }
 

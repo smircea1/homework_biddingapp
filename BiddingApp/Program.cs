@@ -50,7 +50,7 @@ namespace BiddingApp
 
 
             DateTime startDate = DateTime.Now;
-            DateTime endDate = DateTime.Now.AddSeconds(10);
+            DateTime endDate = DateTime.Now.AddDays(1);
 
             double startValue = 123.3;
 
