@@ -103,7 +103,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
                 throw e;
             }
 
-            this.Auction.EndDate = DateTime.Now;  
+            // Hackish fix
+            this.Auction.EndDate = DateTime.Now.AddSeconds(-1);  
 
             this.UpdateStatus(); 
         }
