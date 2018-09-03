@@ -165,25 +165,28 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 auction.Currency.ValidateObject();
                 auction.Product.ValidateObject();
 
-                Product product = productTable.FetchProductByAllAttributes(auction.Product.Category.IdCategory, auction.Product);
-                product.Category = category;
-
-                Auction fetched = auctionTable.FetchAuctionByIds(offeror.IdOfferor, product.IdProduct);
-
-                if (fetched.IdAuction != 0)
-                { 
-                    fetched.PersonOfferor = offeror; 
-                    fetched.Product = product; 
-                    fetched.Currency = currency;
-
-                    return fetched;
-                    ////throw new Exception("Auction is already registered");
-                } 
-
                 if (auction.Currency.IdCurrency == 0)
                 {
                     throw new Exception("Invalid currency.");
                 }
+
+                Product product = productTable.FetchProductByAllAttributes(auction.Product.Category.IdCategory, auction.Product);
+                if(product != null)
+                {
+                    product.Category = category;
+
+                    Auction fetched = auctionTable.FetchAuctionByIds(offeror.IdOfferor, product.IdProduct);
+
+                    if (fetched.IdAuction != 0)
+                    {
+                        fetched.PersonOfferor = offeror;
+                        fetched.Product = product;
+                        fetched.Currency = currency;
+
+                        return fetched;
+                        ////throw new Exception("Auction is already registered");
+                    }
+                }  
             }
             catch (Exception e)
             {
@@ -235,8 +238,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
             try
             {
                 PersonBidder personBidder = personBidderTable.FetchPersonBidderByIdPerson(person.IdPerson);
-
-                bid.PersonBidder = personBidder;
+                bid.PersonBidder = personBidder ?? throw new Exception("no person bidder!");
+                personBidder.Person = person;
 
                 Bid highest_bid = this.GetHighestBid(auction);
 
@@ -246,7 +249,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                     throw new Exception("INVALID BID!");
                 }
 
-                bidTable.InsertBid(personBidder.Id, auction.IdAuction, auction.Currency.IdCurrency, bid);
+                bidTable.InsertBid(personBidder.IdBidder, auction.IdAuction, auction.Currency.IdCurrency, bid);
             }
             catch (Exception e)
             {

@@ -77,7 +77,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
 
         public static AuctionService GetAuctionService(Auction auction)
         {
-            if (auction != null) return new AuctionService(auction);
+            if (auction != null)
+                return new AuctionService(auction);
             return new AuctionService(GetAuction());
         }
 
