@@ -12,24 +12,43 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
     {
         List<Person> persons = new List<Person>();
 
-        public Person FetchPersonById(int id)
+        int index = 0;
+
+        public PersonTable()
         {
-            throw new NotImplementedException();
+
         }
 
         public Person FetchPersonByPhone(string phone)
         {
-            throw new NotImplementedException();
+            foreach(Person person in persons)
+            {
+                if (person.Phone.Equals(phone))
+                {
+                    return person;
+                }
+            }
+            return null;
         }
 
         public void InsertPerson(Person person)
         {
-            throw new NotImplementedException();
+            if(FetchPersonByPhone(person.Phone) == null)
+            {
+                person.IdPerson = index++;
+                persons.Add(person);
+            }
         }
 
         public void UpdatePerson(Person person)
         {
-            throw new NotImplementedException();
+            foreach(Person list_person in persons)
+            {
+                if (list_person.Phone.Equals(person.Phone))
+                {
+                    list_person.Name = person.Name;
+                }
+            }
         }
     }
 }

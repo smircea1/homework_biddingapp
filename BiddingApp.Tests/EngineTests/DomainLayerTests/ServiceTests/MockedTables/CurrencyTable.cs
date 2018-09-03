@@ -11,6 +11,9 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
     class CurrencyTable : ICurrencyTable
     {
         List<Currency> currencies = new List<Currency>();
+
+        int index = 3;
+
         public CurrencyTable()
         {
             Currency ronCurrency = new Currency() { Name = "ron" };
@@ -37,6 +40,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
         public void InsertCurrency(Currency currency)
         {
+            currency.IdCurrency = index++;
             currencies.Add(currency);
         }
     };

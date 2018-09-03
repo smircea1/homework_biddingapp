@@ -11,6 +11,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
     class CategoryTable : ICategoryTable
     {
         List<Category> categories = new List<Category>();
+        int index = 3;
+
         public CategoryTable()
         {
             categories.Add(new Category() { Name = "blah", IdCategory = 1 });
@@ -56,6 +58,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
                 return; // uniq by name
             }
 
+            category.IdCategory = index++;
             categories.Add(category);
         }
     };

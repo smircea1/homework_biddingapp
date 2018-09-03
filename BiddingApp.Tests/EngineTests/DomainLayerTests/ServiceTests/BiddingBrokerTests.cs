@@ -8,6 +8,7 @@ using BiddingApp.BiddingEngine.DomainLayer.Service;
 using BiddingApp.BiddingEngine.DomainData;
 using Moq;
 using BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTables;
+using BiddingApp.BiddingEngine.DomainLayer;
 
 namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 { 
@@ -17,18 +18,46 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
         public BiddingBrokerTests()
         {
+            
+        }
+
+        private void ResetMockedDB()
+        {
             CategoryTable categoryTable = new CategoryTable();
             CurrencyTable currencyTable = new CurrencyTable();
+
+            PersonTable personTable = new PersonTable();
+
+            BidTable bidTable = new BidTable();
+            PersonBidderTable personBidderTable = new PersonBidderTable(bidTable);
+
+            AuctionsTable auctionsTable = new AuctionsTable();
+            ProductTable productTable = new ProductTable();
+
+            PersonMarkTable personMarkTable = new PersonMarkTable();
 
             Mock<ITablesProvider> mock = new Mock<ITablesProvider>();
             mock.Setup(x => x.GetCategoryTable()).Returns(categoryTable);
             mock.Setup(x => x.GetCurrencyTable()).Returns(currencyTable);
+
+            mock.Setup(x => x.GetPersonTable()).Returns(personTable);
+
+            mock.Setup(x => x.GetBidTable()).Returns(bidTable);
+            mock.Setup(x => x.GetPersonBidderTable()).Returns(personBidderTable);
+
+            mock.Setup(x => x.GetAuctionTable()).Returns(auctionsTable);
+            mock.Setup(x => x.GetProductTable()).Returns(productTable);
+             
+            mock.Setup(x => x.GetPersonMarkTable()).Returns(personMarkTable);
+
+            tables = mock.Object;
         }
 
         [Fact]
         public void BiddingBroker_ShouldReturnInstance()
         {
-
+            ResetMockedDB();
+            Assert.NotNull(new BiddingBroker(tables));
         }
 
         [Fact]
@@ -114,14 +143,18 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
         }
 
-        [Fact]
-        public void GetPersonByPhone_ShouldReturnPerson()
+        [Theory]
+        [InlineData("07111111")]
+        [InlineData("08111111")]
+        public void GetPersonByPhone_ShouldReturnPerson(string phone)
         {
 
         }
 
-        [Fact]
-        public void GetPersonByPhone_ShouldReturnNullDueNotFound()
+        [Theory]
+        [InlineData("012022304")]
+        [InlineData("1123445")]
+        public void GetPersonByPhone_ShouldReturnNullDueNotFound(string phone)
         {
 
         }

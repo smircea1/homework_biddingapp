@@ -34,14 +34,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <returns>
         /// the product with ID
         /// </returns>
-        Product FetchProductByAllAttributes(int idCategory, Product product);
-
-        /// <summary>
-        /// Fetches the product by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>the product by id</returns>
-        Product FetchProductById(int id);
+        Product FetchProductByAllAttributes(int idCategory, Product product); 
 
         /// <summary>
         /// Fetches all products.

@@ -101,9 +101,15 @@
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\CanOfferorEndAuctionCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\ExistsAnySimilarProductCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\CurrencyConverterTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\AuctionsTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\BidTable.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\CategoryTable.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\CurrencyTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonBidderTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonMarkTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonOfferorTable.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\ProductTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

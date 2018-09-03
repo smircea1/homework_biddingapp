@@ -29,6 +29,13 @@ namespace BiddingApp.BiddingEngine.DomainData
         void InsertBid(int idBidder, int idAuction, int idCurrency, Bid bid);
 
         /// <summary>
+        /// Fetches the bid by identifier bid.
+        /// </summary>
+        /// <param name="idBid">The identifier bid.</param>
+        /// <returns>found or null bid.</returns>
+        Bid FetchBidByIdBid(int idBid);
+
+        /// <summary>
         /// Fetches the auction highest bid.
         /// </summary>
         /// <param name="auction">The auction.</param>

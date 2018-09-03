@@ -63,10 +63,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         {
             this.auctions = new List<Auction>();
 
-            this.currencyConverter = new CurrencyConverter(tablesProvider);
-
             this.tablesProvider = tablesProvider;
 
+            this.currencyConverter = new CurrencyConverter(tablesProvider);
+             
             this.UpdateCategories();
             this.UpdateCurrencies();
             this.LoadAuctions();
