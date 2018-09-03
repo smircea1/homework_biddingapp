@@ -83,13 +83,33 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             return new AuctionService(GetAuction());
         }
 
+        public static PersonBidder GetPersonBidder()
+        {
+            return new PersonBidder
+            {
+                IdBidder = 1,
+                Person = GetPerson()
+            };
+        }
+
+        public static Bid GetBid()
+        {
+            return new Bid
+            {
+                IdBid = 1,
+                Date = DateTime.Now,
+                Auction = GetAuction(),
+                Currency = GetCurrency(),
+                PersonBidder = GetPersonBidder(),
+                Value = 2
+            };
+        }
+
         public static PersonOfferorService GetPersonOfferorService(PersonOfferor personOfferor)
         {
             if (personOfferor != null) return new PersonOfferorService(personOfferor);
             return new PersonOfferorService(GetPersonOfferor());
         }
-
-
 
         public static ITablesProvider GetTableProvider()
         {
