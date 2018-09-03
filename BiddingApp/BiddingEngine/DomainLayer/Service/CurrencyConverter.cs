@@ -24,6 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         public CurrencyConverter()
         {
+            this.AvailableCurrencies = new List<Currency>();
         }
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <param name="tablesProvider">The tables provider.</param>
         public CurrencyConverter(ITablesProvider tablesProvider)
         {
+            this.AvailableCurrencies = new List<Currency>();
             this.CurrencyTable = tablesProvider.GetCurrencyTable();
             this.UpdateRates();
             this.UpdateDbCurrencies();
@@ -59,7 +61,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <value>
         /// The currency table.
         /// </value>
-        private ICurrencyTable CurrencyTable { get; set; }
+        public ICurrencyTable CurrencyTable { get; set; }
          
         /// <summary>
         /// Does the exchange.
@@ -114,7 +116,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// <summary>
         /// Updates the database currencies.
         /// </summary>
-        private void UpdateDbCurrencies()
+        public void UpdateDbCurrencies()
         {
             List<Currency> currencies = this.CurrencyTable.FetchAllCurrencies();
 

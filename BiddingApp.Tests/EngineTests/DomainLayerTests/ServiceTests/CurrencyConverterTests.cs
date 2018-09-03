@@ -29,7 +29,73 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
         [Fact]
         public void CurrencyConverter_ShouldCreateInstance()
         {  
-            Assert.NotNull(new CurrencyConverter(tablesProvider)); 
+            //// MOCKING USED HERE.
+            Assert.NotNull(new CurrencyConverter(tablesProvider));
+            Assert.NotNull(new CurrencyConverter());
+        }
+
+        [Fact]
+        public void UpdateRates_ShouldIncrementsTheCurrencies()
+        {
+            CurrencyConverter converter = new CurrencyConverter();
+            converter.CurrencyTable = tablesProvider.GetCurrencyTable();
+
+            int initial_size = converter.AvailableCurrencies.Count;
+            converter.UpdateRates();
+            int actual_size = converter.AvailableCurrencies.Count;
+
+            Assert.NotEqual(initial_size, actual_size); 
+        }
+
+        [Fact]
+        public void UpdateDbCurrencies_ShouldIncrementsTheCurrenciesInDb()
+        {
+            ICurrencyTable currencyTable = tablesProvider.GetCurrencyTable();
+
+            int initial_size = currencyTable.FetchAllCurrencies().Count();
+
+            CurrencyConverter converter = new CurrencyConverter();
+            converter.CurrencyTable = tablesProvider.GetCurrencyTable();
+
+            converter.AvailableCurrencies.Add(new Currency() { Name = "dummy" });
+                 
+            converter.UpdateDbCurrencies();
+
+            int actual_size = currencyTable.FetchAllCurrencies().Count();
+
+            Assert.NotEqual(initial_size, actual_size);
+        }
+
+        [Fact]
+        public void GetCurrencyByName_ShouldReturnObject()
+        {
+            CurrencyConverter converter = new CurrencyConverter(tablesProvider);
+            Assert.NotNull(converter.GetCurrencyByName("ron"));
+        }
+
+        [Fact]
+        public void GetCurrencyByName_ShouldReturnNull()
+        {
+            CurrencyConverter converter = new CurrencyConverter(tablesProvider);
+            Assert.Null(converter.GetCurrencyByName("ronn")); 
+        }
+
+        [Theory]
+        [InlineData(280, 3.3)]
+        [InlineData(561, 6.6)]
+        [InlineData(8415, 99)]
+        public void DoExchange_ShouldConvertAllright(int expected, double value)
+        {
+            CurrencyConverter converter = new CurrencyConverter(tablesProvider);
+
+            Currency eur = converter.GetCurrencyByName("eur");
+            Currency usd = converter.GetCurrencyByName("usd");
+
+            ////double value = 3.3; // eurs
+            double converted_value = converter.DoExchange(eur, usd, value); // returns 2.8049999999999997
+            ////int expected = 280; 
+
+            Assert.Equal(expected, (int)(converted_value*100)); 
         }
 
 
