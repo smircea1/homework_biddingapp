@@ -5,14 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using BiddingApp.BiddingEngine.DomainLayer.Service;
-using BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests;
 using BiddingApp.BiddingEngine.DomainData;
 
 namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 {
     public class CategoriesUpdaterTests
     {
-        public static ITablesProvider tables = InstanceHelper.GetTableProvider();
+        public static ITablesProvider tables = MockHelper.GetTableProvider();
         [Fact]
         public void UpdateElectronics_ShouldChangeTheListSize()
         {
