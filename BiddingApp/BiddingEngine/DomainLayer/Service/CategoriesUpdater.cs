@@ -20,8 +20,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
     /// instead of adding them directly into the db.
     /// </summary>
     public class CategoriesUpdater
-    { 
-
+    {  
         /// <summary>
         /// Gets or sets the tables provider.
         /// </summary>

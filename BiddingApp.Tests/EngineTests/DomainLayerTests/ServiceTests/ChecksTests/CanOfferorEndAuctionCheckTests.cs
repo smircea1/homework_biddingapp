@@ -47,9 +47,9 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.ChecksTests
         {
             PersonOfferor offeror = InstanceHelper.GetPersonOfferor();
             var auctionServcie = InstanceHelper.GetAuctionService(null);
-            var updatedAuction = auctionServcie.EndAuction(offeror);
+            auctionServcie.EndAuction(offeror);
 
-            Assert.ThrowsAny<Exception>(() => CanOfferorEndAuctionCheck.DoCheck(offeror, updatedAuction));
+            Assert.ThrowsAny<Exception>(() => CanOfferorEndAuctionCheck.DoCheck(offeror, auctionServcie));
         }
     }
 }

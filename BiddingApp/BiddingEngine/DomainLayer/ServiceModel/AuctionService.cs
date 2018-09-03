@@ -91,8 +91,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Ends the auction.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
-        public AuctionService EndAuction(PersonOfferor offeror)
+        /// <param name="offeror">The offeror.</param> 
+        public void EndAuction(PersonOfferor offeror)
         {
             try
             {
@@ -106,18 +106,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
 
             this.IsActive = false;
             this.Auction.EndDate = DateTime.Now;
-            this.HadEnded = true;
-             
-            return this;
+            this.HadEnded = true; 
         }
 
         /// <summary>
         /// Updates the status.
         /// </summary>
         internal void UpdateStatus()
-        {
-
-
+        { 
             DateTime current = DateTime.Now;
             TimeSpan untilEnd = this.Auction.EndDate - current;
             TimeSpan untilStart = this.Auction.StartDate - current;

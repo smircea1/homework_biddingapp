@@ -172,7 +172,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 }
 
                 Product product = productTable.FetchProductByAllAttributes(auction.Product.Category.IdCategory, auction.Product);
-                if(product != null)
+                if (product != null)
                 {
                     product.Category = category;
 
