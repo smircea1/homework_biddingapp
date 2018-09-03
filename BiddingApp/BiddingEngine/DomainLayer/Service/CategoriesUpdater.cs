@@ -32,7 +32,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <value>
         /// The tables provider.
         /// </value>
-        public static ITablesProvider TablesProvider { internal get; set; }
+        private static ITablesProvider TablesProvider { get; set; }
 
         /// <summary>
         /// Gets all available categories.
