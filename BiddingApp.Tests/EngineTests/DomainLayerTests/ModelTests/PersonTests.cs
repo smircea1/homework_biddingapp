@@ -23,6 +23,57 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
         }
 
         [Theory]
+        [InlineData(-1)]
+        [InlineData(-12000)]
+        [InlineData(-12)]
+        [InlineData(-231)]
+        public void CreatePerson_ShouldThrowBadId(int id)
+        {
+            var person = new Person
+            {
+                IdPerson = id,
+                Name = "Gigi",
+                Phone = "0711112222"
+            };
+
+            Assert.ThrowsAny<Exception>(() => person.ValidateObject());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("       ")]
+        [InlineData(" ")]
+        public void CreatePerson_ShouldThrowName(string name)
+        {
+            var person = new Person
+            {
+                IdPerson = 1,
+                Name = name,
+                Phone = "0711112222"
+            };
+
+            Assert.ThrowsAny<Exception>(() => person.ValidateObject());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("       ")]
+        [InlineData(" ")]
+        public void CreatePerson_ShouldThrowPhone(string phone)
+        {
+            var person = new Person
+            {
+                IdPerson = 1,
+                Name = "Gigi",
+                Phone = phone
+            };
+
+            Assert.ThrowsAny<Exception>(() => person.ValidateObject());
+        }
+
+        [Theory]
         [InlineData(-1, "Gigi", "0728818282")]
         [InlineData(-1, "", "0728818282")]
         [InlineData(-1, " ", "0728818282")]
