@@ -20,11 +20,6 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             ICategoryTable categoryTable = tables.GetCategoryTable();
             int actual_size = categoryTable.FetchAllCategories().Count; 
 
-            if(tables == null)
-            {
-                throw new Exception("");
-            }
-
             CategoriesUpdater.UpdateCategories(tables);
 
             int new_size = categoryTable.FetchAllCategories().Count;

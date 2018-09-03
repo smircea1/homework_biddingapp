@@ -243,6 +243,12 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 personBidder.Person = person;
 
                 Bid highest_bid = this.GetHighestBid(auction);
+                if (highest_bid != null)
+                {
+                    highest_bid.PersonBidder = personBidderTable.FetchPersonByIdBid(highest_bid.IdBid);
+                    highest_bid.Currency = auction.Currency;
+                    highest_bid.Auction = auction;
+                }
 
                 bool isOkToPostBid = CanBidBePostedToActionCheck.DoCheck(personBidder, bid, auction, highest_bid);
                 if (!isOkToPostBid)

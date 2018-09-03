@@ -34,5 +34,12 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// the bidder found
         /// </returns>
         PersonBidder FetchPersonBidderByIdPerson(int idPerson);
+
+        /// <summary>
+        /// Fetches the person by identifier bid.
+        /// </summary>
+        /// <param name="idBid">The identifier bid.</param>
+        /// <returns>the owner of the bid.</returns>
+        PersonBidder FetchPersonByIdBid(int idBid);
     }
 }

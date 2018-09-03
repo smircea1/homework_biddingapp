@@ -47,25 +47,29 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
                 return false;
             }
 
+            double highest_value;
+
             //// there is no bid & this bid value is bigger than auction start value.
             if (highest_bid == null)
             {
-                highest_bid = bid;
-            }
+                highest_value = auction.StartValue;
+            } 
+            else
+            { // null Person Bidder
+                if (highest_bid.PersonBidder == null)
+                {
+                    return false;
+                }
 
-            // null Person Bidder
-            if (highest_bid.PersonBidder == null)
-            {
-                return false;
-            }
+                // bid his bid?
+                if (highest_bid.PersonBidder.IdBidder == bid.PersonBidder.IdBidder)
+                {
+                    return false;
+                }
 
-            // bid his bid?
-            if (highest_bid.PersonBidder.IdBidder == bid.PersonBidder.IdBidder)
-            {
-                return false;
-            }
-             
-            double highest_value = highest_bid.Value;
+                highest_value = highest_bid.Value;
+            }   
+
             double incoming_value = bid.Value;
 
             //// Max current price + 50% * current price

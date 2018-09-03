@@ -26,7 +26,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             {
                 IdPerson = 1,
                 Name = "Gigi",
-                Phone = "0728829291"
+                Phone = "0721122334"
             };
         }
 
@@ -58,7 +58,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
                 IdProduct = 1,
                 Name = "PC",
                 Category = GetCategory(),
-                Description = "i7, 1070 GTX, 16GB RAM"
+                Description = "i7, 1060 GTX, 16GB RAM"
             };
         }
 
