@@ -29,5 +29,30 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 
             Assert.ThrowsAny<Exception>(() => personBidder.ValidateObject());
         }
+
+        [Theory]
+        [InlineData(412)]
+        [InlineData(1)]
+        [InlineData(23)]
+        [InlineData(90092)]
+        public void CreatePersonBidder_ShouldInstantiatePersonBidderTheory(int id)
+        {
+            Person person = new Person();
+            var personBidder = new PersonBidder();
+            personBidder.Person = person;
+            personBidder.IdBidder = id;
+
+            personBidder.ValidateObject();
+            Assert.NotNull(personBidder);
+        }
+
+        public PersonBidder GetPersonBidder()
+        {
+            Person person = new Person();
+            var personBidder = new PersonBidder();
+            personBidder.Person = person;
+
+            return personBidder;
+        }
     }
 }

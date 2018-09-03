@@ -10,7 +10,6 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 {
     public class CurrecyTests
     {
-        // TODO: check this
         [Fact]
         public void CreateCurrencyOfferor_ShouldInstantiateCurrency()
         {
@@ -37,6 +36,24 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             };
 
             Assert.ThrowsAny<Exception>(() => currency.ValidateObject());
+        }
+
+        [Theory]
+        [InlineData(1, "USD")]
+        [InlineData(31212, "GBP")]
+        [InlineData(10, "LONGER")]
+        [InlineData(1000, "EUR")]
+        [InlineData(352, "$")]
+        public void CreateCurrencyOfferor_ShouldInstantiateCUrrencyTheory(int id, string name)
+        {
+            Currency currency = new Currency
+            {
+                IdCurrency = id,
+                Name = name
+            };
+            
+            currency.ValidateObject();
+            Assert.NotNull(currency);
         }
     }
 }
