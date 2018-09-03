@@ -10,6 +10,7 @@ using BiddingApp.BiddingEngine.DomainData;
 using BiddingApp.BiddingEngine.DomainLayer.Model;
 using Moq;
 using BiddingApp.BiddingEngine.DomainLayer;
+using BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTables;
 
 namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 {
@@ -96,41 +97,6 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             ////int expected = 280; 
 
             Assert.Equal(expected, (int)(converted_value*100)); 
-        }
-
-
-
-        class CurrencyTable : ICurrencyTable
-        {
-            List<Currency> currencies = new List<Currency>();
-            public CurrencyTable()
-            {
-                Currency ronCurrency = new Currency() { Name = "ron" };
-                Currency eurCurrency = new Currency() { Name = "eur" };
-
-                currencies.Add(ronCurrency);
-                currencies.Add(eurCurrency);
-            }
-
-            public List<Currency> FetchAllCurrencies()
-            {
-                return currencies;
-            }
-
-            public Currency FetchCurrencyByName(string name)
-            {
-                foreach(Currency currency in currencies)
-                {
-                    if (currency.Name.Equals(name))
-                        return currency;
-                }
-                return null;
-            }
-
-            public void InsertCurrency(Currency currency)
-            {
-                currencies.Add(currency);
-            }
-        };
+        } 
     }
 }

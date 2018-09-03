@@ -101,6 +101,9 @@
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\CanOfferorEndAuctionCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\ExistsAnySimilarProductCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\CurrencyConverterTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\CategoryTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\CurrencyTable.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +128,7 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

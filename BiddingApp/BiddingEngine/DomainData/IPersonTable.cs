@@ -29,14 +29,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Updates the person.
         /// </summary>
         /// <param name="person">The person.</param>
-        void UpdatePerson(Person person);
-         
-        /// <summary>
-        /// Gets the person by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>the person by id</returns>
-        Person FetchPersonById(int id);
+        void UpdatePerson(Person person); 
 
         /// <summary>
         /// Fetches the person by phone.
