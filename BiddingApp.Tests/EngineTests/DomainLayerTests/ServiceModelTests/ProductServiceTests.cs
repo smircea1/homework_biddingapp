@@ -142,12 +142,48 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
         }
 
         [Fact]
-        public void RemoveCharsFromString_ShouldRemoveMultipleCHars()
+        public void RemoveCharsFromString_ShouldRemoveMultipleChars()
         {
             string source = ".:?!,";
             char[] charsToReplase = { '.', ',', ':', '?', '!' };
             string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
             Assert.Equal("", preparedText);
+        }
+
+        [Fact]
+        public void RemoveCharsFromString_ShouldRemoveDots()
+        {
+            string source = "Ana.are.mere";
+            char[] charsToReplase = { '.' };
+            string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
+            Assert.Equal("Anaaremere", preparedText);
+        }
+
+        [Fact]
+        public void RemoveCharsFromString_ShouldRemoveQuestionMark()
+        {
+            string source = "Ana?are?mere";
+            char[] charsToReplase = { '?' };
+            string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
+            Assert.Equal("Anaaremere", preparedText);
+        }
+
+        [Fact]
+        public void RemoveCharsFromString_ShouldRemoveExclamationMark()
+        {
+            string source = "Ana!are!mere";
+            char[] charsToReplase = { '!' };
+            string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
+            Assert.Equal("Anaaremere", preparedText);
+        }
+
+        [Fact]
+        public void RemoveCharsFromString_ShouldRemoveColumn()
+        {
+            string source = "Ana:are:mere";
+            char[] charsToReplase = { ':' };
+            string preparedText = ProductService.RemoveCharsFromString(source, charsToReplase);
+            Assert.Equal("Anaaremere", preparedText);
         }
     }
 }

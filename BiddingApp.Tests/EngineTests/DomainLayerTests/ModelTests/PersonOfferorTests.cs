@@ -29,5 +29,21 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 
             Assert.ThrowsAny<Exception>(() => personOfferor.ValidateObject());
         }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-12000)]
+        [InlineData(-12)]
+        [InlineData(-231)]
+        public void CreatePersonOfferor_ShouldThrowBadId(int id)
+        {
+            var personOfferor = new PersonOfferor {
+                IdOfferor = id,
+                LastBannedDate = DateTime.Now,
+                Person = new Person()
+            };
+
+            Assert.ThrowsAny<Exception>(() => personOfferor.ValidateObject());
+        }
     }
 }
