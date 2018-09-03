@@ -98,6 +98,7 @@
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\CanOfferorEndAuctionCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\ChecksTests\ExistsAnySimilarProductCheckTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\CurrencyConverterTests.cs" />
+    <Compile Include="EngineTests\DomainLayerTests\MockHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
