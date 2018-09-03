@@ -50,7 +50,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
             //// there is no bid & this bid value is bigger than auction start value.
             if (highest_bid == null)
             {
-                return bid.Value > auction.StartValue; 
+                highest_bid = bid;
+            }
+
+            // null Person Bidder
+            if (highest_bid.PersonBidder == null)
+            {
+                return false;
             }
 
             // bid his bid?
