@@ -92,10 +92,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// Ends the auction.
         /// </summary>
         /// <param name="offeror">The offeror.</param>
-        public void EndAuction(PersonOfferor offeror)
+        public AuctionService EndAuction(PersonOfferor offeror)
         {
             try
             {
+                this.Auction.ValidateObject();
                 CanOfferorEndAuctionCheck.DoCheck(offeror, this);
             } 
             catch (Exception e)
@@ -103,9 +104,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
                 throw e;
             }
 
-            this.Auction.EndDate = DateTime.Now;  
-
-            this.UpdateStatus(); 
+            this.IsActive = false;
+            this.Auction.EndDate = DateTime.Now;
+            this.HadEnded = true;
+             
+            return this;
         }
 
         /// <summary>
@@ -113,6 +116,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </summary>
         internal void UpdateStatus()
         {
+
+
             DateTime current = DateTime.Now;
             TimeSpan untilEnd = this.Auction.EndDate - current;
             TimeSpan untilStart = this.Auction.StartDate - current;

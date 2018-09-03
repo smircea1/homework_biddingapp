@@ -24,8 +24,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             AuctionService auction = InstanceHelper.GetAuctionService(null);
             auction.EndAuction(auction.Auction.PersonOfferor);
 
-            Assert.False(auction.HadEnded);
-            Assert.True(auction.IsActive);
+            Assert.True(auction.HadEnded);
+            Assert.False(auction.IsActive);
         }
 
         //[Fact]

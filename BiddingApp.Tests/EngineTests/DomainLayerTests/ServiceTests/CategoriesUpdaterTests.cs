@@ -12,11 +12,18 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
     public class CategoriesUpdaterTests
     {
         public static ITablesProvider tables = MockHelper.GetTableProvider();
+
         [Fact]
         public void UpdateElectronics_ShouldChangeTheListSize()
         {
+            ITablesProvider tables = MockHelper.GetTableProvider();
             ICategoryTable categoryTable = tables.GetCategoryTable();
-            int actual_size = categoryTable.FetchAllCategories().Count;
+            int actual_size = categoryTable.FetchAllCategories().Count; 
+
+            if(tables == null)
+            {
+                throw new Exception("");
+            }
 
             CategoriesUpdater.UpdateCategories(tables);
 

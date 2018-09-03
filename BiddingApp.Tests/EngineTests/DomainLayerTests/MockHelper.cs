@@ -17,6 +17,8 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
         private class TableProviderTest : ITablesProvider
         {
+            private CategoryTableImpl categoryTable =  new CategoryTableImpl();
+
             class CategoryTableImpl : ICategoryTable
             {
                 public List<Category> list;
@@ -68,7 +70,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
 
             public ICategoryTable GetCategoryTable()
             {
-                return new CategoryTableImpl();
+                return categoryTable;
             }
 
             public ICurrencyTable GetCurrencyTable()

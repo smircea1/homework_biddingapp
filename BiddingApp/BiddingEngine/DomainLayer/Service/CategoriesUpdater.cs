@@ -20,11 +20,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
     /// instead of adding them directly into the db.
     /// </summary>
     public class CategoriesUpdater
-    {
-        /// <summary>
-        /// The domain data storage
-        /// </summary>
-        private static DomainDataStorage domainDataStorage = DomainDataStorage.GetInstance();
+    { 
 
         /// <summary>
         /// Gets or sets the tables provider.
