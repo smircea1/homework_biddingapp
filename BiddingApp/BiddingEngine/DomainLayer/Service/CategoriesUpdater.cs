@@ -27,7 +27,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <value>
         /// The tables provider.
         /// </value>
-        private static ITablesProvider TablesProvider { get; set; }
+        public static ITablesProvider TablesProvider { get; set; }
 
         /// <summary>
         /// Gets all available categories.
@@ -59,8 +59,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <summary>
         /// Updates the electronics.
         /// </summary>
+        /// <exception cref="Exception">Unable to fetch electronics category item.</exception>
         /// <exception cref="System.Exception">Unable to fetch electronics category item.</exception>
-        private static void UpdateElectronics()
+        public static void UpdateElectronics()
         {
             List<Category> electronicCategories = new List<Category>();
 
@@ -94,7 +95,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// <summary>
         /// Updates the home.
         /// </summary>
-        private static void UpdateHome()
+        /// <exception cref="Exception">Unable to fetch home category item.</exception>
+        public static void UpdateHome()
         {
             List<Category> homeCategories = new List<Category>();
 
@@ -128,7 +130,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// Inserts the category list.
         /// </summary>
         /// <param name="list">The list.</param>
-        private static void InsertCategoryList(List<Category> list)
+        public static void InsertCategoryList(List<Category> list)
         {
             ICategoryTable categoryTable = TablesProvider.GetCategoryTable();
 
