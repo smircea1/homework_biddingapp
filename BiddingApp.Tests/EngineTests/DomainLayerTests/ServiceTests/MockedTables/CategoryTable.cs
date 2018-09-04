@@ -15,8 +15,12 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
         public CategoryTable()
         {
-            categories.Add(new Category() { Name = "blah", IdCategory = 1 });
-            categories.Add(new Category() { Name = "blahh", IdParent = 1, IdCategory = 2 });
+            Category blah = new Category() { Name = "blah", IdCategory = 1 };
+            Category blahh = new Category() { Name = "blahh", IdCategory = 2 };
+
+            blah.Subcategories.Add(blahh);
+            categories.Add(blah);
+            categories.Add(blahh); 
         }
 
         public List<Category> FetchAllCategories()
@@ -39,16 +43,15 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
         public List<Category> FetchSubCategories(Category category)
         {
-            List<Category> subcategories = new List<Category>();
-            foreach (Category list_category in categories)
+            foreach(Category listed_category in categories)
             {
-                if (category.IdParent == category.IdCategory)
+                if(listed_category.IdCategory == category.IdCategory)
                 {
-                    subcategories.Add(list_category);
+                    return listed_category.Subcategories;
                 }
             }
 
-            return subcategories;
+            return new List<Category>();
         }
 
         public void InsertCategory(Category category)
@@ -60,6 +63,20 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests.MockedTable
 
             category.IdCategory = index++;
             categories.Add(category);
+        }
+
+        public void InsertSubCategory(int idParent, int idSon)
+        {
+            foreach(Category category in categories)
+            {
+                foreach(Category subcategory in categories)
+                {
+                    if(category.IdCategory == idParent && subcategory.IdCategory == idSon)
+                    {
+                        category.Subcategories.Add(subcategory);
+                    }
+                } 
+            }
         }
     };
 }

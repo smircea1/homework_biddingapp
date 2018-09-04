@@ -45,8 +45,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
         {
             return new Category
             {
-                IdCategory = 1,
-                IdParent = 2,
+                IdCategory = 1, 
                 Name = "Electronics"
             };
         }

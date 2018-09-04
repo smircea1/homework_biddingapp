@@ -20,7 +20,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
     /// instead of adding them directly into the db.
     /// </summary>
     public class CategoriesUpdater
-    {  
+    {
         /// <summary>
         /// Gets or sets the tables provider.
         /// </summary>
@@ -68,26 +68,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
             ICategoryTable categoryTable = TablesProvider.GetCategoryTable();
 
             Category electronics = new Category { Name = "Electronics" };
-            //// ELECTRONICS
-            try
-            {
-                categoryTable.InsertCategory(electronics);
-                electronics = categoryTable.FetchCategoryByName(electronics.Name);
-            } 
-            catch (Exception)
-            {
-                electronics = categoryTable.FetchCategoryByName(electronics.Name);
-            }
 
-            if (electronics == null)
+            List<Category> elec_sub = new List<Category>()
             {
-                throw new Exception("Unable to fetch electronics category item.");
-            }
+                { new Category { Name = "Laptops" } },
+                { new Category { Name = "TVs" } },
+                { new Category { Name = "CellPhones" } },
+                { new Category { Name = "PC Periferics" } },
+            };
 
-            electronicCategories.Add(new Category { Name = "Laptops", IdParent = electronics.IdCategory });
-            electronicCategories.Add(new Category { Name = "TVs", IdParent = electronics.IdCategory });
-            electronicCategories.Add(new Category { Name = "CellPhones", IdParent = electronics.IdCategory });
-            electronicCategories.Add(new Category { Name = "PC Periferics", IdParent = electronics.IdCategory });
+            electronics.Subcategories = elec_sub;
+
+            electronicCategories.Add(electronics);
+            electronicCategories.AddRange(elec_sub);
 
             InsertCategoryList(electronicCategories);
         }
@@ -97,31 +90,24 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
         /// </summary>
         /// <exception cref="Exception">Unable to fetch home category item.</exception>
         public static void UpdateHome()
-        {
-            List<Category> homeCategories = new List<Category>();
-
+        { 
             ICategoryTable categoryTable = TablesProvider.GetCategoryTable();
 
             Category home = new Category { Name = "Home" };
-            //// HOME
-            try
-            {
-                categoryTable.InsertCategory(home);
-                home = categoryTable.FetchCategoryByName(home.Name);
-            } 
-            catch (Exception)
-            {
-                home = categoryTable.FetchCategoryByName(home.Name);
-            }
 
-            if (home == null)
+            List<Category> home_sub = new List<Category>()
             {
-                throw new Exception("Unable to fetch home category item.");
-            }
+                { new Category { Name = "Chairs" } },
+                { new Category { Name = "Tables" } },
+                { new Category { Name = "Bolts" } },
+            };
 
-            homeCategories.Add(new Category { Name = "Chairs", IdParent = home.IdCategory });
-            homeCategories.Add(new Category { Name = "Tables", IdParent = home.IdCategory });
-            homeCategories.Add(new Category { Name = "Bolts", IdParent = home.IdCategory });
+            home.Subcategories = home_sub;
+
+            List<Category> homeCategories = new List<Category>();
+
+            homeCategories.Add(home);
+            homeCategories.AddRange(home_sub);
 
             InsertCategoryList(homeCategories);
         }
@@ -139,6 +125,22 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
                 try
                 {
                     categoryTable.InsertCategory(category);
+                } 
+                catch (Exception)
+                {
+                }  
+            }
+
+            foreach (Category category in list)
+            {
+                try
+                {
+                    Category fetched_with_id = categoryTable.FetchCategoryByName(category.Name);
+                    Category fetched_sub_with_id = categoryTable.FetchCategoryByName(category.Name);
+                    foreach (Category sub_category in category.Subcategories)
+                    {
+                        categoryTable.InsertSubCategory(fetched_with_id.IdCategory, fetched_sub_with_id.IdCategory);
+                    }
                 } 
                 catch (Exception)
                 {

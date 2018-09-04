@@ -38,6 +38,18 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             Assert.ThrowsAny<Exception>(() => currency.ValidateObject());
         }
 
+        [Fact]
+        public void Equals_shouldFail()
+        {
+            Currency currency = new Currency
+            {
+                IdCurrency = 1,
+                Name = "blah"
+            };
+
+            Assert.False(currency.Equals("badtype"));
+        }
+
         [Theory]
         [InlineData(1, "USD")]
         [InlineData(31212, "GBP")]

@@ -1,11 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="Auction.cs" company="Transilvania University of Brasov"> 
-//     Copyright (c) Transilvania University of Brasov. All rights reserved. 
-// </copyright> 
-// <author>Stoica Mircea</author> 
-//-----------------------------------------------------------------------  
-
-namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
+﻿namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 {
     using BiddingApp.BiddingEngine.DomainLayer;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
@@ -60,6 +53,15 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             auction.IdAuction = id;
             auction.StartValue = startValue;
             Assert.NotNull(auction);
+        }
+
+        [Fact]
+        public void CreateAuction_ShouldThrowBadPerson()
+        {
+
+            Auction auction = GetAuctionInstance();
+            auction.PersonOfferor = null;
+            Assert.ThrowsAny<Exception>(() => auction.ValidateObject());
         }
 
         [Theory]

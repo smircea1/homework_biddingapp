@@ -49,6 +49,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
 
             Assert.ThrowsAny<Exception>(() => bid.ValidateObject());
         }
+         
 
         [Fact]
         public void CreateBid_ShouldTwrowBadAuction()

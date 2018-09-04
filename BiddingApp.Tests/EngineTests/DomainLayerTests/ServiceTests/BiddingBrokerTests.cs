@@ -74,7 +74,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
         public Person GetGoodPerson2(BiddingBroker broker)
         {
             Person goodPerson = new Person() { Name = "ggz", Phone = "9933845523" };
-            goodPerson = broker.RegisterPerson(goodPerson);
+            goodPerson = broker.RegisterPerson(goodPerson); 
 
             return goodPerson;
         }
@@ -117,6 +117,25 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             Person goodPerson = GetGoodPerson(broker);
 
             Assert.NotEqual(0, goodPerson.IdPerson);
+        }
+
+        [Fact]
+        public void RegisterPerson_ShouldThrowDueExisting()
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
+            Person bad = GetGoodPerson(broker);
+            bad.IdPerson = 0;
+
+            Assert.NotNull(broker.RegisterPerson(bad)); 
+        }
+
+        [Fact]
+        public void RegisterPerson_ShouldThrowDueId()
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
+
+            Person bad = new Person() {IdPerson = 1 ,Name = "gigica", Phone = "07299544321" };  
+            Assert.ThrowsAny<Exception>(() => broker.RegisterPerson(bad)); 
         }
 
         [Fact]
@@ -366,16 +385,42 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             Person goodPerson = GetGoodPerson(broker);
             Person good2 = GetGoodPerson2(broker);
 
-            bool didThrown = false;
-            try
-            {
-                broker.PostMark(goodPerson, good2, 5);
-            } catch (Exception e)
-            {
+            broker.PostMark(goodPerson, good2, 5);
+        }
 
-            }
+        [Fact]
+        public void PostMark_ShouldThrowDueIdSender()
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
 
-            Assert.False(didThrown);
+            Person goodPerson = GetGoodPerson(broker);
+            goodPerson.IdPerson = 0;
+            Person good2 = GetGoodPerson2(broker);
+
+            Assert.ThrowsAny<Exception>(() => broker.PostMark(goodPerson, good2, 5));
+        }
+
+        [Fact]
+        public void PostMark_ShouldThrowDueIdReceiver()
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
+
+            Person goodPerson = GetGoodPerson(broker);
+            Person good2 = GetGoodPerson2(broker);
+            good2.IdPerson = 0;
+
+            Assert.ThrowsAny<Exception>(() => broker.PostMark(goodPerson, good2, 5)); 
+        }
+
+        [Fact]
+        public void PostMark_ShouldPostTheMarkAndUpdate()
+        {
+            BiddingBroker broker = new BiddingBroker(InitMockedDb());
+
+            Person goodPerson = GetGoodPerson(broker);
+            Person good2 = GetGoodPerson2(broker);
+
+            broker.PostMark(goodPerson, good2, 5);
         }
 
         [Theory]

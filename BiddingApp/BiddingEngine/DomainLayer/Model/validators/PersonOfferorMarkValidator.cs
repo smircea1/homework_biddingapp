@@ -69,12 +69,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             if (obj.Mark <= 0 || obj.Mark > 10)
             {
                 throw new Exception("Mark is out of range(1, 10)!");
-            }
-
-            if (obj.DateOccur == null)
-            {
-                throw new Exception("DateOccur is required!");
-            }
+            } 
         }
     }
 }

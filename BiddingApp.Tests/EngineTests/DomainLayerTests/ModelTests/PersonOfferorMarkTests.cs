@@ -39,6 +39,48 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             Assert.ThrowsAny<Exception>(() => pom.ValidateObject());
         }
 
+        [Theory, MemberData(nameof(TestDataGenerator))]
+        //[InlineData(-1, null, null, null)]
+        public void Validate_shouldThrowBadId(int mark, Person sender, PersonOfferor receiver, DateTime dateOccur)
+        { 
+            PersonOfferorMark pom = new PersonOfferorMark();
+            pom.IdOfferorMark = -1;
+            pom.DateOccur = dateOccur;
+            pom.Mark = mark;
+            pom.Sender = sender;
+            pom.Receiver = receiver;
+             
+            Assert.ThrowsAny<Exception>(() => pom.ValidateObject());
+        } 
+
+        [Theory, MemberData(nameof(TestDataGenerator))]
+        //[InlineData(-1, null, null, null)]
+        public void Validate_shouldThrowSenderNull(int mark, Person sender, PersonOfferor receiver, DateTime dateOccur)
+        {
+            PersonOfferorMark pom = new PersonOfferorMark();
+            pom.IdOfferorMark = 1;
+            pom.DateOccur = dateOccur;
+            pom.Mark = mark;
+            pom.Sender = null;
+            pom.Receiver = receiver;
+
+            Assert.ThrowsAny<Exception>(() => pom.ValidateObject());
+        }
+
+        [Theory, MemberData(nameof(TestDataGenerator))]
+        //[InlineData(-1, null, null, null)]
+        public void Validate_shouldThrowReceiverNull(int mark, Person sender, PersonOfferor receiver, DateTime dateOccur)
+        {
+            PersonOfferorMark pom = new PersonOfferorMark();
+            pom.IdOfferorMark = 1;
+            pom.DateOccur = dateOccur;
+            pom.Mark = mark;
+            pom.Sender = sender;
+            pom.Receiver = null;
+
+            Assert.ThrowsAny<Exception>(() => pom.ValidateObject());
+        }
+
         public static IEnumerable<object[]> TestDataGenerator
         {
             get

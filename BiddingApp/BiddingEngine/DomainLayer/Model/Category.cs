@@ -18,22 +18,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     /// The category of a product
     /// </summary>
     public class Category
-    {  
+    {    
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
-        public int IdCategory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier parent category.
-        /// </summary>
-        /// <value>
-        /// The identifier parent category.
-        /// </value>
-        public int IdParent { get; set; }
+        public int IdCategory { get; set; } 
 
         /// <summary>
         /// Gets or sets the name.
@@ -41,6 +33,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <value>
         /// The name.
         /// </value> 
-        public string Name { get; set; } 
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the subcategories.
+        /// </summary>
+        /// <value>
+        /// The subcategories.
+        /// </value>
+        public List<Category> Subcategories { get; set; } = new List<Category>();
     }
 }

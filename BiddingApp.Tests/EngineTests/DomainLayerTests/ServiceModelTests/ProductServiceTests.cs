@@ -15,8 +15,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
         {
             var category = new Category
             {
-                IdCategory = 1,
-                IdParent = 2,
+                IdCategory = 1, 
                 Name = "Electronics"
             };
 
@@ -36,8 +35,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             List<Product> producs = new List<Product>();
             var category = new Category
             {
-                IdCategory = 1,
-                IdParent = 2,
+                IdCategory = 1, 
                 Name = "Electronics"
             };
 
@@ -68,8 +66,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
             List<Product> producs = new List<Product>();
             var category = new Category
             {
-                IdCategory = 1,
-                IdParent = 2,
+                IdCategory = 1, 
                 Name = "Electronics"
             };
 

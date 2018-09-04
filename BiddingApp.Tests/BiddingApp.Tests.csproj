@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EngineTests\DomainDataTests\DomainDataStorageTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\AuctionTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\BidTests.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ModelTests\CategoryTests.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonOfferorTable.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\PersonTable.cs" />
     <Compile Include="EngineTests\DomainLayerTests\ServiceTests\MockedTables\ProductTable.cs" />
+    <Compile Include="EngineTests\ProgramMainTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

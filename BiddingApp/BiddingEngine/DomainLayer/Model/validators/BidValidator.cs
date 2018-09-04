@@ -60,12 +60,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
             if (obj.Currency == null)
             {
                 throw new Exception("Currency is required!");
-            }
-
-            if (obj.Date == null)
-            {
-                throw new Exception("Date is required!");
-            }
+            } 
         }
     }
 }

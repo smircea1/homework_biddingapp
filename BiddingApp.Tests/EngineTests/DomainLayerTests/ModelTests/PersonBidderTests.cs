@@ -46,6 +46,21 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ModelTests
             Assert.NotNull(personBidder);
         }
 
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-3)]
+        [InlineData(-5)]
+        [InlineData(-7)]
+        public void CreatePersonBidder_ShouldThrowDueBadId(int id)
+        {
+            Person person = new Person();
+            var personBidder = new PersonBidder();
+            personBidder.Person = person;
+            personBidder.IdBidder = id;
+
+            Assert.ThrowsAny<Exception>(() => personBidder.ValidateObject()); 
+        }
+
         public PersonBidder GetPersonBidder()
         {
             Person person = new Person();

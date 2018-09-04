@@ -122,28 +122,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 throw e;
             }
 
-            //// at this point person doesn't exist into db. 
+            //// at this point person doesn't exist into db.  
+            //// the actual insert
+            personTable.InsertPerson(person);
+            person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
 
-            try
-            { 
-                //// the actual insert
-                personTable.InsertPerson(person);
-                person = personTable.FetchPersonByPhone(person.Phone); //// in order to update Id
+            offeror = new PersonOfferor() { Person = person };
+            bidder = new PersonBidder() { Person = person };
 
-                offeror = new PersonOfferor() { Person = person };
-                bidder = new PersonBidder() { Person = person };
+            personOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
+            personBidderTable.InsertPersonBidder(person.IdPerson, bidder);
 
-                personOfferorTable.InsertPersonOfferor(person.IdPerson, offeror);
-                personBidderTable.InsertPersonBidder(person.IdPerson, bidder);
-
-                Log.Info("RegisterPerson: " + person.Name + " person id =" + person.IdPerson + " inserted with success.");
-            }
-            catch (Exception e)
-            {
-                Log.Info("RegisterPerson: failed to do roles for person.");
-                throw e;
-            }
-
+            Log.Info("RegisterPerson: " + person.Name + " person id =" + person.IdPerson + " inserted with success.");
+             
             return person;
         }
 
@@ -426,38 +417,24 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </summary>
         private void LoadAuctions()
         {
-            IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable();
-            try
+            IAuctionTable auctionTable = this.tablesProvider.GetAuctionTable(); 
+            List<Auction> auctions = auctionTable.FetchAllAuctions();
+            if (auctions != null)
             {
-                List<Auction> auctions = auctionTable.FetchAllAuctions();
-                if (auctions != null)
-                {
-                    this.auctions = auctions;
-                }
+                this.auctions = auctions;
+            }
 
-                Log.Info("auctions loaded!");
-            }
-            catch (Exception e)
-            {
-                Log.Info(e);
-            }
+            Log.Info("auctions loaded!"); 
         }
 
         /// <summary>
         /// Updates the categories.
         /// </summary>
         private void UpdateCategories()
-        {
-            try
-            { 
-                CategoriesUpdater.UpdateCategories(this.tablesProvider);
-                this.availableCategories = CategoriesUpdater.GetAllAvailableCategories();
-                Log.Info("UpdateCategories succeed!");
-            } 
-            catch (Exception e)
-            {
-                Log.Info("UpdateCategories: " + e.Message);
-            } 
+        { 
+            CategoriesUpdater.UpdateCategories(this.tablesProvider);
+            this.availableCategories = CategoriesUpdater.GetAllAvailableCategories();
+            Log.Info("UpdateCategories succeed!"); 
         }
 
         /// <summary>
@@ -478,15 +455,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer
         /// </returns>
         private Bid GetHighestBid(Auction auction)
         {
-            IBidTable bidTable = this.tablesProvider.GetBidTable();
-            try
-            {
-                return bidTable.FetchAuctionHighestBid(auction);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            IBidTable bidTable = this.tablesProvider.GetBidTable(); 
+            return bidTable.FetchAuctionHighestBid(auction); 
         }
     }
 }

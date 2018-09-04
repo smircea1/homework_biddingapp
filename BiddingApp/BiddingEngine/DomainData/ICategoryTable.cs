@@ -26,6 +26,13 @@ namespace BiddingApp.BiddingEngine.DomainData
         void InsertCategory(Category category);
 
         /// <summary>
+        /// Inserts the sub category.
+        /// </summary>
+        /// <param name="idParent">The identifier parent.</param>
+        /// <param name="idSon">The identifier son.</param>
+        void InsertSubCategory(int idParent, int idSon);
+
+        /// <summary>
         /// Fetches the name of the category by.
         /// </summary>
         /// <param name="name">The name.</param>
