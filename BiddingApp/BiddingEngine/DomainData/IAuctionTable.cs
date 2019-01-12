@@ -22,7 +22,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// <summary>
         /// Inserts the auction.
         /// </summary>
-        /// <param name="idOfferor">The identifier offeror.</param>
+        /// <param name="idOfferor">The identifier offer person.</param>
         /// <param name="idProduct">The identifier product.</param>
         /// <param name="idCurrency">The identifier currency.</param>
         /// <param name="auction">The auction.</param>
@@ -32,12 +32,12 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Updates the auction.
         /// </summary>
         /// <param name="auction">The auction.</param>
-        void UpdateAuction(Auction auction); 
+        void UpdateAuction(Auction auction);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IAuctionTable" /> interface.
         /// </summary>
-        /// <param name="idOfferor">The identifier offeror.</param>
+        /// <param name="idOfferor">The identifier offer person.</param>
         /// <param name="idProduct">The identifier product.</param>
         /// <returns>
         /// selected auction or null
@@ -45,11 +45,11 @@ namespace BiddingApp.BiddingEngine.DomainData
         Auction FetchAuctionByIds(int idOfferor, int idProduct);
 
         /// <summary>
-        /// Fetches the offeror auctions.
+        /// Fetches the offer person auctions.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
+        /// <param name="offeror">The offer person.</param>
         /// <returns>
-        /// offeror's auctions
+        /// offer's auctions
         /// </returns>
         List<Auction> FetchOfferorAuctions(PersonOfferor offeror);
 
@@ -62,9 +62,9 @@ namespace BiddingApp.BiddingEngine.DomainData
         List<Auction> FetchAllAuctions();
 
         /// <summary>
-        /// Fetches the offeror auctions by category.
+        /// Fetches the offer person auctions by category.
         /// </summary>
-        /// <param name="offerer">The offerer.</param>
+        /// <param name="offerer">The offer person.</param>
         /// <param name="category">The category.</param>
         /// <returns>
         /// returns all user's auction is specified category

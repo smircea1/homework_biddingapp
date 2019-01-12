@@ -25,7 +25,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// <exception cref="System.Exception">
         /// Invalid Id!
         /// or
-        /// PersonOfferor is required!
+        /// Offer person is required!
         /// or
         /// Product is required!
         /// or
@@ -39,7 +39,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         /// or
         /// StartValue must be greater than 0!
         /// </exception>
-        /// <exception cref="Exception">PersonOfferor is required
+        /// <exception cref="Exception">Offer person is required
         /// or
         /// Product is required
         /// or
@@ -61,7 +61,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
 
             if (obj.PersonOfferor == null)
             {
-                throw new Exception("PersonOfferor is required!");
+                throw new Exception("Offer person is required!");
             }
 
             if (obj.Product == null)

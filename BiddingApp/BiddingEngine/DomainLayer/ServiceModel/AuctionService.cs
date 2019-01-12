@@ -91,7 +91,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Ends the auction.
         /// </summary>
-        /// <param name="offeror">The offeror.</param> 
+        /// <param name="offeror">The offer person.</param> 
         public void EndAuction(PersonOfferor offeror)
         {
             try

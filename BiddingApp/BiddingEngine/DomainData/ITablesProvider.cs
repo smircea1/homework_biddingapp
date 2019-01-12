@@ -31,7 +31,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         IPersonTable GetPersonTable();
 
         /// <summary>
-        /// Gets the person offeror table.
+        /// Gets the offer person table.
         /// </summary>
         /// <returns>the table or null</returns>
         IPersonOfferorTable GetPersonOfferorTable();

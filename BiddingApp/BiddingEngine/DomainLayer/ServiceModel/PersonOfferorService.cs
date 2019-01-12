@@ -15,9 +15,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
     using System.Threading.Tasks;
     using BiddingApp.BiddingEngine.DomainData;
     using BiddingApp.BiddingEngine.DomainLayer.Model;
-     
+
     /// <summary>
-    /// wrapper for offeror
+    /// wrapper for offer person
     /// </summary>
     public class PersonOfferorService
     {
@@ -49,7 +49,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Initializes a new instance of the <see cref="PersonOfferorService"/> class.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
+        /// <param name="offeror">The offer person.</param>
         public PersonOfferorService(PersonOfferor offeror)
         { 
             offeror.ValidateObject();
@@ -60,10 +60,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         }
 
         /// <summary>
-        /// Gets the offeror.
+        /// Gets the offer person.
         /// </summary>
         /// <value>
-        /// The offeror.
+        /// The offer person.
         /// </value>
         public PersonOfferor Offeror { get; internal set; }
 
@@ -84,9 +84,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         public double Rating { get; internal set; }
 
         /// <summary>
-        /// Dids the person hit maximum category list limit.
+        /// Did the person hit maximum category list limit.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
+        /// <param name="offeror">The offer person.</param>
         /// <param name="category">The category.</param>
         /// <param name="auctions">The auctions.</param>
         /// <returns>
@@ -104,9 +104,9 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         }
 
         /// <summary>
-        /// Dids the person hit maximum list limit.
+        /// Did the person hit maximum list limit.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
+        /// <param name="offeror">The offer person.</param>
         /// <param name="auctions">The auctions.</param>
         /// <returns>
         /// true if he did, false either
@@ -159,8 +159,8 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Does the ban if needed.
         /// </summary>
-        /// <param name="categorySeachingFor">The category seaching for.</param>
-        /// <param name="offerorAuctions">The offeror auctions.</param>
+        /// <param name="categorySeachingFor">The category searching for.</param>
+        /// <param name="offerorAuctions">The offer person auctions.</param>
         /// <returns>
         /// The number of the in progress auctions in category.
         /// </returns>
@@ -183,7 +183,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// Counts all active auctions.
         /// </summary>
-        /// <param name="offerorAuctions">The offeror auctions.</param>
+        /// <param name="offerorAuctions">The offer person auctions.</param>
         /// <returns>
         /// count of active auctions.
         /// </returns>

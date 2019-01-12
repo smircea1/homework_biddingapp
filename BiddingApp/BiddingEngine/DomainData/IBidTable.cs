@@ -43,10 +43,10 @@ namespace BiddingApp.BiddingEngine.DomainData
         Bid FetchAuctionHighestBid(Auction auction);
 
         /// <summary>
-        /// Fetches the auction bidds.
+        /// Fetches the auction bids.
         /// </summary>
         /// <param name="auction">The auction.</param>
-        /// <returns>All auction's bidds.</returns>
+        /// <returns>All auction's bids.</returns>
         List<Bid> FetchAuctionBidds(Auction auction);
     }
 }

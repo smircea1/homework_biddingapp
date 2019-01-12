@@ -14,14 +14,14 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     using System.Threading.Tasks;
 
     /// <summary>
-    /// offeror mark validator
+    /// Offer person mark validator
     /// </summary>
     public static class PersonOfferorMarkValidator
     {
         /// <summary>
         /// Validates the object.
         /// </summary>
-        /// <param name="obj">The person offeror mark.</param>
+        /// <param name="obj">The offer person mark.</param>
         /// <exception cref="System.Exception">
         /// Invalid Id!
         /// or

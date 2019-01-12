@@ -17,7 +17,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service
 
     /// <summary>
     /// This is intended in order if you need to add categories directly from a new build
-    /// instead of adding them directly into the db.
+    /// instead of adding them directly into the database.
     /// </summary>
     public class CategoriesUpdater
     {

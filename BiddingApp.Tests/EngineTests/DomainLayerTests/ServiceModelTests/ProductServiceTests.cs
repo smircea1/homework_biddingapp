@@ -125,7 +125,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceModelTests
         [InlineData("asd!", "asd")]
         public void PrepareDescriptionForLevenstein__ShouldLowerAndRemoveChars(string text, string result)
         {
-            string preparedText = ProductService.PrepareDescriptionForLevenstein(text);
+            string preparedText = ProductService.PrepareDescriptionForLevenshtein(text);
             Assert.Equal(preparedText, result);
         }
 

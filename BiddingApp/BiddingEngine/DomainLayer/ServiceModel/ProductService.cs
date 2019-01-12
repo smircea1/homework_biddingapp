@@ -24,7 +24,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// <summary>
         /// The except chars
         /// </summary>
-        private static readonly char[] LevensteinExceptChars = { '.', ',', ':', '?', '!' };
+        private static readonly char[] LevenshteinExceptChars = { '.', ',', ':', '?', '!' };
 
         /// <summary>
         /// The level for string duplicate
@@ -47,19 +47,19 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// The product.
         /// </value>
         public Product Product { get; internal set; }
-         
+
         /// <summary>
-        /// Prepares the description for levenstein.
+        /// Prepares the description for computing the distance.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>returns the string lowered without exception chars.</returns>
-        public static string PrepareDescriptionForLevenstein(string input)
+        public static string PrepareDescriptionForLevenshtein(string input)
         {
             string result = input;
 
             result = result.ToLower();
 
-            result = RemoveCharsFromString(result, LevensteinExceptChars);
+            result = RemoveCharsFromString(result, LevenshteinExceptChars);
 
             return result;
         }
@@ -84,11 +84,11 @@ namespace BiddingApp.BiddingEngine.DomainLayer.ServiceModel
         /// </returns>
         public bool HasSimilarDescriptionToAnyFrom(List<Product> products)
         {
-            string actual_description = PrepareDescriptionForLevenstein(this.Product.Description);
+            string actual_description = PrepareDescriptionForLevenshtein(this.Product.Description);
 
             foreach (Product list_product in products)
             {
-                string list_product_description = PrepareDescriptionForLevenstein(list_product.Description);
+                string list_product_description = PrepareDescriptionForLevenshtein(list_product.Description);
 
                 if (LevenshteinDistance.ComputeDistance(actual_description, list_product_description) < LevelForStringDuplicate)
                 {

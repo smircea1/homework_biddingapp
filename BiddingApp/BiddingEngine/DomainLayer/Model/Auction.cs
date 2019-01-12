@@ -29,10 +29,10 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
         public int IdAuction { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier offeror.
+        /// Gets or sets the identifier offer person.
         /// </summary>
         /// <value>
-        /// The identifier offeror.
+        /// The identifier offer person.
         /// </value> 
         public PersonOfferor PersonOfferor { get; set; }
 

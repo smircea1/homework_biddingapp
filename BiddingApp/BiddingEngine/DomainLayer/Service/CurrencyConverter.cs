@@ -82,7 +82,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
 
         /// <summary>
         /// Updates the rates.
-        /// Not implemented. get them from internet idk.
+        /// Not implemented. get them from internet.
         /// </summary>
         public void UpdateRates()
         {
@@ -124,7 +124,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer
                 {
                     this.CurrencyTable.InsertCurrency(currency);
                 } 
-                catch (Exception e)
+                catch (Exception)
                 {
                     // just ignore that they already exist and trigger unique exception.
                 }

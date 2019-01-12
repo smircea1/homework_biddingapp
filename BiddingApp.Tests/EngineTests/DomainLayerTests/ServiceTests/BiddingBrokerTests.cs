@@ -218,7 +218,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             try
             {
                 broker.RegisterBid(bidder, bid, goodAuction);
-            } catch (Exception e)
+            } catch (Exception )
             {
                 throwed = true;
             }
@@ -352,7 +352,7 @@ namespace BiddingApp.Tests.EngineTests.DomainLayerTests.ServiceTests
             try
             {
                 broker.EndAuction(goodPerson, goodAuction);
-            } catch (Exception e)
+            } catch (Exception)
             {
                 didThrow = true;
             }

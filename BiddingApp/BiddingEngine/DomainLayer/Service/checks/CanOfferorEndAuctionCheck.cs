@@ -16,33 +16,33 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
     using BiddingApp.BiddingEngine.DomainLayer.ServiceModel;
 
     /// <summary>
-    /// Tests if an offeror can close a certain auction
+    /// Tests if an offer person can close a certain auction
     /// </summary>
     public class CanOfferorEndAuctionCheck
     {
         /// <summary>
         /// Does the check.
         /// </summary>
-        /// <param name="offeror">The offeror.</param>
+        /// <param name="offerPerson">The offer person.</param>
         /// <param name="auction">The auction.</param>
         /// <exception cref="System.Exception">
-        /// Offeror is null!
+        /// offer person is null!
         /// or
-        /// Offeror does not have enough privileges for this!
+        /// offer person does not have enough privileges for this!
         /// or
         /// Auction is already ended!
         /// </exception>
-        public static void DoCheck(PersonOfferor offeror, AuctionService auction)
+        public static void DoCheck(PersonOfferor offerPerson, AuctionService auction)
         {
-            if (offeror == null)
+            if (offerPerson == null)
             {
-                throw new Exception("Offeror is null!");
+                throw new Exception("offer person is null!");
             }
 
-            if (offeror.IdOfferor != auction.Auction.PersonOfferor.IdOfferor)
+            if (offerPerson.IdOfferor != auction.Auction.PersonOfferor.IdOfferor)
             {
                 // does not belongs to.
-                throw new Exception("Offeror does not have enough privileges for this!"); 
+                throw new Exception("offer person does not have enough privileges for this!"); 
             }
 
             if (auction.HadEnded)

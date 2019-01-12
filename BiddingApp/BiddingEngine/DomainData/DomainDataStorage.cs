@@ -23,7 +23,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         private static DomainDataStorage instance = null;
 
         /// <summary>
-        /// The database conneection
+        /// The database connection
         /// </summary>
         private MySqlConnection databaseConneection = null;
 
@@ -58,7 +58,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         private IPersonMarkTable personMarkTable;
 
         /// <summary>
-        /// The person offeror table
+        /// The offer person table
         /// </summary>
         private IPersonOfferorTable personOfferorTable;
 
@@ -162,7 +162,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         }
 
         /// <summary>
-        /// Gets the person offeror table.
+        /// Gets the offer person table.
         /// </summary>
         /// <returns>the table</returns>
         public IPersonOfferorTable GetPersonOfferorTable()

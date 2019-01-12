@@ -15,7 +15,7 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Model
     using System.Threading.Tasks;
 
     /// <summary>
-    /// The person who posts a bid or who bidds
+    /// The person who posts a bid or who bids
     /// </summary>
     public class Person
     {

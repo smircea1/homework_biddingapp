@@ -15,7 +15,7 @@ namespace BiddingApp.BiddingEngine.DomainData
     using BiddingApp.BiddingEngine.DomainLayer.Model;
 
     /// <summary>
-    /// Person offeror table interface.
+    /// Offer person table interface.
     /// </summary>
     public interface IPersonOfferorTable
     {
@@ -23,13 +23,13 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// Inserts the person bidder.
         /// </summary>
         /// <param name="idPerson">The identifier person.</param>
-        /// <param name="personOfferor">The person offeror.</param>
+        /// <param name="personOfferor">The offer person.</param>
         void InsertPersonOfferor(int idPerson, PersonOfferor personOfferor);
 
         /// <summary>
-        /// Updates the person offeror.
+        /// Updates the person offer.
         /// </summary>
-        /// <param name="personOfferor">The person offeror.</param>
+        /// <param name="personOfferor">The offer person.</param>
         void UpdatePersonOfferor(PersonOfferor personOfferor);
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace BiddingApp.BiddingEngine.DomainData
         /// </summary>
         /// <param name="person">The person.</param>
         /// <returns>
-        /// the offeror role of the person
+        /// the offer role of the person
         /// </returns>
         PersonOfferor FetchPersonOfferorByPerson(Person person); 
     }

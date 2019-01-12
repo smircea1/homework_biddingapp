@@ -25,13 +25,13 @@ namespace BiddingApp.BiddingEngine.DomainLayer.Service.Checks
         /// The log
         /// </summary>
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-         
+
         /// <summary>
         /// Does the check.
         /// </summary>
-        /// <param name="personOfferor">The person offeror.</param>
+        /// <param name="personOfferor">The person offer.</param>
         /// <param name="auction">The auction.</param>
-        /// <param name="offerorAuctions">The offeror auctions.</param>
+        /// <param name="offerorAuctions">The offer person auctions.</param>
         /// <param name="allProducts">All products.</param>
         /// <returns>
         /// true if the auction can be posted.
