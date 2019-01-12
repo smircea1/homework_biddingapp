@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 01, 2018 at 09:09 PM
+-- Generation Time: Jan 12, 2019 at 09:07 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -26,17 +26,16 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `DeletePerson` (IN `IdPerson` INT)  BEGIN
-	delete from person
-	where person.Id = IdPerson;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAllAuctions` ()  BEGIN
 	select * from auction;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAllCategories` ()  BEGIN
 	select * from category;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAllCurrencies` ()  BEGIN
+	select * from currency;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAllProducts` ()  BEGIN
@@ -47,14 +46,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAuctionBiddings` (IN `IdAuctio
 	select * from bid where bid.IdAuction = IdAuction order by bid.Value desc;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAuctionBidds` (IN `Id` INT)  BEGIN
-	select * from bid inner join auction
-	on bid.IdAuction = auction.Id
-	where auction.Id = Id;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAuctionById` (IN `Id` INT)  BEGIN
-	select * from auction where auction.Id = Id;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAuctionByIds` (IN `IdOfferor` INT, IN `IdProduct` INT)  BEGIN
+	select * from auction
+	where auction.IdOfferor = IdOfferor and auction.IdProduct = IdProduct;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAuctionHighestBid` (IN `IdAuction` INT)  BEGIN
@@ -63,10 +57,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchAuctionHighestBid` (IN `IdAuct
 	order by bid.Value desc limit 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchOfferorAuctions` (IN `Id` INT)  BEGIN
-	select * from auction inner join person_offeror
-	on auction.IdOfferor = person_offeror.Id
-	where person_offeror.Id = Id;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchCategoryByName` (IN `Name` VARCHAR(50))  BEGIN
+	select * from category where category.Name = Name;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchCurrencyByName` (IN `Name` VARCHAR(50))  BEGIN
+	select * from currency
+	where currency.Name = Name;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchOfferorAuctions` (IN `IdOfferor` INT)  BEGIN
+	select * from auction
+	where auction.IdOfferor = IdOfferor;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchOfferorAuctionsByCategory` (IN `IdOfferor` INT, IN `IdCategory` INT)  BEGIN
@@ -75,86 +77,94 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchOfferorAuctionsByCategory` (IN
 	where product.IdCategory = IdCategory and auction.IdOfferor = IdOfferor;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonBidderByPerson` (IN `Id` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonBidderByIdPerson` (IN `IdPerson` INT)  BEGIN
 	select * from person_bidder
-	where person_bidder.IdPerson = Id;
+	where person_bidder.IdPerson = IdPerson;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonById` (IN `Id` INT)  BEGIN
 	select * from person where person.Id = Id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonOfferorByPerson` (IN `Id` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonByIdBid` (IN `IdBid` INT)  BEGIN
+	select * from person_bidder inner join bid
+	on person_bidder.IdBidder = bid.IdBidder
+	where bid.IdBid = IdBid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonByPhone` (IN `Phone` VARCHAR(50))  BEGIN
+	select * from person
+	where person.Phone = Phone;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonOfferorByPerson` (IN `IdPerson` INT)  BEGIN
 	select * from person_offeror
-	where person_offeror.IdPerson = Id;
+	where person_offeror.IdPerson = IdPerson;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonOfferorMarks` (IN `Id` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchPersonOfferorMarks` (IN `IdOfferor` INT)  BEGIN
 	select * from usermarks 
-	where usermarks.IdReceiver = Id order by usermarks.DateOccur desc; 
+	where usermarks.IdReceiver = IdOfferor order by usermarks.DateOccur desc; 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchProductById` (IN `Id` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchProductByAllAttributes` (IN `IdCategory` INT, IN `Name` VARCHAR(50), IN `Description` VARCHAR(50))  BEGIN
+	select * from product
+	where product.IdCategory = IdCategory and product.Name = Name and product.Description = Description;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchProductById` (IN `IdProduct` INT)  BEGIN
 	select * from product 
-	where product.Id = Id;
+	where product.Id = IdProduct;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchSubCategories` (IN `Id` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FetchSubCategories` (IN `IdCategory` INT)  BEGIN
 	select * from category 
 	inner join sub_category
-	on category.Id = sub_category.IdSon
-	where sub_category.IdParent = Id;
+	on category.IdCategory = sub_category.IdSon
+	where sub_category.IdParent = IdCategory;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertAuction` (IN `IdOfferor` INT, IN `IdProduct` INT, IN `IdCurrency` INT, IN `StartDate` DATETIME, IN `EndDate` DATETIME, IN `StartValue` DOUBLE)  BEGIN
 	insert into auction(IdOfferor, IdProduct, IdCurrency, StartDate, EndDate, StartValue) values (IdOfferor, IdProduct, IdCurrency, StartDate, EndDate, StartValue);
-	SELECT LAST_INSERT_ID(); 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertBid` (IN `IdBidder` INT, IN `IdAuction` INT, IN `IdCurrency` INT, IN `Value` DOUBLE, IN `Date` DATETIME)  BEGIN
 	insert into bid(IdBidder, IdAuction, IdCurrency, Value, Date) values (IdBidder, IdAuction, IdCurrency, Value, Date);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertCategory` (IN `Name` VARCHAR(50))  BEGIN
-	insert into category(Name) values (Name);
-	SELECT LAST_INSERT_ID(); 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertCategory` (IN `Name` VARCHAR(50), IN `IdParent` INT)  BEGIN
+	insert into category(Name) values (Name); 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertCurrency` (IN `Name` VARCHAR(50))  BEGIN
-	insert into currency(Name) values(Name);
-	SELECT LAST_INSERT_ID(); 
+	insert into currency(Name) values(Name); 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPerson` (IN `Name` VARCHAR(50))  BEGIN
-	insert into person(Name) values(Name);
-	SELECT LAST_INSERT_ID(); 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPerson` (IN `Name` VARCHAR(50), IN `Phone` VARCHAR(50))  BEGIN 
+	insert into person(Name, Phone) values(Name, Phone); 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPersonBidder` (IN `Id` INT)  BEGIN
-	insert into person_bidder(IdPerson) values(Id);
-	SELECT LAST_INSERT_ID(); 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPersonBidder` (IN `IdPerson` INT)  BEGIN
+	insert into person_bidder(IdPerson) values(IdPerson); 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPersonOfferor` (IN `Id` INT)  BEGIN
-	insert into person_offeror(IdPerson) values(Id);
-	SELECT LAST_INSERT_ID(); 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPersonOfferor` (IN `IdPerson` INT)  BEGIN
+	insert into person_offeror(IdPerson) values(IdPerson); 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPersonOfferorMark` (IN `IdSender` INT, IN `IdReceiver` INT, IN `Mark` INT, IN `DateOccur` DATETIME)  BEGIN
 	insert into personmark(IdSender, IdReceiver, Mark, DateOccur) values (IdSender, IdReceiver, Mark, DateOccur);
-	SELECT LAST_INSERT_ID(); 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertProduct` (IN `IdCategory` INT, IN `Name` VARCHAR(50), IN `Description` VARCHAR(50))  BEGIN
 	insert into product(IdCategory, Name, Description) values (IdCategory, Name, Description);
-	SELECT LAST_INSERT_ID(); 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertSubCategory` (IN `IdParent` INT, IN `IdSon` INT)  BEGIN
 	insert into sub_category(IdParent, IdSon) values (IdParent, IdSon);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateAuction` (IN `Id` INT, IN `IdOfferor` INT, IN `IdProduct` INT, IN `IdCurrency` INT, IN `StartDate` DATETIME, IN `EndDate` DATETIME, IN `StartValue` DOUBLE)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateAuction` (IN `IdAuction` INT, IN `IdOfferor` INT, IN `IdProduct` INT, IN `IdCurrency` INT, IN `StartDate` DATETIME, IN `EndDate` DATETIME, IN `StartValue` DOUBLE)  BEGIN
 	update auction set 
 
 	auction.IdOfferor = IdOfferor,
@@ -164,23 +174,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateAuction` (IN `Id` INT, IN `Id
 	auction.EndDate = EndDate,
 	auction.StartValue = StartValue
 	
-	where auction.Id = Id;
+	where auction.IdAuction = IdAuction;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePerson` (IN `Id` INT, IN `Name` VARCHAR(50))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePerson` (IN `IdPerson` INT, IN `Name` VARCHAR(50), IN `Phone` VARCHAR(50))  BEGIN
 	update person set
 
-	person.Name = Name 
+	person.Name = Name,
+	person.Phone = Phone
 	
-	where person.Id = Id;
+	where person.IdPerson = IdPerson;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePersonOfferor` (IN `Id` INT, IN `LastBannedDate` DATETIME)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePersonOfferor` (IN `IdOfferor` INT, IN `LastBannedDate` DATETIME)  BEGIN
 	update person_offeror set
 
 	person.LastBannedDate = LastBannedDate 
 	
-	where person_offeror.Id = Id;
+	where person_offeror.IdOfferor = IdOfferor;
 END$$
 
 DELIMITER ;
@@ -192,7 +203,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `auction` (
-  `Id` int(11) NOT NULL,
+  `IdAuction` int(11) NOT NULL,
   `IdOfferor` int(11) NOT NULL,
   `IdProduct` int(11) NOT NULL,
   `IdCurrency` int(11) NOT NULL,
@@ -208,7 +219,7 @@ CREATE TABLE `auction` (
 --
 
 CREATE TABLE `bid` (
-  `Id` int(11) NOT NULL,
+  `IdBid` int(11) NOT NULL,
   `IdBidder` int(11) NOT NULL,
   `IdAuction` int(11) NOT NULL,
   `IdCurrency` int(11) NOT NULL,
@@ -223,7 +234,7 @@ CREATE TABLE `bid` (
 --
 
 CREATE TABLE `category` (
-  `Id` int(11) NOT NULL,
+  `IdCategory` int(11) NOT NULL,
   `Name` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -231,8 +242,16 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`Id`, `Name`) VALUES
-(1, 'animal');
+INSERT INTO `category` (`IdCategory`, `Name`) VALUES
+(26, 'Bolts'),
+(21, 'CellPhones'),
+(24, 'Chairs'),
+(18, 'Electronics'),
+(23, 'Home'),
+(19, 'Laptops'),
+(22, 'PC Periferics'),
+(25, 'Tables'),
+(20, 'TVs');
 
 -- --------------------------------------------------------
 
@@ -241,9 +260,18 @@ INSERT INTO `category` (`Id`, `Name`) VALUES
 --
 
 CREATE TABLE `currency` (
-  `Id` int(11) NOT NULL,
+  `IdCurrency` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `currency`
+--
+
+INSERT INTO `currency` (`IdCurrency`, `Name`) VALUES
+(2, 'eur'),
+(3, 'ron'),
+(1, 'usd');
 
 -- --------------------------------------------------------
 
@@ -252,20 +280,17 @@ CREATE TABLE `currency` (
 --
 
 CREATE TABLE `person` (
-  `Id` int(11) NOT NULL,
-  `Name` text NOT NULL
+  `IdPerson` int(11) NOT NULL,
+  `Name` text NOT NULL,
+  `Phone` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `person`
 --
 
-INSERT INTO `person` (`Id`, `Name`) VALUES
-(16, 'gigi'),
-(17, 'gigica'),
-(18, 'gigica'),
-(19, 'gigica'),
-(20, 'gigica');
+INSERT INTO `person` (`IdPerson`, `Name`, `Phone`) VALUES
+(35, 'gigica', '07299544321');
 
 -- --------------------------------------------------------
 
@@ -274,9 +299,16 @@ INSERT INTO `person` (`Id`, `Name`) VALUES
 --
 
 CREATE TABLE `person_bidder` (
-  `Id` int(11) NOT NULL,
+  `IdBidder` int(11) NOT NULL,
   `IdPerson` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `person_bidder`
+--
+
+INSERT INTO `person_bidder` (`IdBidder`, `IdPerson`) VALUES
+(5, 35);
 
 -- --------------------------------------------------------
 
@@ -285,10 +317,17 @@ CREATE TABLE `person_bidder` (
 --
 
 CREATE TABLE `person_offeror` (
-  `Id` int(11) NOT NULL,
+  `IdOfferor` int(11) NOT NULL,
   `IdPerson` int(11) NOT NULL,
   `LastBannedDate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `person_offeror`
+--
+
+INSERT INTO `person_offeror` (`IdOfferor`, `IdPerson`, `LastBannedDate`) VALUES
+(8, 35, NULL);
 
 -- --------------------------------------------------------
 
@@ -297,7 +336,7 @@ CREATE TABLE `person_offeror` (
 --
 
 CREATE TABLE `person_offeror_mark` (
-  `Id` int(11) NOT NULL,
+  `IdOfferorMark` int(11) NOT NULL,
   `IdSender` int(11) NOT NULL,
   `IdReceiver` int(11) NOT NULL,
   `Mark` int(11) NOT NULL,
@@ -311,18 +350,11 @@ CREATE TABLE `person_offeror_mark` (
 --
 
 CREATE TABLE `product` (
-  `Id` int(11) NOT NULL,
+  `IdProduct` int(11) NOT NULL,
   `IdCategory` int(11) NOT NULL,
   `Name` varchar(45) NOT NULL,
   `Description` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`Id`, `IdCategory`, `Name`, `Description`) VALUES
-(1, 1, 'Caine', 'Husky');
 
 -- --------------------------------------------------------
 
@@ -331,10 +363,30 @@ INSERT INTO `product` (`Id`, `IdCategory`, `Name`, `Description`) VALUES
 --
 
 CREATE TABLE `sub_category` (
-  `Id` int(11) NOT NULL,
-  `IdParent` int(11) NOT NULL,
-  `IdSon` int(11) NOT NULL
+  `IdSubCategory` int(11) NOT NULL,
+  `IdParent` int(11) DEFAULT NULL,
+  `IdSon` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sub_category`
+--
+
+INSERT INTO `sub_category` (`IdSubCategory`, `IdParent`, `IdSon`) VALUES
+(1, 18, 18),
+(2, 18, 18),
+(3, 18, 18),
+(4, 18, 18),
+(5, 23, 23),
+(6, 23, 23),
+(7, 23, 23),
+(8, 18, 18),
+(9, 18, 18),
+(10, 18, 18),
+(11, 18, 18),
+(12, 23, 23),
+(13, 23, 23),
+(14, 23, 23);
 
 --
 -- Indexes for dumped tables
@@ -344,7 +396,7 @@ CREATE TABLE `sub_category` (
 -- Indexes for table `auction`
 --
 ALTER TABLE `auction`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdAuction`),
   ADD KEY `auctionofferor_link_idx` (`IdOfferor`),
   ADD KEY `auctionproduct_link_idx` (`IdProduct`),
   ADD KEY `auctioncurrency_link_idx` (`IdCurrency`);
@@ -353,7 +405,7 @@ ALTER TABLE `auction`
 -- Indexes for table `bid`
 --
 ALTER TABLE `bid`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdBid`),
   ADD KEY `auction_link_idx` (`IdAuction`),
   ADD KEY `bidcurrency_link_idx` (`IdCurrency`),
   ADD KEY `bidbidder_link_idx` (`IdBidder`);
@@ -362,41 +414,44 @@ ALTER TABLE `bid`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdCategory`),
   ADD UNIQUE KEY `Name_UNIQUE` (`Name`);
 
 --
 -- Indexes for table `currency`
 --
 ALTER TABLE `currency`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdCurrency`),
   ADD UNIQUE KEY `Name_UNIQUE` (`Name`);
 
 --
 -- Indexes for table `person`
 --
 ALTER TABLE `person`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`IdPerson`),
+  ADD UNIQUE KEY `Phone_UNIQUE` (`Phone`);
 
 --
 -- Indexes for table `person_bidder`
 --
 ALTER TABLE `person_bidder`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdBidder`),
+  ADD UNIQUE KEY `IdPerson_UNIQUE` (`IdPerson`),
   ADD KEY `bidder_link_idx` (`IdPerson`);
 
 --
 -- Indexes for table `person_offeror`
 --
 ALTER TABLE `person_offeror`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdOfferor`),
+  ADD UNIQUE KEY `IdPerson_UNIQUE` (`IdPerson`),
   ADD KEY `person_link_idx` (`IdPerson`);
 
 --
 -- Indexes for table `person_offeror_mark`
 --
 ALTER TABLE `person_offeror_mark`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdOfferorMark`),
   ADD KEY `personreceiver_link_idx` (`IdReceiver`),
   ADD KEY `personsender_link_idx` (`IdSender`);
 
@@ -404,14 +459,14 @@ ALTER TABLE `person_offeror_mark`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdProduct`),
   ADD KEY `link_category_idx` (`IdCategory`);
 
 --
 -- Indexes for table `sub_category`
 --
 ALTER TABLE `sub_category`
-  ADD PRIMARY KEY (`Id`),
+  ADD PRIMARY KEY (`IdSubCategory`),
   ADD KEY `parent_link_idx` (`IdParent`),
   ADD KEY `son_link_idx` (`IdSon`);
 
@@ -423,61 +478,61 @@ ALTER TABLE `sub_category`
 -- AUTO_INCREMENT for table `auction`
 --
 ALTER TABLE `auction`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdAuction` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bid`
 --
 ALTER TABLE `bid`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdBid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IdCategory` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `currency`
 --
 ALTER TABLE `currency`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdCurrency` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `person`
 --
 ALTER TABLE `person`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `IdPerson` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `person_bidder`
 --
 ALTER TABLE `person_bidder`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdBidder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `person_offeror`
 --
 ALTER TABLE `person_offeror`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdOfferor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `person_offeror_mark`
 --
 ALTER TABLE `person_offeror_mark`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdOfferorMark` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IdProduct` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sub_category`
 --
 ALTER TABLE `sub_category`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdSubCategory` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
@@ -487,49 +542,49 @@ ALTER TABLE `sub_category`
 -- Constraints for table `auction`
 --
 ALTER TABLE `auction`
-  ADD CONSTRAINT `auctioncurrency_link` FOREIGN KEY (`IdCurrency`) REFERENCES `currency` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auctionofferor_link` FOREIGN KEY (`IdOfferor`) REFERENCES `person_offeror` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auctionproduct_link` FOREIGN KEY (`IdProduct`) REFERENCES `product` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auctioncurrency_link` FOREIGN KEY (`IdCurrency`) REFERENCES `currency` (`IdCurrency`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auctionofferor_link` FOREIGN KEY (`IdOfferor`) REFERENCES `person_offeror` (`IdOfferor`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auctionproduct_link` FOREIGN KEY (`IdProduct`) REFERENCES `product` (`IdProduct`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bid`
 --
 ALTER TABLE `bid`
-  ADD CONSTRAINT `bidauction_link` FOREIGN KEY (`IdAuction`) REFERENCES `auction` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `bidbidder_link` FOREIGN KEY (`IdBidder`) REFERENCES `person_bidder` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `bidcurrency_link` FOREIGN KEY (`IdCurrency`) REFERENCES `currency` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bidauction_link` FOREIGN KEY (`IdAuction`) REFERENCES `auction` (`IdAuction`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bidbidder_link` FOREIGN KEY (`IdBidder`) REFERENCES `person_bidder` (`IdBidder`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bidcurrency_link` FOREIGN KEY (`IdCurrency`) REFERENCES `currency` (`IdCurrency`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `person_bidder`
 --
 ALTER TABLE `person_bidder`
-  ADD CONSTRAINT `bidder_link` FOREIGN KEY (`IdPerson`) REFERENCES `person` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bidder_link` FOREIGN KEY (`IdPerson`) REFERENCES `person` (`IdPerson`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `person_offeror`
 --
 ALTER TABLE `person_offeror`
-  ADD CONSTRAINT `offeror_link` FOREIGN KEY (`IdPerson`) REFERENCES `person` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `offeror_link` FOREIGN KEY (`IdPerson`) REFERENCES `person` (`IdPerson`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `person_offeror_mark`
 --
 ALTER TABLE `person_offeror_mark`
-  ADD CONSTRAINT `personreceiver_link` FOREIGN KEY (`IdReceiver`) REFERENCES `person_offeror` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `personsender_link` FOREIGN KEY (`IdSender`) REFERENCES `person` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `personreceiver_link` FOREIGN KEY (`IdReceiver`) REFERENCES `person_offeror` (`IdOfferor`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `personsender_link` FOREIGN KEY (`IdSender`) REFERENCES `person` (`IdPerson`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `link_category` FOREIGN KEY (`IdCategory`) REFERENCES `category` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `link_category` FOREIGN KEY (`IdCategory`) REFERENCES `category` (`IdCategory`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sub_category`
 --
 ALTER TABLE `sub_category`
-  ADD CONSTRAINT `parent_link` FOREIGN KEY (`IdParent`) REFERENCES `category` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `son_link` FOREIGN KEY (`IdSon`) REFERENCES `category` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `parent_link` FOREIGN KEY (`IdParent`) REFERENCES `category` (`IdCategory`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `son_link` FOREIGN KEY (`IdSon`) REFERENCES `category` (`IdCategory`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
